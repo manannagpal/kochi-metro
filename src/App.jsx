@@ -86,7 +86,7 @@ export function App() {
       const slug = p.replace(/^\/station\//, '').split('/')[0];
       const st = getStationBySlug(slug);
       if (!st) return '404';
-      return null;
+      return 'stationSeo';
     }
 
     if (p.startsWith('/route/')) {
@@ -164,14 +164,7 @@ export function App() {
   const [sortBy, setSortBy] = useState('fewestSwitches');
   const [maxSwitchesFilter, setMaxSwitchesFilter] = useState('any');
 
-  const [selectedStationModal, setSelectedStationModal] = useState(() => {
-    const p = window.location.pathname.replace(/\/$/, '');
-    if (p.startsWith('/station/')) {
-      const slug = p.replace(/^\/station\//, '').split('/')[0];
-      return getStationBySlug(slug) || null;
-    }
-    return null;
-  });
+  const [selectedStationModal, setSelectedStationModal] = useState(null);
   const [activeModal, setActiveModal] = useState(null); // 'nearest' | 'stations' | 'lines' | null
   const [isMapOpen, setIsMapOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState('');

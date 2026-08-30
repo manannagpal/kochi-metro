@@ -1,26 +1,36 @@
-import { StationDetailModal } from '../components/StationDetailModal.jsx';
 import React, { useEffect } from 'react';
 import { getStationBySlug } from '../utils/slugify.js';
 import { METRO_LINES } from '../data/lines.js';
-import { OFFICIAL_TRAIN_TIMINGS } from '../data/trainTimings.js';
+import { INTERCHANGES } from '../data/interchanges.js';
 import { OFFICIAL_PARKING_RATES } from '../data/parkingInfo.js';
+import { OFFICIAL_TRAIN_TIMINGS } from '../data/trainTimings.js';
 import { getStationGates } from '../data/stationGates.js';
-import { Train, Clock, Car, ArrowLeft, DoorOpen, ShieldCheck } from 'lucide-react';
+import { getStationDirectionalTimings } from '../data/stationTimings.js';
+import { TRANSLATIONS } from '../utils/i18n.js';
+import { Train, Clock, Car, Info, ArrowLeft, ArrowRightLeft, ShieldCheck, Phone, CheckCircle2, Compass } from 'lucide-react';
+
 import { NotFoundPage } from './NotFoundPage.jsx';
 import { AdSenseUnit } from '../components/AdSenseUnit.jsx';
+import { StationDetailModal } from '../components/StationDetailModal.jsx';
 
 export function StationSeoPage({ stationSlug, onBackToHome, lang = 'en' }) {
   const station = getStationBySlug(stationSlug);
+  const gates = station ? getStationGates(station.id, station.name) : [];
+  const directionalTimings = station ? getStationDirectionalTimings(station) : [];
 
   useEffect(() => {
     if (!station) return;
 
-    const stationLine = METRO_LINES[station.line];
-    const lineName = stationLine ? stationLine.name : station.line;
+    const stationLines = (station.lines || []).map(lineId => METRO_LINES[lineId]).filter(Boolean);
+    const lineNames = stationLines.map(l => l.name).join(', ');
 
-    const pageTitle = `${station.name} Metro Station Timings, Line & Fare | Kochi Metro`;
-    const pageDesc = `Kochi Metro Station (${lineName}): First & last train timetables, gate directions, parking details, line interchanges, and station guide.`;
-    const keywords = `${station.name} metro station, ${station.name} metro timings, ${station.name} metro line, kochi metro ${station.name}`;
+    const timingInfo = directionalTimings && directionalTimings.length > 0 ? directionalTimings[0] : null;
+    const firstTrainStr = timingInfo ? timingInfo.directionA.firstTrainWeekdays : '05:30 AM';
+    const lastTrainStr = timingInfo ? timingInfo.directionA.lastTrainWeekdays : '11:30 PM';
+
+    const pageTitle = `${station.name} Metro Station Timings, Lines, Fare & Parking | Delhi Metro`;
+    const pageDesc = `${station.name} Metro Station (${lineNames}): First train at ${firstTrainStr} (weekdays) / 08:00 AM (Sundays), last train at ${lastTrainStr}. Check platform timetables, fare, parking rates & gate guide.`;
+    const keywords = `${station.name} metro station, ${station.name} metro first train timing, ${station.name} metro last train timing, ${station.name} metro parking charges, ${station.name} metro lines, delhi metro ${station.name}`;
     const canonicalUrl = `https://kochi.metro.org.in/station/${stationSlug}/`;
 
     document.title = pageTitle;
@@ -41,20 +51,21 @@ export function StationSeoPage({ stationSlug, onBackToHome, lang = 'en' }) {
     }
     metaKeywords.content = keywords;
 
-    let canonicalLink = document.querySelector('link[rel="canonical"]');
-    if (!canonicalLink) {
-      canonicalLink = document.createElement('link');
-      canonicalLink.rel = 'canonical';
-      document.head.appendChild(canonicalLink);
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.rel = 'canonical';
+      document.head.appendChild(canonical);
     }
-    canonicalLink.href = canonicalUrl;
+    canonical.href = canonicalUrl;
 
-    window.scrollTo(0, 0);
+    // Scroll window to top on station page mount or slug change
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, [station, stationSlug]);
 
   if (!station) {
-    return <NotFoundPage onBackToHome={onBackToHome} />;
+    return <NotFoundPage lang={lang} onNavigate={onBackToHome} />;
   }
 
-  return <StationDetailModal station={station} onClose={onBackToHome} lang={lang} />;
+  return <StationDetailModal station={station} onClose={onBackToHome} lang={lang} isFullPage={true} />;
 }
