@@ -60,39 +60,10 @@ export function App() {
   const [stationSeoSlug, setStationSeoSlug] = useState(() => {
     const p = window.location.pathname.replace(/\/$/, '');
     if (p.startsWith('/station/')) {
-      return p.replace(/^\/station\//, '').split('/')[0];
-    }
-    if (p.startsWith('/route/')) {
-      const parts = p.replace(/^\/route\//, '').split('/').filter(Boolean);
-      if (parts.length === 1) {
-        const st = getStationBySlug(parts[0]);
-        if (st) {
-          if (typeof window !== 'undefined') {
-            window.history.replaceState(null, '', `/station/${getStationSlug(st)}/`);
-          }
-          return parts[0];
-        }
-      }
-    }
-    return null;
-  });
-
-  const [activePageView, setActivePageView] = useState(() => {
-    const p = window.location.pathname.replace(/\/$/, '');
-    if (!p || p === '') return null;
-    if (p === '/about') return 'about';
-    if (p === '/contact') return 'contact';
-    if (p === '/privacy-policy' || p === '/privacy') return 'privacy';
-    if (p === '/terms-of-service' || p === '/terms') return 'terms';
-    if (p === '/disclaimer') return 'disclaimer';
-    if (p === '/stations') return 'stations';
-    if (p === '/sitemap') return 'sitemap';
-    
-    if (p.startsWith('/station/')) {
       const slug = p.replace(/^\/station\//, '').split('/')[0];
       const st = getStationBySlug(slug);
       if (!st) return '404';
-      return 'stationSeo';
+      return null;
     }
 
     if (p.startsWith('/route/')) {
@@ -108,7 +79,7 @@ export function App() {
         if (typeof window !== 'undefined') {
           window.history.replaceState(null, '', `/station/${getStationSlug(st)}/`);
         }
-        return 'stationSeo';
+        return null;
       }
     }
 
@@ -563,9 +534,7 @@ export function App() {
         <StationsDirectoryPage onSelectStation={(st) => handleOpenStationPage(st)} onBackToHome={handleResetSearch} />
       ) : activePageView === 'sitemap' ? (
         <SitemapPage onSelectStation={(st) => handleOpenStationPage(st)} onBackToHome={handleResetSearch} />
-      ) : activePageView === 'stationSeo' && stationSeoSlug ? (
-        <StationSeoPage stationSlug={stationSeoSlug} onBackToHome={handleResetSearch} lang={lang} />
-      ) : activePageView === '404' ? (
+      ) ) : activePageView === '404' ? (
         <NotFoundPage lang={lang} onNavigate={handleNavigate} />
       ) : (
         <>
