@@ -21,9 +21,14 @@ export function QuickServices({ lang = 'en', onOpenMap }) {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '12px' }}>
         
         {/* INTERACTIVE METRO MAP BUTTON */}
-        <button
+        <button type="button"
           onClick={onOpenMap}
           style={{
+            WebkitAppearance: 'none',
+            appearance: 'none',
+            outline: 'none',
+            padding: 0,
+            margin: 0,
             background: 'var(--glass-bg)',
             border: '1px solid var(--border-color)',
             borderRadius: '12px',
@@ -34,8 +39,8 @@ export function QuickServices({ lang = 'en', onOpenMap }) {
             textAlign: 'left',
             cursor: 'pointer',
             transition: 'all 0.2s ease',
-            display: 'flex',
-            alignItems: 'center',
+            display: 'grid',
+            placeItems: 'center',
             justifyContent: 'space-between'
           }}
           onMouseEnter={(e) => {
@@ -47,7 +52,7 @@ export function QuickServices({ lang = 'en', onOpenMap }) {
             e.currentTarget.style.transform = 'translateY(0)';
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'grid', placeItems: 'center', gap: '10px' }}>
             <div style={{ background: 'rgba(229, 46, 45, 0.15)', padding: '8px', borderRadius: '10px' }}>
               <Map size={18} color="#E52E2D" />
             </div>
@@ -60,7 +65,7 @@ export function QuickServices({ lang = 'en', onOpenMap }) {
         </button>
 
         {/* FIRST & LAST TRAIN TIMINGS BUTTON */}
-        <button
+        <button type="button"
           onClick={() => setActiveModal('timings')}
           style={{
             background: 'var(--glass-bg)',
@@ -73,8 +78,8 @@ export function QuickServices({ lang = 'en', onOpenMap }) {
             textAlign: 'left',
             cursor: 'pointer',
             transition: 'all 0.2s ease',
-            display: 'flex',
-            alignItems: 'center',
+            display: 'grid',
+            placeItems: 'center',
             justifyContent: 'space-between'
           }}
           onMouseEnter={(e) => {
@@ -86,7 +91,7 @@ export function QuickServices({ lang = 'en', onOpenMap }) {
             e.currentTarget.style.transform = 'translateY(0)';
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'grid', placeItems: 'center', gap: '10px' }}>
             <div style={{ background: 'rgba(16, 185, 129, 0.15)', padding: '8px', borderRadius: '10px' }}>
               <Clock size={18} color="#10B981" />
             </div>
@@ -99,7 +104,7 @@ export function QuickServices({ lang = 'en', onOpenMap }) {
         </button>
 
         {/* PARKING RATES BUTTON */}
-        <button
+        <button type="button"
           onClick={() => setActiveModal('parking')}
           style={{
             background: 'var(--glass-bg)',
@@ -112,8 +117,8 @@ export function QuickServices({ lang = 'en', onOpenMap }) {
             textAlign: 'left',
             cursor: 'pointer',
             transition: 'all 0.2s ease',
-            display: 'flex',
-            alignItems: 'center',
+            display: 'grid',
+            placeItems: 'center',
             justifyContent: 'space-between'
           }}
           onMouseEnter={(e) => {
@@ -125,7 +130,7 @@ export function QuickServices({ lang = 'en', onOpenMap }) {
             e.currentTarget.style.transform = 'translateY(0)';
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ display: 'grid', placeItems: 'center', gap: '10px' }}>
             <div style={{ background: 'rgba(59, 130, 246, 0.15)', padding: '8px', borderRadius: '10px' }}>
               <Car size={18} color="#3B82F6" />
             </div>
@@ -146,23 +151,23 @@ export function QuickServices({ lang = 'en', onOpenMap }) {
           top: 0, left: 0, right: 0, bottom: 0,
           backgroundColor: 'rgba(0, 0, 0, 0.7)',
           backdropFilter: 'blur(8px)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          display: 'grid', placeItems: 'center', 
           zIndex: 1000, padding: '20px'
         }}>
           <div className="glass-panel animate-fade-in" style={{
             width: '100%', maxWidth: '640px', maxHeight: '88vh', overflowY: 'auto',
             padding: '24px', position: 'relative', background: 'var(--bg-surface)', borderRadius: '16px'
           }}>
-            <button onClick={() => { setActiveModal(null); setTimingSearch(''); setSelectedStationTimings(null); }} style={{
+            <button type="button" onClick={() => { setActiveModal(null); setTimingSearch(''); setSelectedStationTimings(null); }} style={{
               position: 'absolute', top: '16px', right: '16px', background: 'var(--input-bg)',
               border: '1px solid var(--border-color)', color: 'var(--text-primary)',
-              width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              width: '36px', height: '36px', borderRadius: '50%', display: 'grid', placeItems: 'center', 
             padding: 0,
             margin: 0,
-            lineHeight: 0,
-            boxSizing: 'border-box', cursor: 'pointer'
+            
+             cursor: 'pointer'
             }}>
-              <X size={18} style={{ display: 'block' }} />
+              <X size={18} style={{ display: 'block', margin: 'auto' }} />
             </button>
 
             <h3 style={{ fontSize: '1.3rem', fontWeight: 800, marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -221,7 +226,7 @@ export function QuickServices({ lang = 'en', onOpenMap }) {
               <div className="glass-panel" style={{ padding: '16px', borderRadius: '12px', background: 'rgba(16, 185, 129, 0.1)', border: '1px solid #10B981', marginBottom: '20px' }}>
                 <div style={{ fontWeight: 800, fontSize: '1.1rem', color: '#10B981', marginBottom: '10px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <span>📍 {selectedStationTimings.name} Metro Station Timetable</span>
-                  <button onClick={() => setSelectedStationTimings(null)} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '0.8rem' }}>Clear</button>
+                  <button type="button" onClick={() => setSelectedStationTimings(null)} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '0.8rem' }}>Clear</button>
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', fontSize: '0.88rem' }}>
                   <div style={{ background: 'var(--bg-surface)', padding: '10px', borderRadius: '8px' }}>
@@ -294,7 +299,7 @@ export function QuickServices({ lang = 'en', onOpenMap }) {
             width: '100%', maxWidth: '640px', maxHeight: '85vh', overflowY: 'auto',
             padding: '24px', position: 'relative', background: 'var(--bg-surface)'
           }}>
-            <button onClick={() => setActiveModal(null)} style={{
+            <button type="button" onClick={() => setActiveModal(null)} style={{
               position: 'absolute', top: '16px', right: '16px', background: 'var(--input-bg)',
               border: '1px solid var(--border-color)', color: 'var(--text-primary)',
               width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -303,7 +308,7 @@ export function QuickServices({ lang = 'en', onOpenMap }) {
             lineHeight: 0,
             boxSizing: 'border-box', cursor: 'pointer'
             }}>
-              <X size={18} style={{ display: 'block' }} />
+              <X size={18} style={{ display: 'block', margin: 'auto' }} />
             </button>
 
             <h3 style={{ fontSize: '1.3rem', fontWeight: 800, marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>

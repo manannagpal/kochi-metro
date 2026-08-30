@@ -36,9 +36,14 @@ export function StationDetailModal({ station, onClose, lang = 'en' }) {
         background: 'var(--bg-surface)'
       }}>
         {/* Close Button */}
-        <button
+        <button type="button"
           onClick={onClose}
           style={{
+            WebkitAppearance: 'none',
+            appearance: 'none',
+            outline: 'none',
+            padding: 0,
+            margin: 0,
             position: 'absolute',
             top: '16px',
             right: '16px',
@@ -48,13 +53,13 @@ export function StationDetailModal({ station, onClose, lang = 'en' }) {
             width: '36px',
             height: '36px',
             borderRadius: '50%',
-            display: 'flex',
-            alignItems: 'center',
+            display: 'grid',
+            placeItems: 'center',
             justify: 'center',
             cursor: 'pointer'
           }}
         >
-          <X size={18} style={{ display: 'block' }} />
+          <X size={18} style={{ display: 'block', margin: 'auto' }} />
         </button>
 
         {/* Header */}
@@ -91,7 +96,7 @@ export function StationDetailModal({ station, onClose, lang = 'en' }) {
 
         {/* Navigation Tabs */}
         <div style={{ display: 'flex', gap: '8px', borderBottom: '1px solid var(--border-color)', paddingBottom: '12px', marginBottom: '20px' }}>
-          <button
+          <button type="button"
             onClick={() => setActiveTab('timings')}
             style={{
               padding: '8px 14px', borderRadius: '8px', border: 'none',
@@ -104,7 +109,7 @@ export function StationDetailModal({ station, onClose, lang = 'en' }) {
             <span>Train Timings</span>
           </button>
 
-          <button
+          <button type="button"
             onClick={() => setActiveTab('gates')}
             style={{
               padding: '8px 14px', borderRadius: '8px', border: 'none',
@@ -117,7 +122,7 @@ export function StationDetailModal({ station, onClose, lang = 'en' }) {
             <span>Gates & Exits</span>
           </button>
 
-          <button
+          <button type="button"
             onClick={() => setActiveTab('parking')}
             style={{
               padding: '8px 14px', borderRadius: '8px', border: 'none',

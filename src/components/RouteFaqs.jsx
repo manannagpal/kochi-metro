@@ -66,7 +66,7 @@ export function RouteFaqs({ fromStation, toStation, primaryRoute }) {
             <div key={idx} className="glass-panel" style={{
               borderRadius: '10px', overflow: 'hidden', background: 'var(--bg-surface)', border: '1px solid var(--border-color)'
             }}>
-              <button
+              <button type="button"
                 onClick={() => toggleFaq(idx)}
                 style={{
                   width: '100%', padding: '14px 18px', background: 'var(--input-bg)', border: 'none',

@@ -103,16 +103,21 @@ export function MetroMapViewer({ onClose, activeRoute }) {
             </div>
           </div>
 
-          <button onClick={onClose} style={{
-            background: 'var(--input-bg)', border: '1px solid var(--border-color)',
-            color: 'var(--text-primary)', width: '34px', height: '34px', borderRadius: '50%',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          <button type="button" onClick={onClose} style={{
+            WebkitAppearance: 'none',
+            appearance: 'none',
+            outline: 'none',
             padding: 0,
             margin: 0,
-            lineHeight: 0,
-            boxSizing: 'border-box', cursor: 'pointer'
+            background: 'var(--input-bg)', border: '1px solid var(--border-color)',
+            color: 'var(--text-primary)', width: '34px', height: '34px', borderRadius: '50%',
+            display: 'grid', placeItems: 'center', 
+            padding: 0,
+            margin: 0,
+            
+             cursor: 'pointer'
           }}>
-            <X size={18} style={{ display: 'block' }} />
+            <X size={18} style={{ display: 'block', margin: 'auto' }} />
           </button>
         </div>
 
@@ -137,7 +142,7 @@ export function MetroMapViewer({ onClose, activeRoute }) {
           </div>
 
           <div style={{ display: 'flex', gap: '6px', overflowX: 'auto' }}>
-            <button
+            <button type="button"
               onClick={() => setSelectedLineFilter('all')}
               style={{
                 padding: '6px 12px', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 700,

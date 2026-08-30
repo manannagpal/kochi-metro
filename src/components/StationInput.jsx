@@ -341,23 +341,28 @@ export function StationInput({
             margin: 0,
             lineHeight: 0,
             boxSizing: 'border-box', margin: '-4px 0' }}>
-          <button
+          <button type="button"
             onClick={handleSwap}
             title={t.swapStations}
             style={{
+            WebkitAppearance: 'none',
+            appearance: 'none',
+            outline: 'none',
+            padding: 0,
+            margin: 0,
               background: 'var(--input-bg)',
               border: '1px solid var(--border-accent)',
               color: 'var(--accent-primary)',
               width: '40px',
               height: '40px',
               borderRadius: '50%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              display: 'grid',
+              placeItems: 'center',
+              
             padding: 0,
             margin: 0,
-            lineHeight: 0,
-            boxSizing: 'border-box',
+            
+            
               cursor: 'pointer',
               boxShadow: 'var(--shadow-sm)',
               transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
@@ -442,7 +447,7 @@ export function StationInput({
 
       {/* FIND ROUTES SUBMIT BUTTON */}
       <div style={{ marginTop: '24px', textAlign: 'center' }}>
-        <button
+        <button type="button"
           onClick={onSearch}
           disabled={!fromStation || !toStation}
           style={{

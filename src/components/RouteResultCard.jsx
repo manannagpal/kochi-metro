@@ -166,7 +166,7 @@ export function RouteResultCard({
             Smart Card Fare: <strong style={{ color: '#10B981' }}>₹{route.smartCardFare}</strong>
           </div>
 
-          <button
+          <button type="button"
             onClick={onToggleOpen}
             style={{
               background: 'var(--input-bg)',

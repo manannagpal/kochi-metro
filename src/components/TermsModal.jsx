@@ -34,15 +34,20 @@ export function TermsModal({ onClose }) {
             </div>
           </div>
 
-          <button onClick={onClose} style={{
-            background: 'rgba(255, 255, 255, 0.15)', border: 'none', color: '#FFFFFF',
-            width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+          <button type="button" onClick={onClose} style={{
+            WebkitAppearance: 'none',
+            appearance: 'none',
+            outline: 'none',
             padding: 0,
             margin: 0,
-            lineHeight: 0,
-            boxSizing: 'border-box', cursor: 'pointer'
+            background: 'rgba(255, 255, 255, 0.15)', border: 'none', color: '#FFFFFF',
+            width: '36px', height: '36px', borderRadius: '50%', display: 'grid', placeItems: 'center', 
+            padding: 0,
+            margin: 0,
+            
+             cursor: 'pointer'
           }}>
-            <X size={18} style={{ display: 'block' }} />
+            <X size={18} style={{ display: 'block', margin: 'auto' }} />
           </button>
         </div>
 

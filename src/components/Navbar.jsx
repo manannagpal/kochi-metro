@@ -80,7 +80,7 @@ export function Navbar({
 
           {/* Controls (Share, Theme) */}
           <div className="navbar-controls">
-            <button
+            <button type="button"
               onClick={onShareApp}
               title={t.shareRoute}
               className="btn-header-action"
@@ -89,7 +89,7 @@ export function Navbar({
               <span>{t.shareRoute || 'Share'}</span>
             </button>
 
-            <button
+            <button type="button"
               onClick={toggleTheme}
               title="Toggle Light / Dark Mode"
               className="btn-header-action"
@@ -111,7 +111,7 @@ export function Navbar({
 
         {/* HEADER NAVIGATION RIBBON */}
         <div className="nav-ribbon">
-          <button
+          <button type="button"
             onClick={onOpenTimings}
             style={{
               padding: '6px 12px', borderRadius: '8px', border: '1px solid var(--border-color)',
@@ -124,7 +124,7 @@ export function Navbar({
             <span>First / Last Train</span>
           </button>
 
-          <button
+          <button type="button"
             onClick={onOpenNearest}
             style={{
               padding: '6px 12px', borderRadius: '8px', border: '1px solid var(--border-color)',
@@ -137,7 +137,7 @@ export function Navbar({
             <span>Nearest Metro</span>
           </button>
 
-          <button
+          <button type="button"
             onClick={onOpenMap}
             style={{
               padding: '6px 12px', borderRadius: '8px', border: '1px solid var(--border-color)',
@@ -150,7 +150,7 @@ export function Navbar({
             <span>Metro Map</span>
           </button>
 
-          <button
+          <button type="button"
             onClick={onOpenParking}
             style={{
               padding: '6px 12px', borderRadius: '8px', border: '1px solid var(--border-color)',
@@ -163,7 +163,7 @@ export function Navbar({
             <span>Parking Rates</span>
           </button>
 
-          <button
+          <button type="button"
             onClick={onOpenStations}
             style={{
               padding: '6px 12px', borderRadius: '8px', border: '1px solid var(--border-color)',
@@ -176,7 +176,7 @@ export function Navbar({
             <span>Stations Directory</span>
           </button>
 
-          <button
+          <button type="button"
             onClick={onOpenLines}
             style={{
               padding: '6px 12px', borderRadius: '8px', border: '1px solid var(--border-color)',
@@ -215,7 +215,7 @@ export function Navbar({
           justify: 'space-between',
           position: 'relative'
         }}>
-          <button
+          <button type="button"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             title="Toggle Menu"
             style={{
@@ -258,7 +258,7 @@ export function Navbar({
           </div>
 
           <div ref={overflowRef} style={{ position: 'absolute', right: '14px', zIndex: 10 }}>
-            <button
+            <button type="button"
               onClick={() => setShowOverflowMenu(!showOverflowMenu)}
               title="More options"
               style={{
