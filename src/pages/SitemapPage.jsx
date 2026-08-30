@@ -23,9 +23,9 @@ export function SitemapPage({ onBackToHome, onSelectStation }) {
   }, []);
 
   const xmlSitemaps = [
-    { title: "Master Sitemap Index", url: "https://kolkata.metro.org.in/sitemap.xml" },
-    { title: "Sitemap Chunk 1", url: "https://kolkata.metro.org.in/sitemap-1.xml" },
-    { title: "Core Pages & Stations Sitemap", url: "https://kolkata.metro.org.in/sitemap-home.xml" },
+    { title: "Master Sitemap Index", url: "https://kochi.metro.org.in/sitemap.xml" },
+    { title: "Sitemap Chunk 1", url: "https://kochi.metro.org.in/sitemap-1.xml" },
+    { title: "Core Pages & Stations Sitemap", url: "https://kochi.metro.org.in/sitemap-home.xml" },
   ];
 
   return (
