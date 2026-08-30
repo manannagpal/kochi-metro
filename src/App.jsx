@@ -170,7 +170,14 @@ export function App() {
   const [sortBy, setSortBy] = useState('fewestSwitches');
   const [maxSwitchesFilter, setMaxSwitchesFilter] = useState('any');
 
-  const [selectedStationModal, setSelectedStationModal] = useState(null);
+  const [selectedStationModal, setSelectedStationModal] = useState(() => {
+    const p = window.location.pathname.replace(/\/$/, '');
+    if (p.startsWith('/station/')) {
+      const slug = p.replace(/^\/station\//, '').split('/')[0];
+      return getStationBySlug(slug) || null;
+    }
+    return null;
+  });
   const [activeModal, setActiveModal] = useState(null); // 'nearest' | 'stations' | 'lines' | null
   const [isMapOpen, setIsMapOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
@@ -180,7 +187,7 @@ export function App() {
 
   // Sync SEO metadata (title, description, keywords, canonical, JSON-LD) dynamically
   useEffect(() => {
-    if (activePageView === 'stationSeo') {
+    if (activePageView === 'stationSeo' || selectedStationModal) {
       const slug = stationSeoSlug || (fromStation ? getStationSlug(fromStation) : null);
       const st = (fromStation && getStationSlug(fromStation) === slug) ? fromStation : (slug ? getStationBySlug(slug) : null);
       if (st) {
@@ -316,9 +323,9 @@ export function App() {
       } else if (parts.length === 1) {
         const f = getStationBySlug(parts[0]);
         if (f) {
-          setFromStation(f);
+          setSelectedStationModal(f);
           setStationSeoSlug(parts[0]);
-          setActivePageView('stationSeo');
+          setActivePageView(null);
           updatePageSeo(f, null, null);
           return;
         } else {
@@ -471,8 +478,7 @@ export function App() {
     if (!st) return;
     const slug = getStationSlug(st);
     setStationSeoSlug(slug);
-    setActivePageView('stationSeo');
-    setSelectedStationModal(null);
+    setSelectedStationModal(st);
     setActiveModal(null);
     if (window.location.pathname !== `/station/${slug}/`) {
       window.history.pushState({}, '', `/station/${slug}/`);
@@ -733,7 +739,8 @@ export function App() {
           station={selectedStationModal}
           onClose={() => {
             setSelectedStationModal(null);
-            if (window.location.pathname.startsWith('/station/') || window.location.pathname.startsWith('/route/')) {
+            setStationSeoSlug(null);
+            if (window.location.pathname.startsWith('/station/')) {
               window.history.pushState({}, '', '/');
             }
           }}
