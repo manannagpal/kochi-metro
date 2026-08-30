@@ -67,7 +67,7 @@ export function StationsDirectoryPage({ onSelectStation, onBackToHome }) {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search station by name (e.g. Versova, Andheri, BKC)..."
+              placeholder="Search station by name (e.g. Aluva, Edapally, Tripunithura)..."
               style={{
                 width: '100%', padding: '12px 14px 12px 40px', borderRadius: '12px',
                 border: '1px solid var(--border-color)', background: 'var(--input-bg)',
