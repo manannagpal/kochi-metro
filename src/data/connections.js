@@ -1,7 +1,6 @@
 // Explicit Line Sequences & Edge Connections for Kochi Metro
 export const LINE_SEQUENCES = {
   "line1": [
-    "line1",
     "aluva",
     "pulinchodu",
     "companypady",
