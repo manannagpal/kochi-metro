@@ -22,11 +22,12 @@ export function StationTimeline({ route, onStationClick, lang = 'en' }) {
       const isDestination = (legIdx === route.legs.length - 1 && stIdx === stationIds.length - 1);
       const isInterchange = (!isDestination && stIdx === stationIds.length - 1);
       
-      const stObj = getStationById(stId);
+      const stObj = typeof stId === 'object' && stId !== null ? stId : getStationById(stId);
+      const realStId = typeof stId === 'object' && stId !== null ? stId.id : stId;
       const stationName = stObj ? stObj.name : (stIdx === 0 ? leg.fromStationName : leg.toStationName);
 
       timelineItems.push({
-        stationId: stId,
+        stationId: realStId,
         stationName: stationName || stId,
         lineDef,
         direction: leg.direction,

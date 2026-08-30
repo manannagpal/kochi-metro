@@ -154,13 +154,13 @@ export function buildRouteDetail(rawPath, fromStationId, toStationId, overrideDm
           fromStationName: metroGraph.getStation(currStationId).name,
           toStationId: null,
           toStationName: null,
-          stations: [metroGraph.getStation(currStationId)],
+          stations: [currStationId],
           distance: 0,
           stopsCount: 0,
           direction: ''
         };
       }
-      currentLeg.stations.push(metroGraph.getStation(nextStationId));
+      currentLeg.stations.push(nextStationId);
       currentLeg.distance += edge.distance;
       totalDistance += edge.distance;
       totalTime += edge.weight + CONSTANTS.STATION_STOP_BUFFER_MINS;
