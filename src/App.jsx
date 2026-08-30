@@ -4,7 +4,7 @@ import { Navbar } from './components/Navbar.jsx';
 import { Footer } from './components/Footer.jsx';
 import { StationInput } from './components/StationInput.jsx';
 import { RecentSearches } from './components/RecentSearches.jsx';
-import { PopularRoutes } from './components/PopularRoutes.jsx';
+import { PopularRoutes, PRESET_ROUTES } from './components/PopularRoutes.jsx';
 import { QuickActions } from './components/QuickActions.jsx';
 import { NearestMetro } from './components/NearestMetro.jsx';
 import { StationsDirectory } from './components/StationsDirectory.jsx';
@@ -117,8 +117,17 @@ export function App() {
 
   // Extract initial route calculation from URL synchronously for instant first-render state
   const initialRouteState = (() => {
-    const defaultFrom = STATIONS[0];
-    const defaultTo = STATIONS[1] || STATIONS[0];
+    let defaultFrom = STATIONS[0];
+    let defaultTo = STATIONS[1] || STATIONS[0];
+
+    if (typeof PRESET_ROUTES !== 'undefined' && PRESET_ROUTES.length > 0) {
+      const pFrom = getStationById(PRESET_ROUTES[0].fromId);
+      const pTo = getStationById(PRESET_ROUTES[0].toId);
+      if (pFrom && pTo) {
+        defaultFrom = pFrom;
+        defaultTo = pTo;
+      }
+    }
 
     const p = window.location.pathname.replace(/\/$/, '');
     if (p.startsWith('/route/')) {
@@ -138,7 +147,15 @@ export function App() {
         }
       }
     }
-    return { from: defaultFrom, to: defaultTo, routes: [], hasSearched: false, openIds: new Set() };
+
+    const defaultCalculated = calculateRoutes(defaultFrom.id, defaultTo.id);
+    return {
+      from: defaultFrom,
+      to: defaultTo,
+      routes: defaultCalculated,
+      hasSearched: true,
+      openIds: defaultCalculated.length > 0 ? new Set([defaultCalculated[0].id]) : new Set()
+    };
   })();
 
   const [fromStation, setFromStation] = useState(initialRouteState.from);
@@ -250,8 +267,22 @@ export function App() {
     if (!pTrim || pTrim === '') {
       setActivePageView(null);
       setStationSeoSlug(null);
-      setHasSearched(false);
-      setRoutes([]);
+      let defaultFrom = STATIONS[0];
+      let defaultTo = STATIONS[1] || STATIONS[0];
+      if (typeof PRESET_ROUTES !== 'undefined' && PRESET_ROUTES.length > 0) {
+        const pFrom = getStationById(PRESET_ROUTES[0].fromId);
+        const pTo = getStationById(PRESET_ROUTES[0].toId);
+        if (pFrom && pTo) {
+          defaultFrom = pFrom;
+          defaultTo = pTo;
+        }
+      }
+      setFromStation(defaultFrom);
+      setToStation(defaultTo);
+      const calculated = calculateRoutes(defaultFrom.id, defaultTo.id);
+      setRoutes(calculated);
+      setHasSearched(true);
+      if (calculated.length > 0) setOpenRouteIds(new Set([calculated[0].id]));
       return;
     }
 
@@ -327,13 +358,23 @@ export function App() {
   const handleResetSearch = () => {
     setActivePageView(null);
     setStationSeoSlug(null);
-    setHasSearched(false);
-    setRoutes([]);
-    setOpenRouteIds(new Set());
-    const defaultFrom = STATIONS[0];
-    const defaultTo = STATIONS[1] || STATIONS[0];
+    let defaultFrom = STATIONS[0];
+    let defaultTo = STATIONS[1] || STATIONS[0];
+    if (typeof PRESET_ROUTES !== 'undefined' && PRESET_ROUTES.length > 0) {
+      const pFrom = getStationById(PRESET_ROUTES[0].fromId);
+      const pTo = getStationById(PRESET_ROUTES[0].toId);
+      if (pFrom && pTo) {
+        defaultFrom = pFrom;
+        defaultTo = pTo;
+      }
+    }
     setFromStation(defaultFrom);
     setToStation(defaultTo);
+    const calculated = calculateRoutes(defaultFrom.id, defaultTo.id);
+    setRoutes(calculated);
+    setHasSearched(true);
+    if (calculated.length > 0) setOpenRouteIds(new Set([calculated[0].id]));
+    else setOpenRouteIds(new Set());
     setMaxSwitchesFilter('any');
     setSortBy('fewestSwitches');
     if (window.location.pathname !== '/') {

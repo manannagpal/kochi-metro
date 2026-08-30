@@ -45,7 +45,7 @@ export function RouteResultCard({
             {route.totalTimeMins}
           </div>
           <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', color: '#94A3B8', marginTop: '4px', fontWeight: 600, letterSpacing: '0.02em', whiteSpace: 'nowrap' }}>
-            {t.mins}
+            {t.mins || 'MINS'}
           </div>
         </div>
 
@@ -54,7 +54,7 @@ export function RouteResultCard({
             ₹{route.fare}
           </div>
           <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', color: '#94A3B8', marginTop: '4px', fontWeight: 600, letterSpacing: '0.02em', whiteSpace: 'nowrap' }}>
-            {t.fare}
+            {t.fare || 'FARE'}
           </div>
         </div>
 
@@ -63,7 +63,7 @@ export function RouteResultCard({
             {route.totalStops}
           </div>
           <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', color: '#94A3B8', marginTop: '4px', fontWeight: 600, letterSpacing: '0.02em', whiteSpace: 'nowrap' }}>
-            {t.stops}
+            {t.stops || t.stations || 'STATIONS'}
           </div>
         </div>
 
@@ -72,7 +72,7 @@ export function RouteResultCard({
             {route.switches}
           </div>
           <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', color: '#94A3B8', marginTop: '4px', fontWeight: 600, letterSpacing: '0.02em', whiteSpace: 'nowrap' }}>
-            {route.switches === 1 ? t.switch : t.switchPlural}
+            {route.switches === 1 ? (t.switch || 'INTERCHANGE') : (t.switchPlural || t.interchanges || 'INTERCHANGES')}
           </div>
         </div>
       </div>

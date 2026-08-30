@@ -22,7 +22,11 @@ export const TRANSLATIONS = {
     fewestStops: "Fewest Stops",
     fastest: "Fastest Route",
     shareRoute: "Share",
-    linkCopied: "Route link copied to clipboard!"
+    linkCopied: "Route link copied to clipboard!",
+    mins: "MINS",
+    stops: "STATIONS",
+    switch: "INTERCHANGE",
+    switchPlural: "INTERCHANGES"
   },
   hi: {
     appTitle: "कोलकाता मेट्रो",
@@ -47,6 +51,10 @@ export const TRANSLATIONS = {
     fewestStops: "कम से कम स्टेशन",
     fastest: "सबसे तेज़ रूट",
     shareRoute: "शेयर करें",
-    linkCopied: "रूट लिंक क्लिपबोर्ड पर कॉपी हो गया!"
+    linkCopied: "रूट लिंक क्लिपबोर्ड पर कॉपी हो गया!",
+    mins: "मिनट",
+    stops: "स्टेशन",
+    switch: "इंटरचेंज",
+    switchPlural: "इंटरचेंज"
   }
 };
