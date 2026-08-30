@@ -715,10 +715,7 @@ export function App() {
       {activeModal === 'stations' && (
         <StationsDirectory
           onClose={() => setActiveModal(null)}
-          onSelectStation={(st) => {
-            setSelectedStationModal(st);
-            setActiveModal(null);
-          }}
+          onSelectStation={(st) => handleOpenStationPage(st)}
         />
       )}
 
@@ -726,10 +723,7 @@ export function App() {
       {activeModal === 'lines' && (
         <LinesDirectory
           onClose={() => setActiveModal(null)}
-          onSelectStation={(st) => {
-            setSelectedStationModal(st);
-            setActiveModal(null);
-          }}
+          onSelectStation={(st) => handleOpenStationPage(st)}
         />
       )}
 
