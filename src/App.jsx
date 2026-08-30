@@ -117,8 +117,8 @@ export function App() {
 
   // Extract initial route calculation from URL synchronously for instant first-render state
   const initialRouteState = (() => {
-    const defaultFrom = STATIONS.find(s => s.id === 'line1') || STATIONS[0];
-    const defaultTo = STATIONS.find(s => s.id === 'line1') || STATIONS[1];
+    const defaultFrom = STATIONS[0];
+    const defaultTo = STATIONS[1] || STATIONS[0];
 
     const p = window.location.pathname.replace(/\/$/, '');
     if (p.startsWith('/route/')) {
@@ -330,8 +330,8 @@ export function App() {
     setHasSearched(false);
     setRoutes([]);
     setOpenRouteIds(new Set());
-    const defaultFrom = STATIONS.find(s => s.id === 'line1') || STATIONS[0];
-    const defaultTo = STATIONS.find(s => s.id === 'line1') || STATIONS[1];
+    const defaultFrom = STATIONS[0];
+    const defaultTo = STATIONS[1] || STATIONS[0];
     setFromStation(defaultFrom);
     setToStation(defaultTo);
     setMaxSwitchesFilter('any');
