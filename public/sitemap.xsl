@@ -7,11 +7,11 @@
   <xsl:template match="/">
     <html lang="en">
       <head>
-        <title>XML Sitemap | Delhi Metro Route Finder</title>
+        <title>XML Sitemap | Kochi Metro Route Finder</title>
         <meta charset="UTF-8" />
-        <link rel="icon" type="image/svg+xml" href="https://delhi.metro.org.in/favicon.svg?v=2" />
-        <link rel="icon" type="image/png" sizes="48x48" href="https://delhi.metro.org.in/favicon-48x48.png?v=2" />
-        <link rel="shortcut icon" href="https://delhi.metro.org.in/favicon.ico?v=2" />
+        <link rel="icon" type="image/svg+xml" href="https://kochi.metro.org.in/favicon.svg?v=2" />
+        <link rel="icon" type="image/png" sizes="48x48" href="https://kochi.metro.org.in/favicon-48x48.png?v=2" />
+        <link rel="shortcut icon" href="https://kochi.metro.org.in/favicon.ico?v=2" />
         <style>
           body { font-family: system-ui, -apple-system, sans-serif; background: #090d16; color: #f8fafc; padding: 2rem; margin: 0; }
           .container { max-width: 1100px; margin: 0 auto; background: #0f172a; padding: 2rem; border-radius: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.5); border: 1px solid #1e293b; }
@@ -26,8 +26,8 @@
       </head>
       <body>
         <div class="container">
-          <h1>🚇 Delhi Metro Route Finder — XML Sitemap</h1>
-          <p>This is the official XML Sitemap index &amp; route list for delhi.metro.org.in, generated for Google Search.</p>
+          <h1>🚇 Kochi Metro Route Finder — XML Sitemap</h1>
+          <p>This is the official XML Sitemap index &amp; route list for kochi.metro.org.in, generated for Google Search.</p>
 
           <xsl:if test="sitemap:sitemapindex">
             <table>
