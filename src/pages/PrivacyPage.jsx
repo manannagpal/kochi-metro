@@ -3,7 +3,7 @@ import { ShieldCheck, ArrowLeft } from 'lucide-react';
 
 export function PrivacyPage({ onBackToHome }) {
   useEffect(() => {
-    document.title = "Privacy Policy | Kolkata Metro Route Finder";
+    document.title = "Privacy Policy | Kochi Metro Route Finder";
     window.scrollTo(0, 0);
   }, []);
 

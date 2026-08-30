@@ -6,7 +6,7 @@ export function NotFoundPage({ lang = 'en', onNavigate }) {
   const t = TRANSLATIONS[lang] || TRANSLATIONS.en;
 
   useEffect(() => {
-    document.title = '404 - Page Not Found | Delhi Metro Route Finder';
+    document.title = '404 - Page Not Found | Kochi Metro Route Finder';
 
     let metaRobots = document.querySelector('meta[name="robots"]');
     if (!metaRobots) {

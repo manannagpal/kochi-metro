@@ -3,7 +3,7 @@ import { Info, MapPin, Clock, CreditCard, Shield, ArrowLeft } from 'lucide-react
 
 export function AboutPage({ onBackToHome }) {
   useEffect(() => {
-    document.title = "About Us | Kolkata Metro Route Finder";
+    document.title = "About Us | Kochi Metro Route Finder";
     window.scrollTo(0, 0);
   }, []);
 
@@ -29,7 +29,7 @@ export function AboutPage({ onBackToHome }) {
           </div>
           <div>
             <h1 style={{ fontSize: '1.8rem', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
-              About Kolkata Metro Route Finder
+              About Kochi Metro Route Finder
             </h1>
             <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', margin: '4px 0 0 0' }}>
               Empowering daily commuters with fast, accurate transit navigation.
@@ -39,7 +39,7 @@ export function AboutPage({ onBackToHome }) {
 
         <div style={{ fontSize: '0.95rem', color: 'var(--text-primary)', lineHeight: '1.7', display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <p>
-            <strong>kolkata.metro.org.in</strong> is an independent web application dedicated to providing fast, reliable, and accessible route planning across the Kolkata Metro network (Line 1 Blue Line, Line 2 Green Line, Line 3 Purple Line, and Line 6 Orange Line).
+            <strong>kolkata.metro.org.in</strong> is an independent web application dedicated to providing fast, reliable, and accessible route planning across the Kochi Metro network (Line 1 Blue Line, Line 2 Green Line, Line 3 Purple Line, and Line 6 Orange Line).
           </p>
 
           <h2 style={{ fontSize: '1.25rem', fontWeight: 700, margin: '16px 0 8px 0', color: 'var(--text-primary)' }}>

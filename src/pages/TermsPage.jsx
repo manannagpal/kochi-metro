@@ -3,7 +3,7 @@ import { FileText, ArrowLeft } from 'lucide-react';
 
 export function TermsPage({ onBackToHome }) {
   useEffect(() => {
-    document.title = "Terms of Service | Kolkata Metro Route Finder";
+    document.title = "Terms of Service | Kochi Metro Route Finder";
     window.scrollTo(0, 0);
   }, []);
 
@@ -32,7 +32,7 @@ export function TermsPage({ onBackToHome }) {
               Terms of Service
             </h1>
             <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', margin: '4px 0 0 0' }}>
-              Terms governing the use of Kolkata Metro Route Finder.
+              Terms governing the use of Kochi Metro Route Finder.
             </p>
           </div>
         </div>

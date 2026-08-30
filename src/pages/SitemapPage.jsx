@@ -8,7 +8,7 @@ export function SitemapPage({ onBackToHome, onSelectStation }) {
   const isNativeApp = Capacitor.isNativePlatform();
 
   useEffect(() => {
-    document.title = "Sitemap | Kolkata Metro Route Finder";
+    document.title = "Sitemap | Kochi Metro Route Finder";
     window.scrollTo(0, 0);
   }, []);
 
@@ -60,7 +60,7 @@ export function SitemapPage({ onBackToHome, onSelectStation }) {
               Sitemap
             </h1>
             <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-              Complete index of all stations and core pages for Kolkata Metro
+              Complete index of all stations and core pages for Kochi Metro
             </span>
           </div>
         </div>
@@ -102,7 +102,7 @@ export function SitemapPage({ onBackToHome, onSelectStation }) {
         <div>
           <h2 style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '16px', display: 'flex', items: 'center', gap: '8px' }}>
             <MapPin size={18} color="var(--accent-primary)" />
-            All {STATIONS.length} Kolkata Metro Stations
+            All {STATIONS.length} Kochi Metro Stations
           </h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             {Object.keys(groupedStations).sort().map(letter => (

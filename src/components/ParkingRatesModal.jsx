@@ -3,12 +3,12 @@ import { Car, X, Info } from 'lucide-react';
 import { OFFICIAL_PARKING_RATES } from '../data/parkingInfo.js';
 
 export function ParkingRatesModal({ onClose }) {
-  const [selectedNetwork, setSelectedNetwork] = useState('KOLKATA');
+  const [selectedNetwork, setSelectedNetwork] = useState('KOCHI');
 
-  const currentParking = OFFICIAL_PARKING_RATES[selectedNetwork] || OFFICIAL_PARKING_RATES.KOLKATA;
+  const currentParking = OFFICIAL_PARKING_RATES[selectedNetwork] || OFFICIAL_PARKING_RATES.KOCHI;
 
   const networks = [
-    { key: 'KOLKATA', name: 'Metro Railway Kolkata', badge: 'Default' }
+    { key: 'KOCHI', name: 'Kochi Metro Rail (KMRL)', badge: 'Official' }
   ];
 
   return (
@@ -36,7 +36,7 @@ export function ParkingRatesModal({ onClose }) {
           </div>
           <div>
             <h3 style={{ fontSize: '1.25rem', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
-              Official Metro Parking Rates & Info
+              Official Kochi Metro Parking Rates & Info
             </h3>
             <span style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
               Station-wise 2-wheeler, 4-wheeler, cycle & night parking rates
@@ -64,106 +64,50 @@ export function ParkingRatesModal({ onClose }) {
           ))}
         </div>
 
-        {/* Selected Operator Header Card */}
-        <div className="glass-panel" style={{ padding: '16px 20px', borderRadius: '12px', background: 'var(--input-bg)', marginBottom: '20px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
-            <span style={{ fontWeight: 800, fontSize: '1rem', color: 'var(--text-primary)' }}>
-              {currentParking.operator}
-            </span>
-            <span style={{ fontSize: '0.75rem', padding: '3px 8px', borderRadius: '6px', background: 'rgba(16, 185, 129, 0.15)', color: '#10B981', fontWeight: 700 }}>
-              Official Authorized Rates
-            </span>
-          </div>
-          <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', margin: 0, lineHeight: '1.4' }}>
-            {currentParking.notes}
-          </p>
-        </div>
+        {/* Parking Tariff Cards */}
+        {currentParking && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', lineHeight: '1.5' }}>
+              ℹ️ {currentParking.notes}
+            </div>
 
-        {/* Rates Comparison Table */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '12px', marginBottom: '20px' }}>
-          {/* 4-Wheeler */}
-          <div className="glass-panel" style={{ padding: '16px', borderRadius: '12px', border: '1px solid var(--border-color)', background: 'var(--bg-surface)' }}>
-            <div style={{ fontSize: '0.85rem', fontWeight: 800, color: 'var(--accent-primary)', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              🚗 4-Wheeler (Car / SUV)
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '0.82rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: 'var(--text-muted)' }}>Up to 6h:</span>
-                <span style={{ fontWeight: 700 }}>{currentParking.rates.fourWheeler.upTo6h}</span>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px' }}>
+              <div style={{ background: 'var(--input-bg)', padding: '16px', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
+                <h4 style={{ margin: '0 0 10px 0', fontSize: '0.95rem', fontWeight: 800, color: 'var(--text-primary)' }}>🚗 4-Wheeler Parking</h4>
+                <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <div>Up to 6 hrs: <strong>{currentParking.rates.fourWheeler.upTo6h}</strong></div>
+                  <div>Up to 12 hrs: <strong>{currentParking.rates.fourWheeler.upTo12h}</strong></div>
+                  <div>Full Day (24h): <strong>{currentParking.rates.fourWheeler.fullDay}</strong></div>
+                  <div>Monthly Pass: <strong>{currentParking.rates.fourWheeler.monthly}</strong></div>
+                </div>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: 'var(--text-muted)' }}>Up to 12h:</span>
-                <span style={{ fontWeight: 700 }}>{currentParking.rates.fourWheeler.upTo12h}</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: 'var(--text-muted)' }}>Full Day (24h):</span>
-                <span style={{ fontWeight: 800, color: '#10B981' }}>{currentParking.rates.fourWheeler.fullDay}</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid var(--border-color)', paddingTop: '6px' }}>
-                <span style={{ color: 'var(--text-muted)' }}>Monthly Pass:</span>
-                <span style={{ fontWeight: 800 }}>{currentParking.rates.fourWheeler.monthly}</span>
-              </div>
-            </div>
-          </div>
 
-          {/* 2-Wheeler */}
-          <div className="glass-panel" style={{ padding: '16px', borderRadius: '12px', border: '1px solid var(--border-color)', background: 'var(--bg-surface)' }}>
-            <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#F59E0B', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              🛵 2-Wheeler (Bike / Scooter)
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '0.82rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: 'var(--text-muted)' }}>Up to 6h:</span>
-                <span style={{ fontWeight: 700 }}>{currentParking.rates.twoWheeler.upTo6h}</span>
+              <div style={{ background: 'var(--input-bg)', padding: '16px', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
+                <h4 style={{ margin: '0 0 10px 0', fontSize: '0.95rem', fontWeight: 800, color: 'var(--text-primary)' }}>🛵 2-Wheeler Parking</h4>
+                <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <div>Up to 6 hrs: <strong>{currentParking.rates.twoWheeler.upTo6h}</strong></div>
+                  <div>Up to 12 hrs: <strong>{currentParking.rates.twoWheeler.upTo12h}</strong></div>
+                  <div>Full Day (24h): <strong>{currentParking.rates.twoWheeler.fullDay}</strong></div>
+                  <div>Monthly Pass: <strong>{currentParking.rates.twoWheeler.monthly}</strong></div>
+                </div>
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: 'var(--text-muted)' }}>Up to 12h:</span>
-                <span style={{ fontWeight: 700 }}>{currentParking.rates.twoWheeler.upTo12h}</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: 'var(--text-muted)' }}>Full Day (24h):</span>
-                <span style={{ fontWeight: 800, color: '#10B981' }}>{currentParking.rates.twoWheeler.fullDay}</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid var(--border-color)', paddingTop: '6px' }}>
-                <span style={{ color: 'var(--text-muted)' }}>Monthly Pass:</span>
-                <span style={{ fontWeight: 800 }}>{currentParking.rates.twoWheeler.monthly}</span>
-              </div>
-            </div>
-          </div>
 
-          {/* Bicycle */}
-          <div className="glass-panel" style={{ padding: '16px', borderRadius: '12px', border: '1px solid var(--border-color)', background: 'var(--bg-surface)' }}>
-            <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#10B981', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              🚲 Bicycle / Cycle
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '0.82rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: 'var(--text-muted)' }}>Up to 6h:</span>
-                <span style={{ fontWeight: 700 }}>{currentParking.rates.cycle.upTo6h}</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: 'var(--text-muted)' }}>Up to 12h:</span>
-                <span style={{ fontWeight: 700 }}>{currentParking.rates.cycle.upTo12h}</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ color: 'var(--text-muted)' }}>Full Day (24h):</span>
-                <span style={{ fontWeight: 800, color: '#10B981' }}>{currentParking.rates.cycle.fullDay}</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid var(--border-color)', paddingTop: '6px' }}>
-                <span style={{ color: 'var(--text-muted)' }}>Monthly Pass:</span>
-                <span style={{ fontWeight: 800 }}>{currentParking.rates.cycle.monthly}</span>
+              <div style={{ background: 'var(--input-bg)', padding: '16px', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
+                <h4 style={{ margin: '0 0 10px 0', fontSize: '0.95rem', fontWeight: 800, color: 'var(--text-primary)' }}>🚲 Bicycle Parking</h4>
+                <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <div>Up to 6 hrs: <strong>{currentParking.rates.cycle.upTo6h}</strong></div>
+                  <div>Up to 12 hrs: <strong>{currentParking.rates.cycle.upTo12h}</strong></div>
+                  <div>Full Day (24h): <strong>{currentParking.rates.cycle.fullDay}</strong></div>
+                  <div>Monthly Pass: <strong>{currentParking.rates.cycle.monthly}</strong></div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* Night Parking Rules */}
-        <div style={{ padding: '12px 16px', borderRadius: '10px', background: 'rgba(59, 130, 246, 0.1)', color: '#3B82F6', fontSize: '0.82rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <Info size={20} style={{ flexShrink: 0 }} />
-          <div>
-            <strong>Night Parking Policy:</strong> {currentParking.nightParking}
+            <div style={{ background: 'rgba(59, 130, 246, 0.08)', padding: '12px 14px', borderRadius: '10px', fontSize: '0.82rem', color: 'var(--text-muted)' }}>
+              🌙 <strong>Overnight Parking:</strong> {currentParking.nightParking}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

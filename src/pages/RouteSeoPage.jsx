@@ -15,8 +15,8 @@ export function RouteSeoPage({ fromSlug, toSlug, onResetSearch }) {
   useEffect(() => {
     if (!fromStation || !toStation || !primaryRoute) return;
 
-    const pageTitle = `${fromStation.name} to ${toStation.name} Metro Route, Fare (₹${primaryRoute.fare}) & Time - Kolkata Metro`;
-    const pageDesc = `Kolkata Metro route from ${fromStation.name} to ${toStation.name}. Distance: ${primaryRoute.totalDistanceKm} km, Token Fare: ₹${primaryRoute.fare} (Smart Card: ₹${primaryRoute.smartCardFare}), Travel Time: ${primaryRoute.totalTimeMins} mins with ${primaryRoute.switches} line changes.`;
+    const pageTitle = `${fromStation.name} to ${toStation.name} Metro Route, Fare (₹${primaryRoute.fare}) & Time - Kochi Metro`;
+    const pageDesc = `Kochi Metro route from ${fromStation.name} to ${toStation.name}. Distance: ${primaryRoute.totalDistanceKm} km, Token Fare: ₹${primaryRoute.fare} (Smart Card: ₹${primaryRoute.smartCardFare}), Travel Time: ${primaryRoute.totalTimeMins} mins with ${primaryRoute.switches} line changes.`;
     const canonicalUrl = `https://kolkata.metro.org.in/route/${fromSlug}/${toSlug}/`;
 
     document.title = pageTitle;

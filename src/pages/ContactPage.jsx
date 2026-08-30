@@ -3,7 +3,7 @@ import { Mail, ArrowLeft, Send } from 'lucide-react';
 
 export function ContactPage({ onBackToHome }) {
   useEffect(() => {
-    document.title = "Contact Us | Kolkata Metro Route Finder";
+    document.title = "Contact Us | Kochi Metro Route Finder";
     window.scrollTo(0, 0);
   }, []);
 

@@ -27,7 +27,7 @@ export function AboutModal({ onClose }) {
           </div>
           <div>
             <h3 style={{ fontSize: '1.25rem', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
-              About Mumbai Metro Route Finder
+              About Kochi Metro Route Finder
             </h3>
             <span style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
               Independent Route & Station Navigation Portal for Mumbai
@@ -37,7 +37,7 @@ export function AboutModal({ onClose }) {
 
         <div style={{ fontSize: '0.9rem', color: 'var(--text-primary)', lineHeight: '1.6', display: 'flex', flexDirection: 'column', gap: '14px' }}>
           <p>
-            <strong>mumbai.metro.org.in</strong> is an independent web application dedicated to providing fast, reliable, and accessible route planning across the Mumbai Metro network (Line 1 Blue Line, Line 2A Yellow Line, Line 7 Red Line, and Line 3 Aqua Line).
+            <strong>mumbai.metro.org.in</strong> is an independent web application dedicated to providing fast, reliable, and accessible route planning across the Kochi Metro network (Line 1 Blue Line, Line 2A Yellow Line, Line 7 Red Line, and Line 3 Aqua Line).
           </p>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px', marginTop: '6px' }}>

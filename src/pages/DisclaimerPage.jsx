@@ -3,7 +3,7 @@ import { AlertCircle, ArrowLeft } from 'lucide-react';
 
 export function DisclaimerPage({ onBackToHome }) {
   useEffect(() => {
-    document.title = "Disclaimer | Kolkata Metro Route Finder";
+    document.title = "Disclaimer | Kochi Metro Route Finder";
     window.scrollTo(0, 0);
   }, []);
 
@@ -39,7 +39,7 @@ export function DisclaimerPage({ onBackToHome }) {
 
         <div style={{ fontSize: '0.95rem', color: 'var(--text-primary)', lineHeight: '1.7', display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <p>
-            <strong>kolkata.metro.org.in</strong> is an independent digital tool. It is <strong>NOT affiliated with, associated with, authorized by, endorsed by, or in any way officially connected to Metro Railway Kolkata</strong>, or any of their subsidiaries.
+            <strong>kolkata.metro.org.in</strong> is an independent digital tool. It is <strong>NOT affiliated with, associated with, authorized by, endorsed by, or in any way officially connected to Kochi Metro Rail (KMRL)</strong>, or any of their subsidiaries.
           </p>
 
           <p>

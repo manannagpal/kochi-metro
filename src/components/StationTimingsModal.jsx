@@ -5,7 +5,7 @@ import { getStationDirectionalTimings } from '../data/stationTimings.js';
 import { getCleanLineName } from '../utils/stationSearch.js';
 
 export function StationTimingsModal({ onClose, defaultStation }) {
-  const [selectedStation, setSelectedStation] = useState(defaultStation || STATIONS.find(s => s.id === 'versova') || STATIONS[0]);
+  const [selectedStation, setSelectedStation] = useState(defaultStation || STATIONS[0]);
   const [searchQuery, setSearchQuery] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
   const containerRef = useRef(null);
@@ -74,7 +74,7 @@ export function StationTimingsModal({ onClose, defaultStation }) {
             }}
             onFocus={() => setShowDropdown(true)}
             onClick={() => setShowDropdown(true)}
-            placeholder="Select or search station (e.g. Versova, Andheri, BKC)..."
+            placeholder="Select or search station (e.g. Aluva, Edapally, Tripunithura)..."
             style={{
               width: '100%', padding: '12px 14px 12px 38px', borderRadius: '10px',
               border: '1px solid var(--border-color)', background: 'var(--input-bg)',
