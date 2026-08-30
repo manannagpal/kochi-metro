@@ -197,7 +197,7 @@ export function NearestMetro({ onClose, onSelectStation }) {
         {nearbyStations.length > 0 && (
           <div>
             <div style={{ fontSize: '0.88rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '12px' }}>
-              Closest Kolkata Metro Stations:
+              Closest Kochi Metro Stations:
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {nearbyStations.map((item, idx) => (

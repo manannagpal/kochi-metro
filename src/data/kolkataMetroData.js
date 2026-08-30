@@ -1,4 +1,4 @@
-// Official Kolkata Metro Network Data (Metro Railway Kolkata)
+// Official Kochi Metro Network Data (Metro Railway Kolkata)
 export const lines = {
   line1: {
     id: 'line1',
@@ -72,7 +72,7 @@ const rawStations = [
   { id: 'kavi-subhash', name: 'Kavi Subhash (New Garia)', line: 'line1', isInterchange: true, interchangeLines: ['line1', 'line6'], code: 'SUBH' },
 
   // --- LINE 2 (GREEN LINE: Howrah Maidan to Salt Lake Sector V) ---
-  { id: 'howrah-maidan', name: 'Howrah Maidan', line: 'line2', code: 'HMDN' },
+  { id: 'line1', name: 'Howrah Maidan', line: 'line2', code: 'HMDN' },
   { id: 'howrah', name: 'Howrah', line: 'line2', code: 'HWRH' },
   { id: 'mahakaran', name: 'Mahakaran', line: 'line2', code: 'MHKR' },
   { id: 'esplanade-line2', name: 'Esplanade', line: 'line2', isInterchange: true, interchangeLines: ['line2', 'line1'], code: 'ESPL2' },
@@ -83,7 +83,7 @@ const rawStations = [
   { id: 'city-centre', name: 'City Centre', line: 'line2', code: 'CTCN' },
   { id: 'central-park', name: 'Central Park', line: 'line2', code: 'CNPK' },
   { id: 'karunamoyee', name: 'Karunamoyee', line: 'line2', code: 'KRNM' },
-  { id: 'salt-lake-sector-v', name: 'Salt Lake Sector V', line: 'line2', code: 'SLSV' },
+  { id: 'line1', name: 'Salt Lake Sector V', line: 'line2', code: 'SLSV' },
 
   // --- LINE 3 (PURPLE LINE: Joka to Khidirpur) ---
   { id: 'joka', name: 'Joka', line: 'line3', code: 'JOKA' },
@@ -118,7 +118,7 @@ export const stations = rawStations.map(st => ({
   lines: st.interchangeLines || [st.line]
 }));
 
-// Calculate Kolkata Metro Fare based on distance/station count slabs
+// Calculate Kochi Metro Fare based on distance/station count slabs
 export function calculateKolkataFare(stationCount) {
   let tokenFare = 30;
   if (stationCount <= 2) tokenFare = 5;

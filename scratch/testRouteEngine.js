@@ -1,8 +1,8 @@
 import { calculateRoutes } from '../src/routing/routeEngine.js';
 import { getStationById } from '../src/data/stations.js';
 
-const howrahMaidan = getStationById('howrah-maidan');
-const saltLakeSectorV = getStationById('salt-lake-sector-v');
+const howrahMaidan = getStationById('line1');
+const saltLakeSectorV = getStationById('line1');
 const dakshineswar = getStationById('dakshineswar');
 const sealdah = getStationById('sealdah');
 

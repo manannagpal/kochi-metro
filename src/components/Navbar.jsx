@@ -250,7 +250,7 @@ export function Navbar({
             }}
           >
             <span style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-primary)', whiteSpace: 'nowrap' }}>
-              Kolkata Metro
+              Kochi Metro
             </span>
             <span style={{ fontSize: '1.0rem', fontWeight: 700, color: 'var(--accent-primary)', letterSpacing: '0.03em', whiteSpace: 'nowrap' }}>
               Route Finder

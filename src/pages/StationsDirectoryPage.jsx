@@ -10,7 +10,7 @@ export function StationsDirectoryPage({ onSelectStation, onBackToHome }) {
   const [selectedLineFilter, setSelectedLineFilter] = useState('all');
 
   useEffect(() => {
-    document.title = `Mumbai Metro Stations Directory (${STATIONS.length} Stations) | Mumbai Metro`;
+    document.title = `Kochi Metro Stations Directory (${STATIONS.length} Stations) | Kochi Metro`;
     window.scrollTo(0, 0);
   }, []);
 
@@ -53,7 +53,7 @@ export function StationsDirectoryPage({ onSelectStation, onBackToHome }) {
           </div>
           <div>
             <h1 style={{ fontSize: '1.6rem', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
-              Mumbai Metro Stations Directory ({STATIONS.length} Stations)
+              Kochi Metro Stations Directory ({STATIONS.length} Stations)
             </h1>
             <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', margin: '4px 0 0 0' }}>
               Explore connected lines, first/last train timetables, and interchange details for every station.

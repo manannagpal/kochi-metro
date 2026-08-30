@@ -49,7 +49,7 @@ export function TermsModal({ onClose }) {
             1. Acceptance of Terms
           </h4>
           <p>
-            By accessing and using <strong>Delhi Metro Route Finder</strong> (<a href="https://delhi.metro.org.in" style={{ color: 'var(--accent-primary)', textDecoration: 'none' }}>delhi.metro.org.in</a>), you accept and agree to be bound by the terms and provision of this agreement.
+            By accessing and using <strong>Kochi Metro Route Finder</strong> (<a href="https://delhi.metro.org.in" style={{ color: 'var(--accent-primary)', textDecoration: 'none' }}>delhi.metro.org.in</a>), you accept and agree to be bound by the terms and provision of this agreement.
           </p>
 
           <h4 style={{ fontSize: '1.05rem', color: 'var(--text-primary)', fontWeight: 700, marginTop: '20px', marginBottom: '8px' }}>

@@ -14,7 +14,7 @@ export const STATION_GATES = {
     { gateNo: 'Gate No. 1', landmark: 'Sealdah Railway Station Main Platform Hall', divyangFriendly: true },
     { gateNo: 'Gate No. 2', landmark: 'Kaiser Street / APC Roy Road Entrance', divyangFriendly: true }
   ],
-  'salt-lake-sector-v': [
+  'line1': [
     { gateNo: 'Gate No. 1', landmark: 'College More / Ring Road Junction', divyangFriendly: true },
     { gateNo: 'Gate No. 2', landmark: 'Nabadiganta IT Park / Wipro More', divyangFriendly: true }
   ],

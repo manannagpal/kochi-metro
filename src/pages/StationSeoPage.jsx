@@ -20,8 +20,8 @@ export function StationSeoPage({ stationSlug, onBackToHome, lang = 'en' }) {
     const firstTrainStr = timingInfo ? timingInfo.directionA.firstTrainWeekdays : '05:30 AM';
     const lastTrainStr = timingInfo ? timingInfo.directionA.lastTrainWeekdays : '11:30 PM';
 
-    const pageTitle = `${station.name} Metro Station Timings, Line & Fare | Mumbai Metro`;
-    const pageDesc = `Mumbai Metro Station (${lineName}): First train at ${firstTrainStr} (weekdays), last train at ${lastTrainStr}. Check platform timetables, fare, and station guide.`;
+    const pageTitle = `${station.name} Metro Station Timings, Line & Fare | Kochi Metro`;
+    const pageDesc = `Kochi Metro Station (${lineName}): First train at ${firstTrainStr} (weekdays), last train at ${lastTrainStr}. Check platform timetables, fare, and station guide.`;
     const keywords = `${station.name} metro station, ${station.name} metro first train timing, ${station.name} metro last train timing, ${station.name} metro line, mumbai metro ${station.name}`;
     const canonicalUrl = `https://mumbai.metro.org.in/station/${stationSlug}/`;
 
@@ -117,7 +117,7 @@ export function StationSeoPage({ stationSlug, onBackToHome, lang = 'en' }) {
             </h3>
           </div>
           <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
-            Standard Mumbai Metro authorized parking available for 2-wheelers, 4-wheelers, and bicycles with 6h, 12h, full-day, and monthly pass options.
+            Standard Kochi Metro authorized parking available for 2-wheelers, 4-wheelers, and bicycles with 6h, 12h, full-day, and monthly pass options.
           </p>
         </div>
       </div>

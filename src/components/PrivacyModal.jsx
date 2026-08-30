@@ -46,7 +46,7 @@ export function PrivacyModal({ onClose }) {
         <div style={{ flex: 1, overflowY: 'auto', padding: '24px', lineHeight: '1.7', color: 'var(--text-secondary)', fontSize: '0.88rem' }}>
           
           <p>
-            At <strong>Delhi Metro Route Finder</strong> (<a href="https://delhi.metro.org.in" style={{ color: 'var(--accent-primary)', textDecoration: 'none' }}>delhi.metro.org.in</a>), accessible from https://delhi.metro.org.in, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by delhi.metro.org.in and how we use it.
+            At <strong>Kochi Metro Route Finder</strong> (<a href="https://delhi.metro.org.in" style={{ color: 'var(--accent-primary)', textDecoration: 'none' }}>delhi.metro.org.in</a>), accessible from https://delhi.metro.org.in, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by delhi.metro.org.in and how we use it.
           </p>
 
           <h4 style={{ fontSize: '1.05rem', color: 'var(--text-primary)', fontWeight: 700, marginTop: '20px', marginBottom: '8px' }}>

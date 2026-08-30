@@ -1,7 +1,7 @@
 import { METRO_LINES } from './lines.js';
 
 export const POPULAR_TIMING_STATIONS = [
-  'howrah', 'esplanade', 'sealdah', 'salt-lake-sector-v', 'dum-dum', 'dakshineswar', 'kavi-subhash', 'park-street', 'kalighat', 'joka'
+  'howrah', 'esplanade', 'sealdah', 'line1', 'dum-dum', 'dakshineswar', 'kavi-subhash', 'park-street', 'kalighat', 'joka'
 ];
 
 export function getStationDirectionalTimings(station) {

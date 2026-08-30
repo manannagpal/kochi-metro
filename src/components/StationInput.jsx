@@ -190,7 +190,7 @@ export function StationInput({
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.95rem', color: 'var(--text-primary)' }}>
             <div>
               <span style={{ fontWeight: 600 }}>{station.name}</span>
-              <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}> — {systemName || 'Delhi Metro'}</span>
+              <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}> — {systemName || 'Kochi Metro'}</span>
             </div>
           </div>
 

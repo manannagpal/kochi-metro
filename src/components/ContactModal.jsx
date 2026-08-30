@@ -30,7 +30,7 @@ export function ContactModal({ onClose }) {
               Contact & Feedback
             </h3>
             <span style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
-              Kolkata Metro Portal Helpdesk
+              Kochi Metro Portal Helpdesk
             </span>
           </div>
         </div>

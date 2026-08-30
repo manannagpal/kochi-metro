@@ -117,8 +117,8 @@ export function App() {
 
   // Extract initial route calculation from URL synchronously for instant first-render state
   const initialRouteState = (() => {
-    const defaultFrom = STATIONS.find(s => s.id === 'howrah-maidan') || STATIONS[0];
-    const defaultTo = STATIONS.find(s => s.id === 'salt-lake-sector-v') || STATIONS[1];
+    const defaultFrom = STATIONS.find(s => s.id === 'line1') || STATIONS[0];
+    const defaultTo = STATIONS.find(s => s.id === 'line1') || STATIONS[1];
 
     const p = window.location.pathname.replace(/\/$/, '');
     if (p.startsWith('/route/')) {
@@ -330,8 +330,8 @@ export function App() {
     setHasSearched(false);
     setRoutes([]);
     setOpenRouteIds(new Set());
-    const defaultFrom = STATIONS.find(s => s.id === 'howrah-maidan') || STATIONS[0];
-    const defaultTo = STATIONS.find(s => s.id === 'salt-lake-sector-v') || STATIONS[1];
+    const defaultFrom = STATIONS.find(s => s.id === 'line1') || STATIONS[0];
+    const defaultTo = STATIONS.find(s => s.id === 'line1') || STATIONS[1];
     setFromStation(defaultFrom);
     setToStation(defaultTo);
     setMaxSwitchesFilter('any');
@@ -374,10 +374,10 @@ export function App() {
   const handleShareApp = async () => {
     const currentUrl = window.location.href;
     const shareData = {
-      title: document.title || 'Kolkata Metro Route Finder',
+      title: document.title || 'Kochi Metro Route Finder',
       text: (fromStation && toStation)
-        ? `Check Kolkata Metro route from ${fromStation.name} to ${toStation.name}`
-        : 'Kolkata Metro Route Finder & Station Guide',
+        ? `Check Kochi Metro route from ${fromStation.name} to ${toStation.name}`
+        : 'Kochi Metro Route Finder & Station Guide',
       url: currentUrl
     };
 

@@ -1,6 +1,6 @@
 export const TRANSLATIONS = {
   en: {
-    appTitle: "Kolkata Metro",
+    appTitle: "Kochi Metro",
     appSubtitle: "Official Route & Station Guide",
     fromStation: "From Station",
     toStation: "To Station",

@@ -2,7 +2,7 @@ import React from 'react';
 
 /**
  * Verified Operator Logos for Delhi NCR Transit Systems:
- * - DMRC (Delhi Metro): Official Red Circle Emblem (#E52E2D)
+ * - DMRC (Kochi Metro): Official Red Circle Emblem (#E52E2D)
  * - NMRC (Noida Metro Aqua Line): Eco-Friendly Aqua Circle (#00C0F3) with 'N' Transit Mark
  * - RMGL (Gurugram Rapid Metro): Light-Metro Green Badge (#50B848) with 'R' Rapid Transit Symbol
  * - RRTS (NaMo Bharat NCRTC): Deep Blue Badge (#00529B) with Forward Speed Arrow
@@ -89,12 +89,12 @@ export function MetroOperatorLogo({ lineDef, size = 20, className = '' }) {
     );
   }
 
-  // 4. DMRC - Official Delhi Metro Rail Corporation Emblem
+  // 4. DMRC - Official Kochi Metro Rail Corporation Emblem
   return (
     <img
       src="/favicon.svg"
-      alt={`${lineDef?.name || 'Delhi Metro'} Official Logo`}
-      title={`${lineDef?.name || 'Delhi Metro'} (DMRC)`}
+      alt={`${lineDef?.name || 'Kochi Metro'} Official Logo`}
+      title={`${lineDef?.name || 'Kochi Metro'} (DMRC)`}
       className={className}
       style={{
         width: `${size}px`,

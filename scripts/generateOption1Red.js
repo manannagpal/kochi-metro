@@ -45,7 +45,7 @@ async function generateOption1Red() {
     <!-- Dark Navy Background -->
     <rect width="1024" height="1024" fill="#0B0F17"/>
     
-    <!-- Red Outer Rings (Matching Delhi Metro Red #E52E2D) -->
+    <!-- Red Outer Rings (Matching Kochi Metro Red #E52E2D) -->
     <circle cx="512" cy="512" r="176" fill="none" stroke="rgba(229, 46, 45, 0.35)" stroke-width="6"/>
     <circle cx="512" cy="512" r="166" fill="none" stroke="#E52E2D" stroke-width="4"/>
 

@@ -1,7 +1,7 @@
-// Central Configuration Blueprint for Kolkata Metro Portal
+// Central Configuration Blueprint for Kochi Metro Portal
 export const CITY_CONFIG = {
   cityName: 'Kolkata',
-  systemName: 'Kolkata Metro',
+  systemName: 'Kochi Metro',
   tagline: 'Official Route & Station Guide',
   operatorName: 'Metro Railway Kolkata',
   domain: 'kolkata.metro.org.in',
@@ -12,8 +12,8 @@ export const CITY_CONFIG = {
   mapCenter: { lat: 22.5645, lng: 88.3517 },
   
   // Default stations for route finder
-  defaultFromStationId: 'howrah-maidan',
-  defaultToStationId: 'salt-lake-sector-v',
+  defaultFromStationId: 'line1',
+  defaultToStationId: 'line1',
   
   // Search input placeholders
   searchPlaceholders: 'Howrah, Esplanade, Salt Lake Sector V...',
@@ -22,6 +22,6 @@ export const CITY_CONFIG = {
   defaultNetworkKey: 'KOLKATA',
 
   // SEO default tags
-  metaTitle: 'Kolkata Metro Route Finder | Interactive Map, Fares & Station Timings',
-  metaDescription: 'Calculate fastest routes, fares, travel time, and line interchange details for Kolkata Metro (Line 1 Blue, Line 2 Green, Line 3 Purple, Line 6 Orange) with interactive station map.'
+  metaTitle: 'Kochi Metro Route Finder | Interactive Map, Fares & Station Timings',
+  metaDescription: 'Calculate fastest routes, fares, travel time, and line interchange details for Kochi Metro (Line 1 Blue, Line 2 Green, Line 3 Purple, Line 6 Orange) with interactive station map.'
 };
