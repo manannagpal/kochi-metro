@@ -119,11 +119,7 @@ export function StationTimeline({ route, onStationClick, lang = 'en' }) {
                 paddingBottom: isLast ? '0' : '6px',
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'center',
-            padding: 0,
-            margin: 0,
-            lineHeight: 0,
-            boxSizing: 'border-box'
+                justifyContent: 'center'
               }}>
                 <div style={{
                   display: 'flex',
