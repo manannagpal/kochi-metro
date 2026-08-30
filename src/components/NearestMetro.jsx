@@ -75,7 +75,7 @@ export function NearestMetro({ onClose, onSelectStation }) {
         },
         (err) => {
           setLoading(false);
-          setErrorMessage('Could not retrieve GPS location. Showing nearest central Kolkata stations.');
+          setErrorMessage('Could not retrieve GPS location. Showing nearest central Kochi Metro stations.');
           findNearestFromCoords(22.5645, 88.3517); // Default Kolkata Esplanade
         },
         { timeout: 8000 }
@@ -115,7 +115,7 @@ export function NearestMetro({ onClose, onSelectStation }) {
               Nearest Metro Station Finder
             </h3>
             <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-              Locate Kolkata Metro stations near you using GPS or station search
+              Locate Kochi Metro stations near you using GPS or station search
             </span>
           </div>
         </div>
@@ -151,7 +151,7 @@ export function NearestMetro({ onClose, onSelectStation }) {
                 setShowDropdown(true);
               }}
               onFocus={() => setShowDropdown(true)}
-              placeholder="Select or search station (e.g. Esplanade, Howrah, Sealdah)..."
+              placeholder="Select or search station (e.g. Aluva, Edapally, Tripunithura)..."
               style={{
                 width: '100%', padding: '12px 14px 12px 42px', borderRadius: '10px',
                 border: '1px solid var(--border-color)', background: 'var(--input-bg)',

@@ -35,7 +35,7 @@ export function LinesDirectory({ onClose, onSelectStation }) {
             </div>
             <div>
               <h3 style={{ fontSize: '1.25rem', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
-                Kolkata Metro Lines
+                Kochi Metro Lines
               </h3>
               <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                 Explore line colors, terminals, and ordered station lists

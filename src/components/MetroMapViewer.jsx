@@ -33,12 +33,7 @@ function FlyToStation({ coords }) {
   return null;
 }
 
-const MAIN_LINE_FILTERS = [
-  { id: 'line1', name: 'Line 1 (Blue Line)' },
-  { id: 'line2', name: 'Line 2 (Green Line)' },
-  { id: 'line3', name: 'Line 3 (Purple Line)' },
-  { id: 'line6', name: 'Line 6 (Orange Line)' }
-];
+const MAIN_LINE_FILTERS = Object.values(METRO_LINES).map(l => ({ id: l.id, name: l.name }));
 
 export function MetroMapViewer({ onClose, activeRoute }) {
   const [searchQuery, setSearchQuery] = useState('');
@@ -55,7 +50,7 @@ export function MetroMapViewer({ onClose, activeRoute }) {
 
   const getStationCoordinates = (st) => {
     const coords = getStationCoords(st);
-    return coords ? [coords.lat, coords.lng] : [22.5645, 88.3517];
+    return coords ? [coords.lat, coords.lng] : [9.9312,76.2673];
   };
 
   const filteredStations = STATIONS.filter(st => {
@@ -100,7 +95,7 @@ export function MetroMapViewer({ onClose, activeRoute }) {
             </div>
             <div>
               <h3 style={{ fontSize: '1.1rem', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
-                Kolkata Metro
+                Kochi Metro
               </h3>
               <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
                 Interactive Route & Station Map
@@ -169,7 +164,7 @@ export function MetroMapViewer({ onClose, activeRoute }) {
         {/* Leaflet Map Viewer */}
         <div style={{ flex: 1, position: 'relative' }}>
           <MapContainer
-            center={[22.5645, 88.3517]}
+            center={[9.9312,76.2673]}
             zoom={12}
             style={{ width: '100%', height: '100%' }}
             scrollWheelZoom={true}

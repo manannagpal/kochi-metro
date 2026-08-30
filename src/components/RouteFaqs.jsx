@@ -11,7 +11,7 @@ export function RouteFaqs({ fromStation, toStation, primaryRoute }) {
   const faqs = [
     {
       q: `What is the fare from ${fromStation.name} to ${toStation.name}?`,
-      a: `The standard token fare for travelling from ${fromStation.name} to ${toStation.name} is ₹${primaryRoute.fare}. Passengers using a Kolkata Metro Smart Card receive a discount, making the smart card fare ₹${primaryRoute.smartCardFare}.`
+      a: `The standard token fare for travelling from ${fromStation.name} to ${toStation.name} is ₹${primaryRoute.fare}. Passengers using a Kochi Metro Smart Card receive a discount, making the smart card fare ₹${primaryRoute.smartCardFare}.`
     },
     {
       q: `How long does the journey from ${fromStation.name} to ${toStation.name} take?`,

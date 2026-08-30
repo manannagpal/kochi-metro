@@ -39,7 +39,7 @@ export function StationsDirectory({ onClose, onSelectStation }) {
             </div>
             <div>
               <h3 style={{ fontSize: '1.25rem', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
-                Kolkata Metro Stations Directory ({STATIONS.length} Stations)
+                Kochi Metro Stations Directory ({STATIONS.length} Stations)
               </h3>
               <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                 Browse all stations, lines, timetables, and interchanges
