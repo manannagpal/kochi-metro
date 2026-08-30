@@ -106,9 +106,13 @@ export function MetroMapViewer({ onClose, activeRoute }) {
           <button onClick={onClose} style={{
             background: 'var(--input-bg)', border: '1px solid var(--border-color)',
             color: 'var(--text-primary)', width: '34px', height: '34px', borderRadius: '50%',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer'
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            padding: 0,
+            margin: 0,
+            lineHeight: 0,
+            boxSizing: 'border-box', cursor: 'pointer'
           }}>
-            <X size={18} />
+            <X size={18} style={{ display: 'block' }} />
           </button>
         </div>
 

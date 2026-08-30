@@ -336,7 +336,11 @@ export function StationInput({
         </div>
 
         {/* SWAP BUTTON */}
-        <div style={{ display: 'flex', justifyContent: 'center', margin: '-4px 0' }}>
+        <div style={{ display: 'flex', justifyContent: 'center',
+            padding: 0,
+            margin: 0,
+            lineHeight: 0,
+            boxSizing: 'border-box', margin: '-4px 0' }}>
           <button
             onClick={handleSwap}
             title={t.swapStations}
@@ -350,6 +354,10 @@ export function StationInput({
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+            padding: 0,
+            margin: 0,
+            lineHeight: 0,
+            boxSizing: 'border-box',
               cursor: 'pointer',
               boxShadow: 'var(--shadow-sm)',
               transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)'

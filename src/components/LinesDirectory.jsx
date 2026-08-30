@@ -46,9 +46,13 @@ export function LinesDirectory({ onClose, onSelectStation }) {
 
           <button onClick={onClose} style={{
             background: 'var(--bg-surface)', border: '1px solid var(--border-color)', color: 'var(--text-primary)',
-            width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer'
+            width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            padding: 0,
+            margin: 0,
+            lineHeight: 0,
+            boxSizing: 'border-box', cursor: 'pointer'
           }}>
-            <X size={18} />
+            <X size={18} style={{ display: 'block' }} />
           </button>
         </div>
 

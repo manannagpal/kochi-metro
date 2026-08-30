@@ -36,9 +36,13 @@ export function PrivacyModal({ onClose }) {
 
           <button onClick={onClose} style={{
             background: 'rgba(255, 255, 255, 0.15)', border: 'none', color: '#FFFFFF',
-            width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer'
+            width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            padding: 0,
+            margin: 0,
+            lineHeight: 0,
+            boxSizing: 'border-box', cursor: 'pointer'
           }}>
-            <X size={18} />
+            <X size={18} style={{ display: 'block' }} />
           </button>
         </div>
 

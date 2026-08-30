@@ -18,6 +18,10 @@ export function HowItWorks() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            padding: 0,
+            margin: 0,
+            lineHeight: 0,
+            boxSizing: 'border-box',
             margin: '0 auto 12px auto'
           }}>
             <Search size={22} color="#3B82F6" />
@@ -37,6 +41,10 @@ export function HowItWorks() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            padding: 0,
+            margin: 0,
+            lineHeight: 0,
+            boxSizing: 'border-box',
             margin: '0 auto 12px auto'
           }}>
             <Route size={22} color="#F59E0B" />
@@ -56,6 +64,10 @@ export function HowItWorks() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            padding: 0,
+            margin: 0,
+            lineHeight: 0,
+            boxSizing: 'border-box',
             margin: '0 auto 12px auto'
           }}>
             <Sliders size={22} color="#8B5CF6" />
@@ -75,6 +87,10 @@ export function HowItWorks() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            padding: 0,
+            margin: 0,
+            lineHeight: 0,
+            boxSizing: 'border-box',
             margin: '0 auto 12px auto'
           }}>
             <CheckCircle size={22} color="#10B981" />

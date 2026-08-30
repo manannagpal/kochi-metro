@@ -54,7 +54,7 @@ export function StationDetailModal({ station, onClose, lang = 'en' }) {
             cursor: 'pointer'
           }}
         >
-          <X size={18} />
+          <X size={18} style={{ display: 'block' }} />
         </button>
 
         {/* Header */}
