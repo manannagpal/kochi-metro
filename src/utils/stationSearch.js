@@ -72,5 +72,5 @@ export function getCleanLineName(lineInput) {
 }
 
 export function getMetroSystemName() {
-  return 'Kolkata Metro';
+  return 'Kochi Metro';
 }

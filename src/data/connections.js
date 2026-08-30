@@ -1,14 +1,34 @@
-import { STATIONS } from './stations.js';
-import { METRO_LINES } from './lines.js';
-
-export const LINE_SEQUENCES = {};
-
-// Dynamically populate ordered station sequences per line
-Object.keys(METRO_LINES).forEach(lineId => {
-  LINE_SEQUENCES[lineId] = STATIONS
-    .filter(st => st.line === lineId || (st.lines && st.lines.includes(lineId)))
-    .map(st => st.id);
-});
+// Explicit Line Sequences & Edge Connections for Kochi Metro
+export const LINE_SEQUENCES = {
+  "line1": [
+    "line1",
+    "aluva",
+    "pulinchodu",
+    "companypady",
+    "ambattukavu",
+    "muttom",
+    "kalamassery",
+    "cusat",
+    "pathadipalam",
+    "edapally",
+    "changampuzha-park",
+    "palarivattom",
+    "jln-stadium",
+    "kaloor",
+    "lissie",
+    "mg-road-kochi",
+    "maharajas-college",
+    "ernakulam-south",
+    "kadavanthra",
+    "elamkulam",
+    "vyttila",
+    "thaikoodam",
+    "petta",
+    "vadakkekotta",
+    "sn-junction",
+    "tripunithura"
+  ]
+};
 
 export const CONNECTIONS = [];
 
