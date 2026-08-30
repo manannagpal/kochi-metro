@@ -164,7 +164,7 @@ export function MetroMapViewer({ onClose, activeRoute }) {
         {/* Leaflet Map Viewer */}
         <div style={{ flex: 1, position: 'relative' }}>
           <MapContainer
-            center={[9.9312,76.2673]}
+            center={[10.02,76.32]}
             zoom={12}
             style={{ width: '100%', height: '100%' }}
             scrollWheelZoom={true}
