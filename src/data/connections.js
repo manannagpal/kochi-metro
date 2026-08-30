@@ -1,26 +1,14 @@
-export const LINE_SEQUENCES = {
-  line1: [
-    'dakshineswar', 'baranagar', 'noapara', 'dum-dum', 'belgachia',
-    'shyambazar', 'shovabazar-sutanuti', 'girish-park', 'mahatma-gandhi-road',
-    'central', 'chandni-chowk-kolkata', 'esplanade', 'park-street', 'maidan',
-    'rabindra-sadan', 'netaji-bhavan', 'jatin-das-park', 'kalighat',
-    'rabindra-sarobar', 'mahanayak-uttam-kumar', 'netaji', 'masterda-surya-sen',
-    'gitanjali', 'kavi-nazrul', 'shahid-khudiram', 'kavi-subhash'
-  ],
-  line2: [
-    'howrah-maidan', 'howrah', 'mahakaran', 'esplanade-line2', 'sealdah',
-    'phoolbagan', 'salt-lake-stadium', 'bengal-chemical', 'city-centre',
-    'central-park', 'karunamoyee', 'salt-lake-sector-v'
-  ],
-  line3: [
-    'joka', 'thakurpukur', 'sakherbazar', 'behala-chowrasta', 'behala-bazar',
-    'taratala', 'majerhat'
-  ],
-  line6: [
-    'kavi-subhash-line6', 'satyajit-ray', 'jyotirindra-nandy', 'kavi-sukanta',
-    'hemanta-mukhopadhyay'
-  ]
-};
+import { STATIONS } from './stations.js';
+import { METRO_LINES } from './lines.js';
+
+export const LINE_SEQUENCES = {};
+
+// Dynamically populate ordered station sequences per line
+Object.keys(METRO_LINES).forEach(lineId => {
+  LINE_SEQUENCES[lineId] = STATIONS
+    .filter(st => st.line === lineId || (st.lines && st.lines.includes(lineId)))
+    .map(st => st.id);
+});
 
 export const CONNECTIONS = [];
 

@@ -5,9 +5,10 @@ import { LINE_SEQUENCES } from '../data/connections.js';
 import { getCleanLineName, getStationById } from '../utils/stationSearch.js';
 
 export function LinesDirectory({ onClose, onSelectStation }) {
-  const [selectedLineId, setSelectedLineId] = useState('line1');
+  const lineKeys = Object.keys(METRO_LINES);
+  const [selectedLineId, setSelectedLineId] = useState(lineKeys[0] || 'line1');
 
-  const selectedLine = METRO_LINES[selectedLineId] || METRO_LINES.line1;
+  const selectedLine = METRO_LINES[selectedLineId] || METRO_LINES[lineKeys[0]];
   const lineSequence = LINE_SEQUENCES[selectedLineId] || [];
   const lineStations = lineSequence.map(id => getStationById(id)).filter(Boolean);
 
