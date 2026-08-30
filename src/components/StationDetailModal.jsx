@@ -16,8 +16,8 @@ export function StationDetailModal({ station, onClose, lang = 'en' }) {
   const interchangeInfo = INTERCHANGES[station.id];
   const stationGates = getStationGates(station.id, station.name);
 
-  const timingData = OFFICIAL_TRAIN_TIMINGS.KOLKATA || OFFICIAL_TRAIN_TIMINGS.MUMBAI;
-  const parkingData = OFFICIAL_PARKING_RATES.KOLKATA || OFFICIAL_PARKING_RATES.MUMBAI;
+  const timingData = Object.values(OFFICIAL_TRAIN_TIMINGS)[0] || {};
+  const parkingData = Object.values(OFFICIAL_PARKING_RATES)[0];
 
   return (
     <div style={{
