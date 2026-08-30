@@ -65,12 +65,12 @@ export function Navbar({
           <div className="navbar-logo" onClick={() => window.location.href = '/'}>
             <img
               src="/favicon.svg"
-              alt="Kolkata Metro Logo"
+              alt="Kochi Metro Logo"
               className="navbar-logo-img"
             />
             <div>
               <h1 className="navbar-title">
-                Kolkata Metro Route Finder
+                Kochi Metro Route Finder
               </h1>
               <p className="navbar-subtitle">
                 Official Route & Station Guide

@@ -4,14 +4,46 @@ import { getStationById } from '../utils/stationSearch.js';
 import { TRANSLATIONS } from '../utils/i18n.js';
 
 export const PRESET_ROUTES = [
-  { fromId: 'howrah-maidan', toId: 'salt-lake-sector-v', label: 'Howrah Maidan → Salt Lake Sector V' },
-  { fromId: 'dakshineswar', toId: 'kavi-subhash', label: 'Dakshineswar → Kavi Subhash' },
-  { fromId: 'howrah', toId: 'sealdah', label: 'Howrah → Sealdah' },
-  { fromId: 'esplanade', toId: 'salt-lake-sector-v', label: 'Esplanade → Salt Lake Sector V' },
-  { fromId: 'dakshineswar', toId: 'esplanade', label: 'Dakshineswar → Esplanade' },
-  { fromId: 'joka', toId: 'majerhat', label: 'Joka → Majerhat' },
-  { fromId: 'dum-dum', toId: 'kavi-subhash', label: 'Dum Dum → Kavi Subhash' },
-  { fromId: 'sealdah', toId: 'salt-lake-sector-v', label: 'Sealdah → Salt Lake Sector V' }
+  {
+    "fromId": "aluva",
+    "toId": "tripunithura",
+    "label": "Aluva → Tripunithura"
+  },
+  {
+    "fromId": "edapally",
+    "toId": "mg-road-kochi",
+    "label": "Edapally → M.G. Road"
+  },
+  {
+    "fromId": "jln-stadium",
+    "toId": "ernakulam-south",
+    "label": "JLN Stadium → Ernakulam South"
+  },
+  {
+    "fromId": "aluva",
+    "toId": "vyttila",
+    "label": "Aluva → Vyttila"
+  },
+  {
+    "fromId": "cusat",
+    "toId": "edapally",
+    "label": "CUSAT → Edapally"
+  },
+  {
+    "fromId": "kaloor",
+    "toId": "maharajas-college",
+    "label": "Kaloor → Maharaja's College"
+  },
+  {
+    "fromId": "ernakulam-south",
+    "toId": "tripunithura",
+    "label": "Ernakulam South → Tripunithura"
+  },
+  {
+    "fromId": "vyttila",
+    "toId": "sn-junction",
+    "label": "Vyttila → SN Junction"
+  }
 ];
 
 export function PopularRoutes({ onSelectRoute, lang = 'en' }) {

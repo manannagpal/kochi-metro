@@ -14,7 +14,7 @@ export function Footer({ onInstallPWA, deferredPrompt, onNavigate }) {
         borderTop: '1px solid var(--border-color)'
       }}>
         <p style={{ margin: 0, fontWeight: 500 }}>
-          © 2026 Kolkata Metro Route Finder
+          © 2026 Kochi Metro Route Finder
         </p>
       </footer>
     );
@@ -31,7 +31,7 @@ export function Footer({ onInstallPWA, deferredPrompt, onNavigate }) {
     }}>
       <div style={{ maxWidth: '640px', margin: '0 auto 14px auto', fontSize: '0.82rem', lineHeight: '1.5', color: 'var(--text-muted)', textAlign: 'center' }}>
         <Info size={15} style={{ display: 'inline', verticalAlign: '-2px', marginRight: '6px', color: 'var(--text-muted)' }} />
-        <span>Based on official Kolkata Metro Operational Network Baseline. All route metrics are estimated.</span>
+        <span>Based on official Kochi Metro Rail (KMRL) Operational Network Baseline. All route metrics are estimated.</span>
       </div>
 
       <nav className="footer-links-container">
@@ -84,11 +84,11 @@ export function Footer({ onInstallPWA, deferredPrompt, onNavigate }) {
         color: 'var(--text-secondary)',
         textAlign: 'center'
       }}>
-        <strong>Disclaimer:</strong> This is an independent route finder tool. It is not affiliated with, authorized, or endorsed by Metro Railway Kolkata.
+        <strong>Disclaimer:</strong> This is an independent route finder tool. It is not affiliated with, authorized, or endorsed by Kochi Metro Rail (KMRL).
       </div>
 
       <p style={{ marginTop: '16px', fontSize: '0.78rem', opacity: 0.8, textAlign: 'center' }}>
-        © 2026 Kolkata Metro Route Finder
+        © 2026 Kochi Metro Route Finder
       </p>
     </footer>
   );
