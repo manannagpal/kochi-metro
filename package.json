@@ -1,0 +1,31 @@
+{
+  "name": "kochi-metro-route-finder",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "node scripts/generateFavicons.js && node scripts/generateSitemap.js && vite build && node scripts/prerenderRoutes.js",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.5.0",
+    "@capacitor/cli": "^8.5.0",
+    "@capacitor/core": "^8.5.0",
+    "@capacitor/splash-screen": "^8.0.2",
+    "leaflet": "^1.9.4",
+    "lucide-react": "^1.31.0",
+    "opentype.js": "^2.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-leaflet": "^4.2.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.7.0",
+    "sharp": "^0.35.3",
+    "vite": "^5.4.21"
+  }
+}

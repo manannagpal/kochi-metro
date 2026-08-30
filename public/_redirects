@@ -1,0 +1,9 @@
+# Cloudflare Pages 301 Redirect Rules for Kolkata Metro
+https://www.kolkata.metro.org.in/* https://kolkata.metro.org.in/:splat 301!
+http://www.kolkata.metro.org.in/* https://kolkata.metro.org.in/:splat 301!
+http://kolkata.metro.org.in/* https://kolkata.metro.org.in/:splat 301!
+
+# SPA Fallback rules for dynamic client-side routes
+/route/* /index.html 200
+/station/* /index.html 200
+/* /index.html 200
