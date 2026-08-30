@@ -534,7 +534,7 @@ export function App() {
         <StationsDirectoryPage onSelectStation={(st) => handleOpenStationPage(st)} onBackToHome={handleResetSearch} />
       ) : activePageView === 'sitemap' ? (
         <SitemapPage onSelectStation={(st) => handleOpenStationPage(st)} onBackToHome={handleResetSearch} />
-      ) ) : activePageView === '404' ? (
+      ) : activePageView === '404' ? (
         <NotFoundPage lang={lang} onNavigate={handleNavigate} />
       ) : (
         <>
