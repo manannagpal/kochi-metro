@@ -20,12 +20,10 @@ export function StationDetailModal({ station, onClose, lang = 'en', isFullPage =
   const stationLines = (station.lines || []).map(lineId => METRO_LINES[lineId]).filter(Boolean);
   const operators = stationLines.map(l => l.operator);
   const isAirportExpress = (station.lines || []).includes('orange');
-  const operatorKey = isAirportExpress
-    ? 'AIRPORT_EXPRESS'
-    : (operators.includes('NMRC') ? 'NMRC' : (operators.includes('RMGL') ? 'RMGL' : 'DMRC'));
+  const operatorKey = 'KOCHI';
 
-  const timingData = OFFICIAL_TRAIN_TIMINGS[operatorKey] || OFFICIAL_TRAIN_TIMINGS.DMRC;
-  const parkingData = OFFICIAL_PARKING_RATES[operatorKey] || OFFICIAL_PARKING_RATES.DMRC;
+  const timingData = OFFICIAL_TRAIN_TIMINGS[operatorKey] || OFFICIAL_TRAIN_TIMINGS['KOCHI'];
+  const parkingData = OFFICIAL_PARKING_RATES[operatorKey] || OFFICIAL_PARKING_RATES['KOCHI'];
 
   const cardContent = (
       <div
