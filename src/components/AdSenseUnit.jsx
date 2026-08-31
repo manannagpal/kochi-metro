@@ -41,14 +41,22 @@ export function AdSenseUnit({
         ? slot
         : `ca-app-pub-3598421466906011/${slot}`;
 
-      if (AdMob && BannerAdSize && BannerAdPosition) {
-        AdMob.showBanner({
-          adId: fullAdUnitId,
-          adSize: BannerAdSize.ADAPTIVE_BANNER,
-          position: BannerAdPosition.BOTTOM_CENTER,
-          margin: 0
-        }).catch(err => console.debug('AdMob banner show debug:', err));
-      }
+      const admobPkg = '@capacitor-community/admob';
+      import(/* @vite-ignore */ admobPkg).then(m => {
+        const { AdMob: admobInst, BannerAdSize: sizeInst, BannerAdPosition: posInst } = m;
+        if (admobInst && sizeInst && posInst) {
+          admobInst.initialize({ initializeForTesting: false })
+            .catch(() => {})
+            .finally(() => {
+              admobInst.showBanner({
+                adId: fullAdUnitId,
+                adSize: sizeInst.ADAPTIVE_BANNER,
+                position: posInst.BOTTOM_CENTER,
+                margin: 0
+              }).catch(err => console.debug('AdMob banner show debug:', err));
+            });
+        }
+      }).catch(err => console.debug('AdMob import err:', err));
       return;
     }
 
