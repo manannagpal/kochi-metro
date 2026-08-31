@@ -37,22 +37,29 @@ export function AdSenseUnit({
   useEffect(() => {
     if (Capacitor.isNativePlatform()) {
       if (!ENABLE_NATIVE_ADS) return;
-      // Exact AdMob Banner Ad Unit ID from Google Mobile Ads SDK dashboard screenshot
-      const fullAdUnitId = 'ca-app-pub-3598421466906011/7690647086';
+      const liveAdUnitId = 'ca-app-pub-3598421466906011/7690647086';
+      const testAdUnitId = 'ca-app-pub-3940256099942544/6300978111';
 
       const admobPkg = '@capacitor-community/admob';
       import(/* @vite-ignore */ admobPkg).then(m => {
         const { AdMob: admobInst, BannerAdSize: sizeInst, BannerAdPosition: posInst } = m;
         if (admobInst && sizeInst && posInst) {
-          admobInst.initialize({ initializeForTesting: false })
+          admobInst.initialize({ initializeForTesting: true })
             .catch(() => {})
             .finally(() => {
               admobInst.showBanner({
-                adId: fullAdUnitId,
+                adId: liveAdUnitId,
                 adSize: sizeInst.ADAPTIVE_BANNER,
                 position: posInst.BOTTOM_CENTER,
                 margin: 0
-              }).catch(err => console.debug('AdMob banner show debug:', err));
+              }).catch(() => {
+                admobInst.showBanner({
+                  adId: testAdUnitId,
+                  adSize: sizeInst.ADAPTIVE_BANNER,
+                  position: posInst.BOTTOM_CENTER,
+                  margin: 0
+                }).catch(err => console.debug('AdMob banner fallback debug:', err));
+              });
             });
         }
       }).catch(err => console.debug('AdMob import err:', err));

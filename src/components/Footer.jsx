@@ -6,11 +6,11 @@ export function Footer({ onInstallPWA, deferredPrompt, onNavigate }) {
   if (Capacitor.isNativePlatform()) {
     return (
       <footer style={{
-        marginTop: '12px',
-        padding: '8px 12px 12px 12px',
+        marginTop: '8px',
+        padding: '6px 12px 12px 12px',
         textAlign: 'center',
         color: 'var(--text-muted)',
-        fontSize: '0.78rem',
+        fontSize: '0.75rem',
         fontWeight: 500,
         background: 'transparent',
         border: 'none'
