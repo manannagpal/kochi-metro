@@ -164,7 +164,14 @@ export function App() {
   const [sortBy, setSortBy] = useState('fewestSwitches');
   const [maxSwitchesFilter, setMaxSwitchesFilter] = useState('any');
 
-  const [selectedStationModal, setSelectedStationModal] = useState(null);
+  const [selectedStationModal, setSelectedStationModal] = useState(() => {
+    const p = window.location.pathname.replace(/\/$/, '');
+    if (p.startsWith('/station/')) {
+      const slug = p.replace(/^\/station\//, '').split('/')[0];
+      return getStationBySlug(slug) || null;
+    }
+    return null;
+  });
   const [activeModal, setActiveModal] = useState(null); // 'nearest' | 'stations' | 'lines' | null
   const [isMapOpen, setIsMapOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
@@ -544,8 +551,6 @@ export function App() {
         <DisclaimerPage onBackToHome={handleResetSearch} />
       ) : activePageView === 'stations' ? (
         <StationsDirectoryPage onSelectStation={(st) => handleOpenStationPage(st)} onBackToHome={handleResetSearch} />
-      ) : activePageView === 'stationSeo' ? (
-        <StationSeoPage stationSlug={stationSeoSlug} onBackToHome={handleResetSearch} lang={lang} />
       ) : activePageView === 'routeSeo' ? (
         <RouteSeoPage fromSlug={routeSeoFromSlug} toSlug={routeSeoToSlug} onResetSearch={handleResetSearch} lang={lang} />
       ) : activePageView === 'sitemap' ? (
@@ -748,10 +753,17 @@ export function App() {
       {selectedStationModal && (
         <StationDetailModal
           station={selectedStationModal}
-          onClose={() => setSelectedStationModal(null)}
+          onClose={() => {
+            setSelectedStationModal(null);
+            setStationSeoSlug(null);
+            if (window.location.pathname.startsWith('/station/')) {
+              window.history.pushState({}, '', '/');
+            }
+            updatePageSeo(null, null, null);
+          }}
           lang={lang}
         />
-      )}
+      )}}
 
       {/* Stations Directory Modal */}
       {activeModal === 'stations' && (
