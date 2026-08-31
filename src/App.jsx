@@ -463,15 +463,11 @@ export function App() {
 
   const handleOpenStationPage = (st) => {
     if (!st) return;
-    const slug = getStationSlug(st);
-    setStationSeoSlug(slug);
-    setSelectedStationModal(st);
-    setActiveModal(null);
-    if (window.location.pathname !== `/station/${slug}/`) {
-      window.history.pushState({}, '', `/station/${slug}/`);
+    const stObj = typeof st === 'object' ? st : (getStationById(st) || getStationBySlug(st));
+    if (stObj) {
+      setSelectedStationModal(stObj);
+      setActiveModal(null);
     }
-    updatePageSeo(st, null, null);
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   };
 
   const formattedDate = new Date().toLocaleDateString(lang === 'hi' ? 'hi-IN' : 'en-IN', {
@@ -548,6 +544,10 @@ export function App() {
         <DisclaimerPage onBackToHome={handleResetSearch} />
       ) : activePageView === 'stations' ? (
         <StationsDirectoryPage onSelectStation={(st) => handleOpenStationPage(st)} onBackToHome={handleResetSearch} />
+      ) : activePageView === 'stationSeo' ? (
+        <StationSeoPage stationSlug={stationSeoSlug} onBackToHome={handleResetSearch} lang={lang} />
+      ) : activePageView === 'routeSeo' ? (
+        <RouteSeoPage fromSlug={routeSeoFromSlug} toSlug={routeSeoToSlug} onResetSearch={handleResetSearch} lang={lang} />
       ) : activePageView === 'sitemap' ? (
         <SitemapPage onSelectStation={(st) => handleOpenStationPage(st)} onBackToHome={handleResetSearch} />
       ) : activePageView === '404' ? (
@@ -741,6 +741,15 @@ export function App() {
             setFromStation(st);
             setActiveModal(null);
           }}
+        />
+      )}
+
+      {/* Station Details Popup Modal */}
+      {selectedStationModal && (
+        <StationDetailModal
+          station={selectedStationModal}
+          onClose={() => setSelectedStationModal(null)}
+          lang={lang}
         />
       )}
 
