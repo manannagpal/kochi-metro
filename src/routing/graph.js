@@ -6,12 +6,20 @@ import { INTERCHANGE_PENALTIES } from '../data/travelTimes.js';
 export class MetroGraph {
   constructor() {
     this.stationMap = new Map();
+    this.nameToStationsMap = new Map();
     this.adjList = new Map();
     this.buildGraph();
   }
 
   buildGraph() {
-    STATIONS.forEach(st => this.stationMap.set(st.id, st));
+    STATIONS.forEach(st => {
+      this.stationMap.set(st.id, st);
+      const normName = st.name.toLowerCase().replace(/\(.*\)/, '').trim();
+      if (!this.nameToStationsMap.has(normName)) {
+        this.nameToStationsMap.set(normName, []);
+      }
+      this.nameToStationsMap.get(normName).push(st);
+    });
 
     CONNECTIONS.forEach(conn => {
       const fromNode = `${conn.from}@${conn.line}`;
@@ -65,36 +73,39 @@ export class MetroGraph {
       }
     });
 
-    const specialTransfers = [
-      { fromNode: 'esplanade@line1', toNode: 'esplanade-line2@line2', fromId: 'esplanade', toId: 'esplanade-line2', line: 'line2', time: 3, dist: 0.1 },
-      { fromNode: 'kavi-subhash@line1', toNode: 'kavi-subhash-line6@line6', fromId: 'kavi-subhash', toId: 'kavi-subhash-line6', line: 'line6', time: 3, dist: 0.1 }
-    ];
+    this.nameToStationsMap.forEach((stationList) => {
+      if (stationList.length > 1) {
+        for (let i = 0; i < stationList.length; i++) {
+          for (let j = 0; j < stationList.length; j++) {
+            if (i !== j) {
+              const stA = stationList[i];
+              const stB = stationList[j];
+              const linesA = stA.lines || [stA.line];
+              const linesB = stB.lines || [stB.line];
 
-    specialTransfers.forEach(st => {
-      if (!this.adjList.has(st.fromNode)) this.adjList.set(st.fromNode, []);
-      if (!this.adjList.has(st.toNode)) this.adjList.set(st.toNode, []);
+              linesA.forEach(lineA => {
+                linesB.forEach(lineB => {
+                  const nodeA = `${stA.id}@${lineA}`;
+                  const nodeB = `${stB.id}@${lineB}`;
 
-      this.adjList.get(st.fromNode).push({
-        neighborNode: st.toNode,
-        fromStationId: st.fromId,
-        toStationId: st.toId,
-        line: st.line,
-        weight: st.time,
-        distance: st.dist,
-        isTransfer: true,
-        transferType: 'nearby_station_transfer'
-      });
+                  if (!this.adjList.has(nodeA)) this.adjList.set(nodeA, []);
 
-      this.adjList.get(st.toNode).push({
-        neighborNode: st.fromNode,
-        fromStationId: st.toId,
-        toStationId: st.fromId,
-        line: st.fromNode.split('@')[1],
-        weight: st.time,
-        distance: st.dist,
-        isTransfer: true,
-        transferType: 'nearby_station_transfer'
-      });
+                  this.adjList.get(nodeA).push({
+                    neighborNode: nodeB,
+                    fromStationId: stA.id,
+                    toStationId: stB.id,
+                    line: lineB,
+                    weight: 3.0,
+                    distance: 0.1,
+                    isTransfer: true,
+                    transferType: 'interchange'
+                  });
+                });
+              });
+            }
+          }
+        }
+      }
     });
   }
 
