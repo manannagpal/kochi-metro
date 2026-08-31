@@ -558,6 +558,12 @@ export function App() {
         <RouteSeoPage fromSlug={routeSeoFromSlug} toSlug={routeSeoToSlug} onResetSearch={handleResetSearch} lang={lang} />
       ) : activePageView === 'sitemap' ? (
         <SitemapPage onSelectStation={(st) => handleOpenStationPage(st)} onBackToHome={handleResetSearch} />
+      ) : activePageView === 'stationSeo' ? (
+        <StationSeoPage
+          stationSlug={stationSeoSlug}
+          onBackToHome={handleResetSearch}
+          lang={lang}
+        />
       ) : activePageView === '404' ? (
         <NotFoundPage lang={lang} onNavigate={handleNavigate} />
       ) : (
