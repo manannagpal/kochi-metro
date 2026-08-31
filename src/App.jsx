@@ -468,13 +468,16 @@ export function App() {
     }
   });
 
-  const handleOpenStationPage = (st) => {
+    const handleOpenStationPage = (st) => {
     if (!st) return;
-    const stObj = typeof st === 'object' ? st : (getStationById(st) || getStationBySlug(st));
-    if (stObj) {
-      setSelectedStationModal(stObj);
-      setActiveModal(null);
+    const slug = getStationSlug(st);
+    setStationSeoSlug(slug);
+    setSelectedStationModal(st);
+    setActiveModal(null);
+    if (window.location.pathname !== `/station/${slug}/`) {
+      window.history.pushState({}, '', `/station/${slug}/`);
     }
+    updatePageSeo(st, null, null);
   };
 
   const formattedDate = new Date().toLocaleDateString(lang === 'hi' ? 'hi-IN' : 'en-IN', {
@@ -766,10 +769,13 @@ export function App() {
       )}}
 
       {/* Stations Directory Modal */}
-      {activeModal === 'stations' && (
+            {activeModal === 'stations' && (
         <StationsDirectory
           onClose={() => setActiveModal(null)}
-          onSelectStation={(st) => handleOpenStationPage(st)}
+          onSelectStation={(st) => {
+            handleOpenStationPage(st);
+            setActiveModal(null);
+          }}
         />
       )}
 
