@@ -37,9 +37,8 @@ export function AdSenseUnit({
   useEffect(() => {
     if (Capacitor.isNativePlatform()) {
       if (!ENABLE_NATIVE_ADS) return;
-      const fullAdUnitId = slot.includes('/')
-        ? slot
-        : `ca-app-pub-3598421466906011/${slot}`;
+      // Exact AdMob Banner Ad Unit ID from Google Mobile Ads SDK dashboard screenshot
+      const fullAdUnitId = 'ca-app-pub-3598421466906011/7690647086';
 
       const admobPkg = '@capacitor-community/admob';
       import(/* @vite-ignore */ admobPkg).then(m => {
