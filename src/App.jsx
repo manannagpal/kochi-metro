@@ -317,9 +317,9 @@ export function App() {
       } else if (parts.length === 1) {
         const f = getStationBySlug(parts[0]);
         if (f) {
-          setSelectedStationModal(f);
           setStationSeoSlug(parts[0]);
-          setActivePageView(null);
+          setActivePageView('stationSeo');
+          setSelectedStationModal(null);
           updatePageSeo(f, null, null);
           return;
         } else {
@@ -727,7 +727,7 @@ export function App() {
       )}
 
       {/* Station Detail Modal */}
-      {selectedStationModal && (
+      {selectedStationModal && activePageView !== 'stationSeo' && (
         <StationDetailModal
           station={selectedStationModal}
           onClose={() => {
