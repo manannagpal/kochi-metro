@@ -812,7 +812,7 @@ export function App() {
       {isMapOpen && (
         <MetroMapViewer
           onClose={() => setIsMapOpen(false)}
-          activeRoute={routes.length > 0 ? routes[0] : null}
+          activeRoute={null}
           lang={lang}
         />
       )}
