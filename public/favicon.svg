@@ -1,12 +1,88 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
-  <circle cx="256" cy="256" r="240" fill="#FFFFFF"/>
-  <circle cx="256" cy="256" r="228" fill="none" stroke="#E52E2D" stroke-width="24"/>
-  <g transform="translate(256, 256) scale(0.62) translate(-256, -265)">
-    <rect x="116" y="96" width="280" height="300" rx="70" fill="#E52E2D"/>
-    <rect x="156" y="136" width="200" height="120" rx="30" fill="#FFFFFF"/>
-    <rect x="156" y="280" width="200" height="24" rx="6" fill="#FFFFFF"/>
-    <circle cx="186" cy="344" r="20" fill="#FFFFFF"/>
-    <circle cx="326" cy="344" r="20" fill="#FFFFFF"/>
-    <path d="M 160 416 L 100 456 M 352 416 L 412 456 M 130 440 L 382 440" stroke="#E52E2D" stroke-width="32" stroke-linecap="round"/>
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0D9488" />
+      <stop offset="100%" stop-color="#115E59" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Squircle Base -->
+  <rect x="0" y="0" width="512" height="512" rx="112" fill="url(#bgGrad)"/>
+
+  <!-- Metro Network Transit Lines in Background -->
+  <!-- Line 1 -->
+  <path d="M-20 180 L160 360 L160 530" fill="none" stroke="#06B6D4" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" opacity="0.65"/>
+  <path d="M-20 160 L140 320 L140 530" fill="none" stroke="#06B6D4" stroke-width="6" stroke-linecap="round" opacity="0.35"/>
+  <!-- Line 2 -->
+  <path d="M530 140 L340 330 L180 330 L-20 530" fill="none" stroke="#10B981" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" opacity="0.65"/>
+  <!-- Line 3 -->
+  <path d="M280 -20 L420 120 L530 230" fill="none" stroke="#F59E0B" stroke-width="12" stroke-linecap="round" opacity="0.5"/>
+
+  <!-- Station Interchange Nodes -->
+  <circle cx="160" cy="360" r="10" fill="#FFFFFF" opacity="0.9"/>
+  <circle cx="340" cy="330" r="10" fill="#FFFFFF" opacity="0.9"/>
+  <circle cx="420" cy="120" r="10" fill="#FFFFFF" opacity="0.9"/>
+
+  <!-- Solid White Metro Train Front with Elevation Shadow -->
+  <g filter="url(#shadow)">
+    <!-- Main Train Outer Body (Solid White) -->
+    <path d="M256 75
+             C190 75 145 105 135 165
+             L125 315
+             C125 355 155 375 256 375
+             C357 375 387 355 387 315
+             L377 165
+             C367 105 322 75 256 75 Z"
+          fill="#FFFFFF" />
+
+    <!-- Top AC Hood Accent -->
+    <path d="M200 75 L208 62 C215 58 297 58 304 62 L312 75 Z" fill="#E2E8F0" />
+
+    <!-- Inner Front Face Inset (City Brand Colored) -->
+    <path d="M256 100
+             C205 100 170 122 162 168
+             L154 290
+             C154 322 178 338 256 338
+             C334 338 358 322 358 290
+             L350 168
+             C342 122 307 100 256 100 Z"
+          fill="#115E59" />
+
+    <!-- Windshield (Cyan Blue / Modern Glass) -->
+    <path d="M256 120
+             C218 120 188 132 182 165
+             L178 220
+             C178 232 195 236 256 236
+             C317 236 334 232 334 220
+             L330 165
+             C324 132 294 120 256 120 Z"
+          fill="#06B6D4" />
+    <!-- Glass Glare Reflection -->
+    <path d="M256 126 C280 126 312 134 322 150 L275 228 L250 228 L290 134 C280 128 268 126 256 126 Z" fill="#FFFFFF" opacity="0.3" />
+
+    <!-- Destination Sign Board (Above Windshield) -->
+    <rect x="216" y="104" width="80" height="10" rx="4" fill="#FFFFFF" opacity="0.9" />
+
+    <!-- Headlights (Glowing Yellow/Amber) -->
+    <circle cx="188" cy="275" r="16" fill="#FBBF24" />
+    <circle cx="188" cy="275" r="9" fill="#FEF08A" />
+    <circle cx="324" cy="275" r="16" fill="#FBBF24" />
+    <circle cx="324" cy="275" r="9" fill="#FEF08A" />
+
+    <!-- Bottom Coupler / Bumper -->
+    <rect x="236" y="322" width="40" height="12" rx="4" fill="#475569" />
+  </g>
+
+  <!-- Metro Track Rails (Solid White Base) -->
+  <g filter="url(#shadow)">
+    <!-- Left Rail -->
+    <polygon points="172,390 196,390 148,460 116,460" fill="#FFFFFF" />
+    <!-- Right Rail -->
+    <polygon points="340,390 316,390 364,460 396,460" fill="#FFFFFF" />
+    <!-- Center Sleeper / Tie -->
+    <rect x="180" y="420" width="152" height="12" rx="4" fill="#FFFFFF" opacity="0.9" />
   </g>
 </svg>
