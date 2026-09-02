@@ -772,7 +772,7 @@ export function App() {
           }}
           lang={lang}
         />
-      )}}
+      )}
 
       {/* Stations Directory Modal */}
             {activeModal === 'stations' && (
