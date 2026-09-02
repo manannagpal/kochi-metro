@@ -395,3 +395,11 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+
+
+.footer-dot {
+  color: var(--text-muted);
+  opacity: 0.45;
+  user-select: none;
+  font-size: 0.85rem;
+}

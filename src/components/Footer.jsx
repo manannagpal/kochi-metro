@@ -38,6 +38,7 @@ export function Footer({ onInstallPWA, deferredPrompt, onNavigate }) {
         >
           All India Metros
         </a>
+        <span className="footer-dot">•</span>
         <a
           href="/about/"
           onClick={(e) => { e.preventDefault(); onNavigate('/about/'); }}
@@ -45,6 +46,7 @@ export function Footer({ onInstallPWA, deferredPrompt, onNavigate }) {
         >
           About Us
         </a>
+        <span className="footer-dot">•</span>
         <a
           href="/contact/"
           onClick={(e) => { e.preventDefault(); onNavigate('/contact/'); }}
@@ -52,6 +54,7 @@ export function Footer({ onInstallPWA, deferredPrompt, onNavigate }) {
         >
           Contact Us
         </a>
+        <span className="footer-dot">•</span>
         <a
           href="/privacy-policy/"
           onClick={(e) => { e.preventDefault(); onNavigate('/privacy-policy/'); }}
@@ -59,6 +62,7 @@ export function Footer({ onInstallPWA, deferredPrompt, onNavigate }) {
         >
           Privacy Policy
         </a>
+        <span className="footer-dot">•</span>
         <a
           href="/terms-of-service/"
           onClick={(e) => { e.preventDefault(); onNavigate('/terms-of-service/'); }}
@@ -66,6 +70,7 @@ export function Footer({ onInstallPWA, deferredPrompt, onNavigate }) {
         >
           Terms of Service
         </a>
+        <span className="footer-dot">•</span>
         <a
           href="/disclaimer/"
           onClick={(e) => { e.preventDefault(); onNavigate('/disclaimer/'); }}
