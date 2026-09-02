@@ -142,13 +142,12 @@ export function App() {
       }
     }
 
-    const defaultCalculated = calculateRoutes(defaultFrom.id, defaultTo.id);
     return {
-      from: defaultFrom,
-      to: defaultTo,
-      routes: defaultCalculated,
-      hasSearched: true,
-      openIds: defaultCalculated.length > 0 ? new Set([defaultCalculated[0].id]) : new Set()
+      from: null,
+      to: null,
+      routes: [],
+      hasSearched: false,
+      openIds: new Set()
     };
   })();
 
@@ -195,9 +194,10 @@ export function App() {
       return;
     }
 
-    if (hasSearched && fromStation && toStation && routes.length > 0) {
+    const isRoutePath = typeof window !== 'undefined' && window.location.pathname.startsWith('/route/');
+    if (isRoutePath && hasSearched && fromStation && toStation && routes.length > 0) {
       updatePageSeo(fromStation, toStation, routes[0]);
-    } else if (!activePageView && !hasSearched) {
+    } else {
       updatePageSeo(null, null, null);
     }
   }, [activePageView, stationSeoSlug, hasSearched, fromStation, toStation, routes]);

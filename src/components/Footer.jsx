@@ -31,11 +31,6 @@ export function Footer({ onInstallPWA, deferredPrompt, onNavigate }) {
       fontSize: '0.85rem',
       background: 'var(--bg-surface)'
     }}>
-      <div style={{ maxWidth: '640px', margin: '0 auto 14px auto', fontSize: '0.82rem', lineHeight: '1.5', color: 'var(--text-muted)', textAlign: 'center' }}>
-        <Info size={15} style={{ display: 'inline', verticalAlign: '-2px', marginRight: '6px', color: 'var(--text-muted)' }} />
-        <span>Based on official Kochi Metro Rail (KMRL) Operational Network Baseline. All route metrics are estimated.</span>
-      </div>
-
       <nav className="footer-links-container">
         <a
           href="/about/"
@@ -74,20 +69,16 @@ export function Footer({ onInstallPWA, deferredPrompt, onNavigate }) {
         </a>
       </nav>
 
-      <div style={{
-        margin: '16px auto',
-        padding: '12px 16px',
-        maxWidth: '720px',
-        borderRadius: '10px',
-        background: 'var(--input-bg)',
-        border: '1px solid var(--border-color)',
-        fontSize: '0.8rem',
-        lineHeight: '1.4',
-        color: 'var(--text-secondary)',
+      <p style={{
+        margin: '14px auto',
+        maxWidth: '850px',
+        fontSize: '0.78rem',
+        lineHeight: '1.5',
+        color: 'var(--text-muted)',
         textAlign: 'center'
       }}>
-        <strong>Disclaimer:</strong> This is an independent route finder tool. It is not affiliated with, authorized, or endorsed by Kochi Metro Rail (KMRL).
-      </div>
+        <strong>Disclaimer:</strong> Independent transit tool based on published Kochi Metro Rail Limited (KMRL) schedules & fare tariffs. Route metrics are estimates; not affiliated with or endorsed by Kochi Metro Rail Limited (KMRL).
+      </p>
 
       <p style={{ marginTop: '16px', fontSize: '0.78rem', opacity: 0.8, textAlign: 'center' }}>
         © 2026 Kochi Metro Route Finder

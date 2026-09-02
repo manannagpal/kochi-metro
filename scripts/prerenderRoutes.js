@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { stations, lines } from "../src/data/kochiMetroData.js";
+import { calculateRoutes } from '../src/routing/routeEngine.js';
 
 function slugify(text) {
   return text
@@ -36,7 +37,11 @@ function renderRouteSeoHtml(fromSt, toSt) {
   const toName = toSt.name;
   const fromSlug = getStationSlug(fromSt);
   const toSlug = getStationSlug(toSt);
-  const pageTitle = `${fromName} to ${toName} Metro Route, Fare & Travel Time | Kochi Metro (KMRL)`;
+  let _fare = null;
+  try { const _r = calculateRoutes(fromSt.id, toSt.id); if (_r && _r.length > 0) _fare = _r[0].fare; } catch(_e) {}
+  const pageTitle = _fare !== null
+    ? `${fromName} to ${toName} Metro Route, Fare (₹${_fare}) & Travel Time | Kochi Metro (KMRL)`
+    : `${fromName} to ${toName} Metro Route, Fare & Travel Time | Kochi Metro (KMRL)`;
   const pageDesc = `Fastest metro route from ${fromName} to ${toName}: Calculate fare, travel time, line interchanges, and platform guide for Kochi Metro (Blue Line).`;
   const canonicalUrl = `https://kochi.metro.org.in/route/${fromSlug}/${toSlug}/`;
 
