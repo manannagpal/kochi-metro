@@ -33,6 +33,12 @@ export function Footer({ onInstallPWA, deferredPrompt, onNavigate }) {
     }}>
       <nav className="footer-links-container">
         <a
+          href="https://metro.org.in"
+          className="footer-link-item"
+        >
+          All India Metros
+        </a>
+        <a
           href="/about/"
           onClick={(e) => { e.preventDefault(); onNavigate('/about/'); }}
           className="footer-link-item"
