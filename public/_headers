@@ -1,0 +1,26 @@
+# 1. Long-term caching for immutable hashed assets (JS, CSS)
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# 2. Static icons, SVGs and images (30 days)
+/*.svg
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+
+/*.png
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+
+/*.ico
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+
+# 3. HTML pages: instantaneous freshness with revalidation (no Clear-Site-Data)
+/*
+  Cache-Control: public, max-age=0, must-revalidate
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
+# 4. Sitemaps and Robots
+/sitemap*.xml
+  Cache-Control: public, max-age=3600, must-revalidate
+
+/robots.txt
+  Cache-Control: public, max-age=3600, must-revalidate

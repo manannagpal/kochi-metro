@@ -33,20 +33,53 @@
     <meta property="twitter:description" content="Calculate fastest routes, fares, travel time, and line interchange details for Kochi Metro (KMRL Blue Line Aluva to Tripunithura) with interactive station map." />
     <meta property="twitter:image" content="https://kochi.metro.org.in/og-image.png" />
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-75R3121JS1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-75R3121JS1');
-    </script>
-
-    <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3598421466906011" crossorigin="anonymous"></script>
+    <!-- DNS Prefetch for third-party scripts (loaded on interaction) -->
+    <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+      <!-- High-Performance Script Loader: Defer Analytics & AdSense to User Interaction / Timeout -->
+    <script>
+      (function() {
+        var thirdPartyLoaded = false;
+        function loadThirdParty() {
+          if (thirdPartyLoaded) return;
+          thirdPartyLoaded = true;
+
+          window.removeEventListener('scroll', loadThirdParty, { passive: true });
+          window.removeEventListener('touchstart', loadThirdParty, { passive: true });
+          window.removeEventListener('mousemove', loadThirdParty, { passive: true });
+          window.removeEventListener('keydown', loadThirdParty, { passive: true });
+
+          // 1. Google Analytics
+          var gtm = document.createElement('script');
+          gtm.async = true;
+          gtm.src = 'https://www.googletagmanager.com/gtag/js?id=G-75R3121JS1';
+          document.head.appendChild(gtm);
+          gtm.onload = function() {
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-75R3121JS1');
+          };
+
+          // 2. Google AdSense
+          var ads = document.createElement('script');
+          ads.async = true;
+          ads.crossOrigin = 'anonymous';
+          ads.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3598421466906011';
+          document.head.appendChild(ads);
+        }
+
+        window.addEventListener('scroll', loadThirdParty, { passive: true, once: true });
+        window.addEventListener('touchstart', loadThirdParty, { passive: true, once: true });
+        window.addEventListener('mousemove', loadThirdParty, { passive: true, once: true });
+        window.addEventListener('keydown', loadThirdParty, { passive: true, once: true });
+
+        setTimeout(loadThirdParty, 3500);
+      })();
+    </script>
   </body>
 </html>
