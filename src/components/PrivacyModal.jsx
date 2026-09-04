@@ -55,14 +55,14 @@ export function PrivacyModal({ onClose }) {
         <div style={{ flex: 1, overflowY: 'auto', padding: '24px', lineHeight: '1.7', color: 'var(--text-secondary)', fontSize: '0.88rem' }}>
           
           <p>
-            At <strong>Kochi Metro Route Finder</strong> (<a href="https://delhi.metro.org.in" style={{ color: 'var(--accent-primary)', textDecoration: 'none' }}>delhi.metro.org.in</a>), accessible from https://delhi.metro.org.in, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by delhi.metro.org.in and how we use it.
+            At <strong>Kochi Metro Route Finder</strong> (<a href="https://kochi.metro.org.in" style={{ color: 'var(--accent-primary)', textDecoration: 'none' }}>kochi.metro.org.in</a>), accessible from https://kochi.metro.org.in, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by kochi.metro.org.in and how we use it.
           </p>
 
           <h4 style={{ fontSize: '1.05rem', color: 'var(--text-primary)', fontWeight: 700, marginTop: '20px', marginBottom: '8px' }}>
             Log Files & Analytics
           </h4>
           <p>
-            delhi.metro.org.in follows a standard procedure of using log files. These files log visitors when they visit websites. The information collected by log files includes internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks. These are not linked to any information that is personally identifiable.
+            kochi.metro.org.in follows a standard procedure of using log files. These files log visitors when they visit websites. The information collected by log files includes internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks. These are not linked to any information that is personally identifiable.
           </p>
 
           <h4 style={{ fontSize: '1.05rem', color: 'var(--text-primary)', fontWeight: 700, marginTop: '20px', marginBottom: '8px' }}>
@@ -76,7 +76,7 @@ export function PrivacyModal({ onClose }) {
             Third Party Advertising Partners
           </h4>
           <p>
-            Some of advertisers on our site may use cookies and web beacons. Our advertising partners include Google AdSense. Third-party ad servers or ad networks uses technologies like cookies, JavaScript, or Web Beacons that are used in their respective advertisements and links that appear on delhi.metro.org.in, which are sent directly to users' browser. They automatically receive your IP address when this occurs.
+            Some of advertisers on our site may use cookies and web beacons. Our advertising partners include Google AdSense. Third-party ad servers or ad networks uses technologies like cookies, JavaScript, or Web Beacons that are used in their respective advertisements and links that appear on kochi.metro.org.in, which are sent directly to users' browser. They automatically receive your IP address when this occurs.
           </p>
 
           <h4 style={{ fontSize: '1.05rem', color: 'var(--text-primary)', fontWeight: 700, marginTop: '20px', marginBottom: '8px' }}>

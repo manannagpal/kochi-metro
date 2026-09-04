@@ -39,7 +39,7 @@ export function PrivacyPage({ onBackToHome }) {
 
         <div style={{ fontSize: '0.95rem', color: 'var(--text-primary)', lineHeight: '1.7', display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <p>
-            Your privacy is extremely important to us. <strong>kolkata.metro.org.in</strong> is built with privacy-first principles:
+            Your privacy is extremely important to us. <strong>kochi.metro.org.in</strong> is built with privacy-first principles:
           </p>
 
           <ul style={{ paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '8px', color: 'var(--text-secondary)' }}>

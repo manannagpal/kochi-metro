@@ -92,7 +92,7 @@ export function StationDetailModal({ station, onClose, lang = 'en', isFullPage =
                 {station.name}
               </h3>
               <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-                {timingData.operator || 'Delhi Metro (DMRC)'} • Station ID: {station.id}
+                {timingData.operator || 'Kochi Metro Rail Limited (KMRL)'} • Station ID: {station.id}
               </div>
             </div>
           </div>

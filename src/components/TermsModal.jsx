@@ -29,7 +29,7 @@ export function TermsModal({ onClose }) {
                 Terms & Conditions
               </h3>
               <span style={{ fontSize: '0.8rem', opacity: 0.85 }}>
-                Terms of Use for delhi.metro.org.in
+                Terms of Use for kochi.metro.org.in
               </span>
             </div>
           </div>
@@ -58,7 +58,7 @@ export function TermsModal({ onClose }) {
             1. Acceptance of Terms
           </h4>
           <p>
-            By accessing and using <strong>Kochi Metro Route Finder</strong> (<a href="https://delhi.metro.org.in" style={{ color: 'var(--accent-primary)', textDecoration: 'none' }}>delhi.metro.org.in</a>), you accept and agree to be bound by the terms and provision of this agreement.
+            By accessing and using <strong>Kochi Metro Route Finder</strong> (<a href="https://kochi.metro.org.in" style={{ color: 'var(--accent-primary)', textDecoration: 'none' }}>kochi.metro.org.in</a>), you accept and agree to be bound by the terms and provision of this agreement.
           </p>
 
           <h4 style={{ fontSize: '1.05rem', color: 'var(--text-primary)', fontWeight: 700, marginTop: '20px', marginBottom: '8px' }}>

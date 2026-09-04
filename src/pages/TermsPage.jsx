@@ -39,7 +39,7 @@ export function TermsPage({ onBackToHome }) {
 
         <div style={{ fontSize: '0.95rem', color: 'var(--text-primary)', lineHeight: '1.7', display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <p>
-            By accessing and using <strong>kolkata.metro.org.in</strong>, you agree to these Terms of Service.
+            By accessing and using <strong>kochi.metro.org.in</strong>, you agree to these Terms of Service.
           </p>
 
           <p>

@@ -28,9 +28,9 @@ export function StationSeoPage({ stationSlug, onBackToHome, lang = 'en' }) {
     const firstTrainStr = timingInfo ? timingInfo.directionA.firstTrainWeekdays : '05:30 AM';
     const lastTrainStr = timingInfo ? timingInfo.directionA.lastTrainWeekdays : '11:30 PM';
 
-    const pageTitle = `${station.name} Metro Station Timings, Lines, Fare & Parking | Delhi Metro`;
+    const pageTitle = `${station.name} Metro Station Timings, Lines, Fare & Parking | Kochi Metro`;
     const pageDesc = `${station.name} Metro Station (${lineNames}): First train at ${firstTrainStr} (weekdays) / 08:00 AM (Sundays), last train at ${lastTrainStr}. Check platform timetables, fare, parking rates & gate guide.`;
-    const keywords = `${station.name} metro station, ${station.name} metro first train timing, ${station.name} metro last train timing, ${station.name} metro parking charges, ${station.name} metro lines, delhi metro ${station.name}`;
+    const keywords = `${station.name} metro station, ${station.name} metro first train timing, ${station.name} metro last train timing, ${station.name} metro parking charges, ${station.name} metro lines, kochi metro ${station.name}`;
     const canonicalUrl = `https://kochi.metro.org.in/station/${stationSlug}/`;
 
     document.title = pageTitle;

@@ -46,7 +46,7 @@ export function DisclaimerModal({ onClose }) {
 
         <div style={{ fontSize: '0.88rem', color: 'var(--text-primary)', lineHeight: '1.6', display: 'flex', flexDirection: 'column', gap: '12px' }}>
           <p>
-            <strong>mumbai.metro.org.in</strong> is an independent commuter guide and is not affiliated with, endorsed by, or connected to MMOPL, MMMOCL, MMRC, or any government agency.
+            <strong>kochi.metro.org.in</strong> is an independent commuter guide and is not affiliated with, endorsed by, or connected to MMOPL, MMMOCL, MMRC, or any government agency.
           </p>
         </div>
       </div>

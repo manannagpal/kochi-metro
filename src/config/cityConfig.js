@@ -1,10 +1,10 @@
 // Central Configuration Blueprint for Kochi Metro Portal
 export const CITY_CONFIG = {
-  cityName: 'Kolkata',
+  cityName: 'Kochi',
   systemName: 'Kochi Metro',
   tagline: 'Official Route & Station Guide',
-  operatorName: 'Metro Railway Kolkata',
-  domain: 'kolkata.metro.org.in',
+  operatorName: 'Kochi Metro Rail Limited (KMRL)',
+  domain: 'kochi.metro.org.in',
   storagePrefix: 'km_',
   themeColor: '#005DAA',
   
@@ -16,10 +16,10 @@ export const CITY_CONFIG = {
   defaultToStationId: 'line1',
   
   // Search input placeholders
-  searchPlaceholders: 'Howrah, Esplanade, Salt Lake Sector V...',
+  searchPlaceholders: 'Aluva, Edapally, JLN Stadium, MG Road, Tripunithura...',
   
   // Network operators for parking & timing modals
-  defaultNetworkKey: 'KOLKATA',
+  defaultNetworkKey: 'KOCHI',
 
   // SEO default tags
   metaTitle: 'Kochi Metro Route Finder | Interactive Map, Fares & Station Timings',

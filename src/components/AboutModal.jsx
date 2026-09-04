@@ -39,21 +39,21 @@ export function AboutModal({ onClose }) {
               About Kochi Metro Route Finder
             </h3>
             <span style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>
-              Independent Route & Station Navigation Portal for Mumbai
+              Independent Route & Station Navigation Portal for Kochi
             </span>
           </div>
         </div>
 
         <div style={{ fontSize: '0.9rem', color: 'var(--text-primary)', lineHeight: '1.6', display: 'flex', flexDirection: 'column', gap: '14px' }}>
           <p>
-            <strong>mumbai.metro.org.in</strong> is an independent web application dedicated to providing fast, reliable, and accessible route planning across the Kochi Metro network (Line 1 Blue Line, Line 2A Yellow Line, Line 7 Red Line, and Line 3 Aqua Line).
+            <strong>kochi.metro.org.in</strong> is an independent web application dedicated to providing fast, reliable, and accessible route planning across the Kochi Metro network.
           </p>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px', marginTop: '6px' }}>
             <div style={{ padding: '12px', borderRadius: '10px', background: 'var(--input-bg)', border: '1px solid var(--border-color)' }}>
               <MapPin size={18} color="#005DAA" style={{ marginBottom: '6px' }} />
               <div style={{ fontWeight: 700, fontSize: '0.85rem' }}>Full Network Coverage</div>
-              <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Versova, Ghatkopar, Andheri, Dahisar, BKC & Airport stops</div>
+              <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Aluva, Edapally, JLN Stadium, M.G. Road, Ernakulam South, Tripunithura & operational stops</div>
             </div>
 
             <div style={{ padding: '12px', borderRadius: '10px', background: 'var(--input-bg)', border: '1px solid var(--border-color)' }}>

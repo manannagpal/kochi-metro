@@ -49,7 +49,7 @@ export function ContactModal({ onClose }) {
             <Globe size={20} color="var(--accent-primary)" />
             <div>
               <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Official Portal URL</div>
-              <div style={{ fontWeight: 700 }}>kolkata.metro.org.in</div>
+              <div style={{ fontWeight: 700 }}>kochi.metro.org.in</div>
             </div>
           </div>
 

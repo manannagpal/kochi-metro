@@ -39,7 +39,7 @@ export function AboutPage({ onBackToHome }) {
 
         <div style={{ fontSize: '0.95rem', color: 'var(--text-primary)', lineHeight: '1.7', display: 'flex', flexDirection: 'column', gap: '16px' }}>
           <p>
-            <strong>kolkata.metro.org.in</strong> is an independent web application dedicated to providing fast, reliable, and accessible route planning across the Kochi Metro network (Line 1 Blue Line, Line 2 Green Line, Line 3 Purple Line, and Line 6 Orange Line).
+            <strong>kochi.metro.org.in</strong> is an independent web application dedicated to providing fast, reliable, and accessible route planning across the Kochi Metro network.
           </p>
 
           <h2 style={{ fontSize: '1.25rem', fontWeight: 700, margin: '16px 0 8px 0', color: 'var(--text-primary)' }}>
@@ -47,7 +47,7 @@ export function AboutPage({ onBackToHome }) {
           </h2>
 
           <ul style={{ paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '8px', color: 'var(--text-secondary)' }}>
-            <li><strong>Full Network Routing:</strong> Calculate optimal routes across Dakshineswar, Howrah Maidan, Salt Lake Sector V, Sealdah, and Kavi Subhash.</li>
+            <li><strong>Full Network Routing:</strong> Calculate optimal routes across Aluva, Edapally, JLN Stadium, M.G. Road, Ernakulam South, Tripunithura.</li>
             <li><strong>Accurate Fares & Timings:</strong> Official token rates, smart card discount options, and first/last train timetables.</li>
             <li><strong>Interactive GIS Map:</strong> Visual Leaflet station map for clear line navigation.</li>
           </ul>
