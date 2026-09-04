@@ -2,6 +2,21 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      (function() {
+        try {
+          var urlTheme = new URLSearchParams(window.location.search).get('theme');
+          var match = document.cookie.match(/(?:^|;\s*)theme_preference=([^;]*)/);
+          var cookieTheme = match ? decodeURIComponent(match[1]) : null;
+          var localTheme = localStorage.getItem('theme_preference');
+          var isNative = window.location.href.indexOf('capacitor://') !== -1 || window.location.protocol === 'capacitor:' || window.location.protocol === 'file:';
+          var theme = (urlTheme === 'dark' || urlTheme === 'light') ? urlTheme : (cookieTheme || localTheme || (isNative ? 'dark' : 'light'));
+          if (theme === 'dark' || theme === 'light') {
+            document.documentElement.setAttribute('data-theme', theme);
+          }
+        } catch (e) {}
+      })();
+    </script>
     <link rel="icon" type="image/x-icon" href="https://kochi.metro.org.in/favicon.ico" />
     <link rel="shortcut icon" type="image/x-icon" href="https://kochi.metro.org.in/favicon.ico" />
     <link rel="icon" type="image/png" sizes="48x48" href="https://kochi.metro.org.in/favicon-48x48.png" />
