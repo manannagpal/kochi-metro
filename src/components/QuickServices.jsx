@@ -11,6 +11,12 @@ export function QuickServices({ lang = 'en', onOpenMap }) {
   const [timingSearch, setTimingSearch] = useState('');
   const [selectedStationTimings, setSelectedStationTimings] = useState(null);
 
+  const popularStations = React.useMemo(() => {
+    if (!STATIONS || !STATIONS.length) return [];
+    const interchanges = STATIONS.filter(s => s.isInterchange || s.interchange);
+    return (interchanges.length >= 3 ? interchanges : STATIONS).slice(0, 5);
+  }, []);
+
   return (
     <div style={{ marginBottom: '32px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px', fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-secondary)' }}>
@@ -97,7 +103,7 @@ export function QuickServices({ lang = 'en', onOpenMap }) {
             </div>
             <div>
               <div>First & Last Train Times</div>
-              <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: 400 }}>Official DMRC & NMRC timings</div>
+              <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontWeight: 400 }}>Official train & schedule timings</div>
             </div>
           </div>
           <Sun size={16} color="#FBBF24" />
@@ -191,7 +197,7 @@ export function QuickServices({ lang = 'en', onOpenMap }) {
                     setSelectedStationTimings(null);
                   }
                 }}
-                placeholder="Type station name (e.g. New Delhi, Rajiv Chowk, Botanical Garden)..."
+                placeholder={`Type station name (e.g. ${popularStations.slice(0, 3).map(s => s.name).join(', ')})...`}
                 style={{
                   width: '100%', padding: '10px 14px', borderRadius: '8px',
                   border: '1px solid var(--border-color)', background: 'var(--bg-surface)',
@@ -202,10 +208,7 @@ export function QuickServices({ lang = 'en', onOpenMap }) {
               {/* Popular Station Quick Buttons */}
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '10px' }}>
                 <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Popular:</span>
-                {['new-delhi', 'rajiv-chowk', 'hauz-khas', 'kashmere-gate', 'botanical-garden'].map(stId => {
-                  const st = STATIONS.find(s => s.id === stId);
-                  if (!st) return null;
-                  return (
+                {popularStations.map(st => (
                     <button
                       key={st.id}
                       onClick={() => { setSelectedStationTimings(st); setTimingSearch(st.name); }}
@@ -216,8 +219,7 @@ export function QuickServices({ lang = 'en', onOpenMap }) {
                     >
                       {st.name}
                     </button>
-                  );
-                })}
+                  ))}
               </div>
             </div>
 

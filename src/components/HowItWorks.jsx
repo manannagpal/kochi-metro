@@ -51,7 +51,7 @@ export function HowItWorks() {
           </div>
           <h4 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '6px' }}>2. Graph Path Engine</h4>
           <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', margin: 0 }}>
-            Our routing engine calculates all practical alternate routes across DMRC network.
+            Our routing engine calculates all practical alternate routes across the metro network.
           </p>
         </div>
 

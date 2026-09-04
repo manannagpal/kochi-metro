@@ -194,58 +194,7 @@ export function RouteResultCard({
           </div>
         )}
 
-        {/* Cross-Network Ticketing Advisory Callouts */}
-        {(() => {
-          const hasAqua = route.legs.some(leg => leg.lineId === 'aqua' || leg.lineDef?.id === 'aqua' || leg.fromStationId?.includes('sector-51') || leg.toStationId?.includes('sector-51'));
-          const hasRRTS = route.legs.some(leg => leg.lineId === 'rrts' || leg.lineDef?.id === 'rrts' || leg.lineDef?.operator === 'NCRTC');
-
-          return (
-            <>
-              {hasAqua && (
-                <div style={{
-                  marginTop: '16px',
-                  padding: '14px 16px',
-                  borderRadius: '12px',
-                  background: 'rgba(6, 182, 212, 0.08)',
-                  border: '1px solid rgba(6, 182, 212, 0.28)',
-                  fontSize: '0.82rem',
-                  lineHeight: '1.5',
-                  color: 'var(--text-primary)'
-                }}>
-                  <div style={{ fontWeight: 800, color: '#0891B2', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.88rem' }}>
-                    <Info size={16} /> <span>Noida Metro Aqua Line (NMRC) Ticketing & Interchange Notice</span>
-                  </div>
-                  <ul style={{ margin: 0, paddingLeft: '18px', display: 'flex', flexDirection: 'column', gap: '4px', color: 'var(--text-secondary)' }}>
-                    <li><strong>Physical Interchange:</strong> Exit DMRC paid area at <strong>Noida Sector 52</strong> (Blue Line) and walk/ride the connecting walkway (~300m) to <strong>Noida Sector 51</strong> (Aqua Line).</li>
-                    <li><strong>Smart Cards &amp; NCMC:</strong> Traditional DMRC smart cards <strong>do not work</strong> on Aqua Line. NCMC-enabled cards are supported on both networks, though some bank NCMC cards may require a one-time counter activation.</li>
-                    <li><strong>App &amp; QR Ticketing:</strong> Use the official <strong>Noida Metro (NMRC) App</strong> or NMRC station counters for Aqua Line QR tickets. <em>(Note: DMRC Sarathi App &amp; DMRC WhatsApp ticketing do not support Aqua Line routes).</em></li>
-                  </ul>
-                </div>
-              )}
-
-              {hasRRTS && (
-                <div style={{
-                  marginTop: '16px',
-                  padding: '14px 16px',
-                  borderRadius: '12px',
-                  background: 'rgba(245, 158, 11, 0.08)',
-                  border: '1px solid rgba(245, 158, 11, 0.28)',
-                  fontSize: '0.82rem',
-                  lineHeight: '1.5',
-                  color: 'var(--text-primary)'
-                }}>
-                  <div style={{ fontWeight: 800, color: '#D97706', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.88rem' }}>
-                    <Info size={16} /> <span>Namo Bharat RRTS Cross-Network Ticketing Notice</span>
-                  </div>
-                  <ul style={{ margin: 0, paddingLeft: '18px', display: 'flex', flexDirection: 'column', gap: '4px', color: 'var(--text-secondary)' }}>
-                    <li><strong>Physical Interchange:</strong> Connected via Foot Overbridge (FOB) / Skywalk at hub stations (e.g. <strong>Anand Vihar</strong>, <strong>New Ashok Nagar</strong>).</li>
-                    <li><strong>Smart Cards & Apps:</strong> Standard DMRC smart cards <strong>do not work</strong> on RRTS. Use <strong>NCMC Cards</strong> *(works on both!)* or the <strong>Rapidx Connect App</strong>.</li>
-                  </ul>
-                </div>
-              )}
-            </>
-          );
-        })()}
+        
       </div>
     </div>
   );

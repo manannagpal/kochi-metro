@@ -40,7 +40,7 @@ export function QuickActions({
     {
       id: 'metro_maps',
       title: 'Metro Maps',
-      sub: 'Downloadable DMRC, RRTS, NMRC network maps',
+      sub: 'Downloadable official system network maps',
       cta: 'View maps',
       icon: <Map size={24} color="#0072CE" />,
       bg: 'rgba(0, 114, 206, 0.12)',
@@ -49,7 +49,7 @@ export function QuickActions({
     {
       id: 'stations',
       title: 'Stations',
-      sub: 'Browse 295 stations with line info, parking & gates',
+      sub: 'Browse all stations with line info, parking & gates',
       cta: 'Browse',
       icon: <Train size={24} color="#990066" />,
       bg: 'rgba(153, 0, 102, 0.12)',
