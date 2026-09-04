@@ -44,7 +44,7 @@ export function PrivacyPage({ onBackToHome }) {
 
           <ul style={{ paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '8px', color: 'var(--text-secondary)' }}>
             <li><strong>No Account Required:</strong> You do not need to register or provide personal credentials.</li>
-            <li><strong>Local Storage Only:</strong> Favorite stations and recent search history are saved strictly inside your browser's local storage (`km_*`).</li>
+            <li><strong>Local Storage Only:</strong> Favorite stations and recent search history are saved strictly inside your browser's local storage.</li>
             <li><strong>GPS Privacy:</strong> Nearby station location lookups process coordinates locally in your browser.</li>
           </ul>
         </div>
