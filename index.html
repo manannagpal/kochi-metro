@@ -40,18 +40,20 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-      <!-- High-Performance Script Loader: Defer Analytics & AdSense to User Interaction / Timeout -->
+      <!-- High-Performance Script Loader: Defer Analytics & AdSense to Post-Load Idle / User Interaction -->
     <script>
       (function() {
         var thirdPartyLoaded = false;
+        var interactionEvents = ['scroll', 'touchstart', 'click', 'keydown'];
+
         function loadThirdParty() {
           if (thirdPartyLoaded) return;
           thirdPartyLoaded = true;
 
-          window.removeEventListener('scroll', loadThirdParty, { passive: true });
-          window.removeEventListener('touchstart', loadThirdParty, { passive: true });
-          window.removeEventListener('mousemove', loadThirdParty, { passive: true });
-          window.removeEventListener('keydown', loadThirdParty, { passive: true });
+          // Remove interaction listeners
+          interactionEvents.forEach(function(evt) {
+            window.removeEventListener(evt, loadThirdParty, { passive: true });
+          });
 
           // 1. Google Analytics
           var gtm = document.createElement('script');
@@ -73,12 +75,27 @@
           document.head.appendChild(ads);
         }
 
-        window.addEventListener('scroll', loadThirdParty, { passive: true, once: true });
-        window.addEventListener('touchstart', loadThirdParty, { passive: true, once: true });
-        window.addEventListener('mousemove', loadThirdParty, { passive: true, once: true });
-        window.addEventListener('keydown', loadThirdParty, { passive: true, once: true });
+        // Attach intentional user interaction listeners (strictly excluding mousemove to prevent premature desktop firing)
+        interactionEvents.forEach(function(evt) {
+          window.addEventListener(evt, loadThirdParty, { passive: true, once: true });
+        });
 
-        setTimeout(loadThirdParty, 3500);
+        // Always wait until window 'load' has completed before scheduling idle background loading
+        function scheduleIdleLoad() {
+          if ('requestIdleCallback' in window) {
+            requestIdleCallback(function() {
+              setTimeout(loadThirdParty, 1200);
+            }, { timeout: 3500 });
+          } else {
+            setTimeout(loadThirdParty, 2000);
+          }
+        }
+
+        if (document.readyState === 'complete') {
+          scheduleIdleLoad();
+        } else {
+          window.addEventListener('load', scheduleIdleLoad, { once: true });
+        }
       })();
     </script>
   </body>

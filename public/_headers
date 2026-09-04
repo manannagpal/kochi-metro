@@ -12,9 +12,9 @@
 /*.ico
   Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
 
-# 3. HTML pages: instantaneous freshness with revalidation (no Clear-Site-Data)
+# 3. HTML pages: instantaneous freshness with revalidation & Cloudflare edge caching
 /*
-  Cache-Control: public, max-age=0, must-revalidate
+  Cache-Control: public, max-age=0, s-maxage=3600, stale-while-revalidate=86400
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
 
