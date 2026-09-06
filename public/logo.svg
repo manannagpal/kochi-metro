@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <filter id="roundelShadow" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-opacity="0.22" flood-color="#000000" />
+    </filter>
+  </defs>
+
+  <!-- Circular Crisp White Base for Universal Contrast -->
+  <circle cx="60" cy="60" r="52" fill="#FFFFFF" filter="url(#roundelShadow)" />
+  
+  <!-- Outer Transit Ring -->
+  <circle cx="60" cy="60" r="41" fill="none" stroke="#0F766E" stroke-width="15" />
+  
+  <!-- Horizontal Transit Crossbar -->
+  <rect x="6" y="43" width="108" height="34" rx="7" fill="#0284C7" filter="url(#roundelShadow)" />
+  
+  <!-- Inner Border Highlight on Crossbar -->
+  <rect x="6" y="43" width="108" height="34" rx="7" fill="none" stroke="#FFFFFF" stroke-width="1.2" stroke-opacity="0.45" />
+  
+  <!-- Full City Name (Optical Center Y=58.5) -->
+  <text 
+    x="60" 
+    y="58.5" 
+    text-anchor="middle" 
+    dominant-baseline="central" 
+    font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" 
+    font-size="16.5" 
+    font-weight="900" 
+    letter-spacing="1.2px" 
+    fill="#FFFFFF"
+  >KOCHI</text>
+</svg>
