@@ -55,20 +55,14 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-      <!-- High-Performance Script Loader: Defer Analytics & AdSense to Post-Load Idle / User Interaction -->
+      <!-- High-Performance Script Loader: Defer Analytics & AdSense to Post-Load Idle -->
     <script>
       (function() {
         var thirdPartyLoaded = false;
-        var interactionEvents = ['scroll', 'touchstart', 'click', 'keydown'];
 
         function loadThirdParty() {
           if (thirdPartyLoaded) return;
           thirdPartyLoaded = true;
-
-          // Remove interaction listeners
-          interactionEvents.forEach(function(evt) {
-            window.removeEventListener(evt, loadThirdParty, { passive: true });
-          });
 
           // 1. Google Analytics
           var gtm = document.createElement('script');
@@ -82,7 +76,7 @@
             gtag('config', 'G-75R3121JS1');
           };
 
-          // 2. Google AdSense
+          // 2. Google AdSense (loaded gracefully in background)
           var ads = document.createElement('script');
           ads.async = true;
           ads.crossOrigin = 'anonymous';
@@ -90,19 +84,14 @@
           document.head.appendChild(ads);
         }
 
-        // Attach intentional user interaction listeners (strictly excluding mousemove to prevent premature desktop firing)
-        interactionEvents.forEach(function(evt) {
-          window.addEventListener(evt, loadThirdParty, { passive: true, once: true });
-        });
-
-        // Always wait until window 'load' has completed before scheduling idle background loading
+        // Defer strictly to post-load idle time to ensure 0 CPU contention during initial render & scroll
         function scheduleIdleLoad() {
           if ('requestIdleCallback' in window) {
             requestIdleCallback(function() {
-              setTimeout(loadThirdParty, 1200);
-            }, { timeout: 3500 });
+              setTimeout(loadThirdParty, 2500);
+            }, { timeout: 5000 });
           } else {
-            setTimeout(loadThirdParty, 2000);
+            setTimeout(loadThirdParty, 3500);
           }
         }
 

@@ -16,7 +16,7 @@ import { ParkingRatesModal } from './components/ParkingRatesModal.jsx';
 import { RouteResultCard } from './components/RouteResultCard.jsx';
 import { RouteFilters } from './components/RouteFilters.jsx';
 import { StationDetailModal } from './components/StationDetailModal.jsx';
-import { MetroMapViewer } from './components/MetroMapViewer.jsx';
+const MetroMapViewer = React.lazy(() => import('./components/MetroMapViewer.jsx').then(m => ({ default: m.MetroMapViewer })));
 import { HowItWorks } from './components/HowItWorks.jsx';
 import { AboutModal } from './components/AboutModal.jsx';
 import { ContactModal } from './components/ContactModal.jsx';
@@ -810,11 +810,13 @@ export function App() {
 
       {/* Interactive Metro Network Map Modal */}
       {isMapOpen && (
-        <MetroMapViewer
-          onClose={() => setIsMapOpen(false)}
-          activeRoute={null}
-          lang={lang}
-        />
+        <React.Suspense fallback={null}>
+          <MetroMapViewer
+            onClose={() => setIsMapOpen(false)}
+            activeRoute={null}
+            lang={lang}
+          />
+        </React.Suspense>
       )}
 
       {/* AdSense Policy Modals */}
