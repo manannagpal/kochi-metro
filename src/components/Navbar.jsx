@@ -64,7 +64,7 @@ export function Navbar({
           {/* Logo & Title */}
           <div className="navbar-logo" onClick={() => window.location.href = '/'}>
             <img
-              src="/logo.svg?v=1"
+              src="/logo.svg?v=2"
               alt="Kochi Metro Logo"
               className="navbar-logo-img"
             />
