@@ -7,13 +7,6 @@ export async function onRequest(context) {
   }
   const { params, env, request } = context;
 
-  // 1. Edge Cache Lookup for instant sub-30ms response
-  try {
-    const cache = caches.default;
-    const cachedResponse = await cache.match(request);
-    if (cachedResponse) return cachedResponse;
-  } catch (e) {}
-
   const fromSlug = params.from;
   const toSlug = params.to;
 
@@ -125,9 +118,6 @@ export async function onRequest(context) {
     }
   });
 
-  try {
-    context.waitUntil(caches.default.put(request, response.clone()));
-  } catch (e) {}
 
   return response;
 }
