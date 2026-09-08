@@ -200,61 +200,33 @@ export function StationTimeline({ route, onStationClick, lang = 'en' }) {
                   </div>
                 )}
 
-                {/* Intermediate Interchange Info Tag */}
-                {!item.isOrigin && !item.isDestination && !item.isInterchange && (() => {
-                  const stObj = getStationById(item.stationId);
-                  const interchangeLines = stObj?.interchangeLines || (stObj?.lines || []);
-                  const otherLines = interchangeLines.filter(lId => lId !== item.lineDef.id && lId !== item.lineDef.name);
-                  if (otherLines.length === 0) return null;
-
-                  return (
-                    <div style={{
-                      marginTop: '3px',
-                      fontSize: '0.74rem',
-                      color: '#0284C7',
-                      background: 'rgba(56, 189, 248, 0.12)',
-                      border: '1px solid rgba(56, 189, 248, 0.25)',
-                      padding: '2px 8px',
-                      borderRadius: '6px',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '4px',
-                      fontWeight: 600,
-                      width: 'fit-content'
-                    }}>
-                      <span>Interchange With: {otherLines.map(lId => {
-                        const lObj = typeof METRO_LINES !== 'undefined' ? METRO_LINES[lId] : null;
-                        return lObj ? lObj.name : lId.toUpperCase();
-                      }).join(' or ')}</span>
-                    </div>
-                  );
-                })()}
-
                 {/* Transfer Station Interchange Box */}
                 {item.isInterchange && item.nextLeg && (
                   <div style={{
-                    marginTop: '4px',
-                    padding: '6px 10px',
+                    marginTop: '6px',
+                    padding: '6px 12px',
                     background: 'var(--input-bg)',
                     border: '1px solid var(--border-color)',
-                    borderRadius: '6px',
+                    borderRadius: '8px',
                     display: 'inline-flex',
                     alignItems: 'center',
-                    gap: '6px',
-                    fontSize: '0.78rem',
-                    color: 'var(--text-primary)'
+                    gap: '8px',
+                    fontSize: '0.8rem',
+                    color: 'var(--text-primary)',
+                    boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
                   }}>
                     <span style={{
-                      fontSize: '0.66rem',
+                      fontSize: '0.68rem',
                       background: item.nextLeg.lineDef?.color || '#3B82F6',
                       color: '#FFF',
-                      padding: '1px 6px',
-                      borderRadius: '8px',
-                      fontWeight: 700
+                      padding: '2px 8px',
+                      borderRadius: '6px',
+                      fontWeight: 700,
+                      letterSpacing: '0.02em'
                     }}>
-                      {item.nextLeg.lineDef?.name}
+                      Change to {item.nextLeg.lineDef?.name}
                     </span>
-                    <ArrowRight size={11} color="var(--text-muted)" />
+                    <ArrowRight size={12} color="var(--text-muted)" />
                     <span style={{ color: 'var(--text-secondary)' }}>
                       {t.towards} <strong>{item.nextLeg.direction}</strong>
                     </span>
