@@ -6,6 +6,28 @@ import { STATIONS } from '../data/stations.js';
 import { TRANSLATIONS } from '../utils/i18n.js';
 import { MetroOperatorLogo } from './MetroOperatorLogo.jsx';
 
+// Pre-computed initial suggestions: top popular interchange hubs + alphabetical slice (16 items)
+// Avoids sorting all items and creating hundreds of DOM objects on every mobile focus/keystroke
+const INITIAL_SUGGESTIONS = (() => {
+  const sorted = [...STATIONS].sort((a, b) => {
+    const aInter = (a.lines && a.lines.length > 1) || (a.interchange) ? 1 : 0;
+    const bInter = (b.lines && b.lines.length > 1) || (b.interchange) ? 1 : 0;
+    if (aInter !== bInter) return bInter - aInter;
+    return a.name.localeCompare(b.name);
+  }).slice(0, 16);
+
+  return sorted.map(st => {
+    const stationLines = (st.lines || [st.line]).map(lineId => METRO_LINES[lineId]).filter(Boolean);
+    return {
+      station: st,
+      score: 100,
+      matchedAlias: null,
+      lines: stationLines,
+      systemName: typeof getMetroSystemName === 'function' ? getMetroSystemName(stationLines, st) : ''
+    };
+  });
+})();
+
 export function StationInput({
   fromStation,
   setFromStation,
@@ -19,8 +41,8 @@ export function StationInput({
   const [fromQuery, setFromQuery] = useState(fromStation ? fromStation.name : '');
   const [toQuery, setToQuery] = useState(toStation ? toStation.name : '');
 
-  const [fromSuggestions, setFromSuggestions] = useState([]);
-  const [toSuggestions, setToSuggestions] = useState([]);
+  const [fromSuggestions, setFromSuggestions] = useState(INITIAL_SUGGESTIONS);
+  const [toSuggestions, setToSuggestions] = useState(INITIAL_SUGGESTIONS);
 
   const [showFromDropdown, setShowFromDropdown] = useState(false);
   const [showToDropdown, setShowToDropdown] = useState(false);
@@ -35,22 +57,33 @@ export function StationInput({
 
   useEffect(() => {
     if (toStation) setToQuery(toStation.name);
-  }, [toStation]);
+  }, [toStation]);// Debounced search for from-station
+  useEffect(() => {
+    const trimmed = fromQuery.trim();
+    if (!trimmed) {
+      setFromSuggestions(INITIAL_SUGGESTIONS);
+      return;
+    }
+    const timer = setTimeout(() => {
+      setFromSuggestions(searchStations(trimmed, 12));
+    }, 60);
+    return () => clearTimeout(timer);
+  }, [fromQuery]);
 
-  // Helper to generate full alphabetical station suggestions
-  const getAlphabeticalStationSuggestions = () => {
-    const sorted = [...STATIONS].sort((a, b) => a.name.localeCompare(b.name));
-    return sorted.map(st => {
-      const stationLines = (st.lines || []).map(lineId => METRO_LINES[lineId]).filter(Boolean);
-      return {
-        station: st,
-        score: 100,
-        matchedAlias: null,
-        lines: stationLines,
-        systemName: getMetroSystemName(stationLines)
-      };
-    });
-  };
+  // Debounced search for to-station
+  useEffect(() => {
+    const trimmed = toQuery.trim();
+    if (!trimmed) {
+      setToSuggestions(INITIAL_SUGGESTIONS);
+      return;
+    }
+    const timer = setTimeout(() => {
+      setToSuggestions(searchStations(trimmed, 12));
+    }, 60);
+    return () => clearTimeout(timer);
+  }, [toQuery]);
+
+  
 
   // Click outside listener to close dropdowns
   useEffect(() => {
@@ -70,7 +103,11 @@ export function StationInput({
     if (e && e.target && e.target.select) {
       e.target.select();
     }
-    setFromSuggestions(getAlphabeticalStationSuggestions());
+    if (!fromQuery.trim()) {
+      setFromSuggestions(INITIAL_SUGGESTIONS);
+    } else {
+      setFromSuggestions(searchStations(fromQuery.trim(), 12));
+    }
     setShowFromDropdown(true);
     setShowToDropdown(false);
   };
@@ -79,33 +116,23 @@ export function StationInput({
     if (e && e.target && e.target.select) {
       e.target.select();
     }
-    setToSuggestions(getAlphabeticalStationSuggestions());
+    if (!toQuery.trim()) {
+      setToSuggestions(INITIAL_SUGGESTIONS);
+    } else {
+      setToSuggestions(searchStations(toQuery.trim(), 12));
+    }
     setShowToDropdown(true);
     setShowFromDropdown(false);
   };
 
   const handleFromInputChange = (e) => {
-    const val = e.target.value;
-    setFromQuery(val);
-    if (val.trim().length > 0) {
-      setFromSuggestions(searchStations(val));
-      setShowFromDropdown(true);
-    } else {
-      setFromSuggestions(getAlphabeticalStationSuggestions());
-      setShowFromDropdown(true);
-    }
+    setFromQuery(e.target.value);
+    setShowFromDropdown(true);
   };
 
   const handleToInputChange = (e) => {
-    const val = e.target.value;
-    setToQuery(val);
-    if (val.trim().length > 0) {
-      setToSuggestions(searchStations(val));
-      setShowToDropdown(true);
-    } else {
-      setToSuggestions(getAlphabeticalStationSuggestions());
-      setShowToDropdown(true);
-    }
+    setToQuery(e.target.value);
+    setShowToDropdown(true);
   };
 
   const selectFromStation = (st) => {
@@ -305,7 +332,7 @@ export function StationInput({
                 onClick={() => {
                   setFromQuery('');
                   setFromStation(null);
-                  setFromSuggestions(getAlphabeticalStationSuggestions());
+                  setFromSuggestions(INITIAL_SUGGESTIONS);
                   setShowFromDropdown(true);
                 }}
                 style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer' }}
@@ -414,7 +441,7 @@ export function StationInput({
                 onClick={() => {
                   setToQuery('');
                   setToStation(null);
-                  setToSuggestions(getAlphabeticalStationSuggestions());
+                  setToSuggestions(INITIAL_SUGGESTIONS);
                   setShowToDropdown(true);
                 }}
                 style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', cursor: 'pointer' }}

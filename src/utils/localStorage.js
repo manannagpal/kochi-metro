@@ -17,16 +17,31 @@ function getSharedCookieDomain() {
 
 function getThemeFromCookie() {
   if (typeof document === 'undefined') return null;
-  const match = document.cookie.match(new RegExp('(?:^|;\\s*)' + SHARED_COOKIE_NAME + '=([^;]*)'));
-  return match ? decodeURIComponent(match[1]) : null;
+  const cookies = document.cookie.split(';');
+  let found = null;
+  for (const c of cookies) {
+    const trimmed = c.trim();
+    if (trimmed.startsWith(SHARED_COOKIE_NAME + '=')) {
+      const val = decodeURIComponent(trimmed.substring(SHARED_COOKIE_NAME.length + 1));
+      if (val === 'dark' || val === 'light') {
+        found = val;
+      }
+    }
+  }
+  return found;
 }
 
 function setThemeToCookie(theme) {
   if (typeof document === 'undefined') return;
-  const domainPart = getSharedCookieDomain();
-  // Set 1-year persistent cookie with Lax samesite
-  document.cookie = `${SHARED_COOKIE_NAME}=${encodeURIComponent(theme)}; path=/${domainPart}; max-age=31536000; SameSite=Lax`;
-  if (domainPart) {
+  const isMetroDomain = typeof window !== 'undefined' && window.location.hostname.toLowerCase().includes('metro.org.in');
+  
+  if (isMetroDomain) {
+    // 1. Actively purge any host-only cookie that shadows the shared domain cookie
+    document.cookie = `${SHARED_COOKIE_NAME}=; path=/; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+    // 2. Set the single authoritative shared cookie on .metro.org.in
+    document.cookie = `${SHARED_COOKIE_NAME}=${encodeURIComponent(theme)}; domain=.metro.org.in; path=/; max-age=31536000; SameSite=Lax`;
+  } else {
+    // Localhost or preview domain
     document.cookie = `${SHARED_COOKIE_NAME}=${encodeURIComponent(theme)}; path=/; max-age=31536000; SameSite=Lax`;
   }
 }
@@ -40,6 +55,10 @@ export function getThemePref() {
     const urlTheme = urlParams.get('theme');
     if (urlTheme === 'dark' || urlTheme === 'light') {
       setThemePref(urlTheme);
+      // Clean query parameter from URL so URL stays clean
+      const cleanUrl = new URL(window.location.href);
+      cleanUrl.searchParams.delete('theme');
+      window.history.replaceState(null, '', cleanUrl.pathname + cleanUrl.search + cleanUrl.hash);
       return urlTheme;
     }
   } catch (e) {}
@@ -48,6 +67,11 @@ export function getThemePref() {
   try {
     const cookieTheme = getThemeFromCookie();
     if (cookieTheme === 'dark' || cookieTheme === 'light') {
+      // Keep local storage in sync with the shared cookie
+      try {
+        localStorage.setItem(SHARED_STORAGE_KEY, cookieTheme);
+        localStorage.setItem(KEYS.THEME, cookieTheme);
+      } catch (e) {}
       return cookieTheme;
     }
   } catch (e) {}

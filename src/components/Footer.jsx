@@ -2,7 +2,7 @@ import React from 'react';
 import { Info } from 'lucide-react';
 import { Capacitor } from '@capacitor/core';
 
-export function Footer({ onInstallPWA, deferredPrompt, onNavigate }) {
+export function Footer({ onInstallPWA, deferredPrompt, onNavigate, theme }) {
   if (Capacitor.isNativePlatform()) {
     return (
       <footer style={{
@@ -32,9 +32,7 @@ export function Footer({ onInstallPWA, deferredPrompt, onNavigate }) {
       background: 'var(--bg-surface)'
     }}>
       <nav className="footer-links-container" aria-label="Footer Navigation">
-        <a
-          href="https://metro.org.in"
-          className="footer-link-item"
+        <a href={theme ? `https://metro.org.in/?theme=${theme}` : "https://metro.org.in"} className="footer-link-item"
         >
           All India Metros
         </a>
