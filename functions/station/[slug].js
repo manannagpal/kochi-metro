@@ -2,6 +2,9 @@ import { stations, lines } from '../../src/data/kochiMetroData.js';
 import { getStationBySlug, getStationSlug } from '../../src/utils/slugify.js';
 
 export async function onRequest(context) {
+  if (context.passThroughOnException) {
+    context.passThroughOnException();
+  }
   const { params, env, request } = context;
 
   try {
@@ -36,33 +39,30 @@ export async function onRequest(context) {
     '<p><a href="/" style="color:#2563eb;text-decoration:none;font-weight:600;">Plan your journey with ' + 'Kochi Metro' + ' Route Finder &rarr;</a></p>' +
     '</section></div>';
 
-  const response = new HTMLRewriter()
-    .on('title', { element(el) { el.setInnerContent(title, { html: true }); } })
-    .on('meta[name="description"]', { element(el) { el.setAttribute('content', description); } })
-    .on('meta[name="keywords"]', { element(el) { el.setAttribute('content', keywords); } })
-    .on('link[rel="canonical"]', { element(el) { el.setAttribute('href', canonicalUrl); } })
-    .on('head', {
-      element(el) {
-        el.append('<meta property="og:title" content="' + title.replace(/"/g, '&quot;') + '" />', { html: true });
-        el.append('<meta property="og:description" content="' + description.replace(/"/g, '&quot;') + '" />', { html: true });
-        el.append('<meta property="og:url" content="' + canonicalUrl + '" />', { html: true });
-        el.append('<meta name="twitter:card" content="summary" />', { html: true });
-        el.append('<meta name="twitter:title" content="' + title.replace(/"/g, '&quot;') + '" />', { html: true });
-        el.append('<meta name="twitter:description" content="' + description.replace(/"/g, '&quot;') + '" />', { html: true });
-      }
-    })
-    .on('div#root', {
-      element(el) {
-        el.setInnerContent(ssrStationHtml, { html: true });
-      }
-    })
-    .transform(new Response(assetResponse.body, {
-      status: 200,
-      headers: {
-        'Content-Type': 'text/html;charset=UTF-8',
-        'Cache-Control': 'public, max-age=604800, s-maxage=604800'
-      }
-    }));
+  let html = await assetResponse.text();
+  html = html.replace(/<title>.*?<\/title>/i, `<title>${title}<\/title>`);
+  html = html.replace(/<meta name="description" content=".*?" \/?>/i, `<meta name="description" content="${description}" />`);
+  html = html.replace(/<meta name="keywords" content=".*?" \/?>/i, `<meta name="keywords" content="${keywords}" />`);
+  html = html.replace(/<link rel="canonical" href=".*?" \/?>/i, `<link rel="canonical" href="${canonicalUrl}" />`);
+
+  const fullOg = `
+  <meta property="og:title" content="${title.replace(/"/g, '&quot;')}" />
+  <meta property="og:description" content="${description.replace(/"/g, '&quot;')}" />
+  <meta property="og:url" content="${canonicalUrl}" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="${title.replace(/"/g, '&quot;')}" />
+  <meta name="twitter:description" content="${description.replace(/"/g, '&quot;')}" />
+  `;
+  html = html.replace('</head>', `${fullOg}\n</head>`);
+  html = html.replace('<div id="root"></div>', `<div id="root">${ssrStationHtml}</div>`);
+
+  const response = new Response(html, {
+    status: 200,
+    headers: {
+      'Content-Type': 'text/html;charset=UTF-8',
+      'Cache-Control': 'public, max-age=604800, s-maxage=604800'
+    }
+  });
 
   try {
     context.waitUntil(caches.default.put(request, response.clone()));
