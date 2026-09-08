@@ -25,6 +25,17 @@ export async function onRequest(context) {
   const keywords = `${st.name} metro station, ${st.name} metro timing, ${st.name} metro fare, Kochi metro ${st.name}`;
   const canonicalUrl = `https://kochi.metro.org.in/station/${canonicalSlug}/`;
 
+
+  const escapeHtml = (s) => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  const ssrStationHtml = '<div style="max-width:900px;margin:0 auto;padding:24px 16px;font-family:system-ui,-apple-system,sans-serif;color:#1e293b;line-height:1.5;">' +
+    '<header style="margin-bottom:20px;"><h1 style="font-size:1.6rem;font-weight:800;color:#0f172a;margin:0 0 8px 0;">' + escapeHtml(st.name) + ' Metro Station</h1>' +
+    '<p style="color:#475569;font-size:0.95rem;margin:0;">Connected lines: <strong>' + escapeHtml(lineNames) + '</strong>. Timetable, line info, and route connections.</p></header>' +
+    '<section style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px;"><h2 style="font-size:1.1rem;font-weight:700;color:#0f172a;margin:0 0 8px 0;">Station Overview</h2>' +
+    '<p style="font-size:0.88rem;color:#334155;margin:0;">Station Code: <strong>' + escapeHtml(st.code || st.id) + '</strong> &bull; Connected Lines: <strong>' + escapeHtml(lineNames) + '</strong></p></section>' +
+    '<section style="margin-top:20px;padding-top:16px;border-top:1px solid #e2e8f0;font-size:0.85rem;color:#64748b;">' +
+    '<p><a href="/" style="color:#2563eb;text-decoration:none;font-weight:600;">Plan your journey with ' + escapeHtml(appName) + ' Route Finder &rarr;</a></p>' +
+    '</section></div>';
+
   const response = new HTMLRewriter()
     .on('title', { element(el) { el.setInnerContent(title, { html: true }); } })
     .on('meta[name="description"]', { element(el) { el.setAttribute('content', description); } })
@@ -32,7 +43,12 @@ export async function onRequest(context) {
     .on('link[rel="canonical"]', { element(el) { el.setAttribute('href', canonicalUrl); } })
     .on('head', {
       element(el) {
-        el.append('<meta property="og:title" content="' + title.replace(/"/g, '&quot;') + '" />', { html: true });
+        el.append('<meta property="og:title" content="' + title.replace(/"/g, '&quot;') + '" />', { html: true })
+    .on('div#root', {
+      element(el) {
+        el.setInnerContent(ssrStationHtml, { html: true });
+      }
+    });
         el.append('<meta property="og:description" content="' + description.replace(/"/g, '&quot;') + '" />', { html: true });
         el.append('<meta property="og:url" content="' + canonicalUrl + '" />', { html: true });
         el.append('<meta name="twitter:card" content="summary" />', { html: true });
