@@ -169,14 +169,18 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .navbar-logo {
-  display: flex;
-  align-items: center;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  direction: ltr !important;
   gap: 12px;
   cursor: pointer;
   width: auto;
 }
 
 .navbar-logo-img {
+  order: 1 !important;
+  flex-shrink: 0 !important;
   width: 42px;
   height: 42px;
   border-radius: 10px;
@@ -185,6 +189,12 @@ h1, h2, h3, h4, h5, h6 {
   background: #FFFFFF;
   padding: 2px;
   border: 1px solid rgba(229, 46, 45, 0.2);
+}
+
+.navbar-logo > div {
+  order: 2 !important;
+  text-align: left !important;
+  direction: ltr !important;
 }
 
 .navbar-title {

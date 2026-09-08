@@ -62,13 +62,27 @@ export function Navbar({
         {/* Top Bar: Logo & Actions */}
         <div className="navbar-top">
           {/* Logo & Title */}
-          <div className="navbar-logo" onClick={() => window.location.href = '/'}>
+          <div
+            className="navbar-logo"
+            onClick={() => window.location.href = '/'}
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              direction: 'ltr',
+              gap: '12px',
+              cursor: 'pointer'
+            }}>
             <img
               src="/logo.svg?v=2"
               alt="Kochi Metro Logo"
               className="navbar-logo-img"
+              style={{
+                order: 1,
+                flexShrink: 0
+              }}
             />
-            <div>
+            <div style={{ order: 2, textAlign: 'left', direction: 'ltr' }}>
               <h1 className="navbar-title">
                 Kochi Metro Route Finder
               </h1>
