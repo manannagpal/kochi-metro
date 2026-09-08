@@ -5,7 +5,7 @@ export function MetroOperatorLogo({ lineDef, size = 20, className = '' }) {
 
   return (
     <img
-      src="/favicon.svg"
+      src="/favicon.svg?v=2026.8"
       alt={`${lineDef?.name || 'Metro'} Logo`}
       title={lineDef?.name || 'Metro'}
       className={className}
