@@ -90,7 +90,7 @@ export async function onRequest(context) {
     '<div style="margin-top:10px;"><h3 style="font-size:0.9rem;font-weight:700;color:#0f172a;margin:0 0 4px 0;">How long does it take by metro?</h3><p style="font-size:0.85rem;color:#475569;margin:0;">The journey takes approximately ' + primaryRoute.totalTimeMins + ' minutes covering ' + primaryRoute.totalDistanceKm + ' km with ' + primaryRoute.switches + ' line switch(es).</p></div>' +
     '</section>' +
     '<section style="margin-top:20px;padding-top:16px;border-top:1px solid #e2e8f0;font-size:0.85rem;color:#64748b;">' +
-    '<p><a href="/" style="color:#2563eb;text-decoration:none;font-weight:600;">Plan your journey with ' + escapeHtml(appName) + ' Route Finder &rarr;</a></p>' +
+    '<p><a href="/" style="color:#2563eb;text-decoration:none;font-weight:600;">Plan your journey with ' + 'Kochi Metro' + ' Route Finder &rarr;</a></p>' +
     '</section></div>';
 
   const response = new HTMLRewriter()
@@ -100,18 +100,18 @@ export async function onRequest(context) {
     .on('link[rel="canonical"]', { element(el) { el.setAttribute('href', canonicalUrl); } })
     .on('head', {
       element(el) {
-        el.append('<meta property="og:title" content="' + title.replace(/"/g, '&quot;') + '" />', { html: true })
-    .on('div#root', {
-      element(el) {
-        el.setInnerContent(ssrBodyHtml, { html: true });
-      }
-    });
+        el.append('<meta property="og:title" content="' + title.replace(/"/g, '&quot;') + '" />', { html: true });
         el.append('<meta property="og:description" content="' + description.replace(/"/g, '&quot;') + '" />', { html: true });
         el.append('<meta property="og:url" content="' + canonicalUrl + '" />', { html: true });
         el.append('<meta name="twitter:card" content="summary" />', { html: true });
         el.append('<meta name="twitter:title" content="' + title.replace(/"/g, '&quot;') + '" />', { html: true });
         el.append('<meta name="twitter:description" content="' + description.replace(/"/g, '&quot;') + '" />', { html: true });
         el.append('<script type="application/ld+json">' + faqSchema + '</script>', { html: true });
+      }
+    })
+    .on('div#root', {
+      element(el) {
+        el.setInnerContent(ssrBodyHtml, { html: true });
       }
     })
     .transform(new Response(assetResponse.body, {
