@@ -40,10 +40,11 @@ function renderRouteSeoHtml(fromSt, toSt) {
   const toSlug = getStationSlug(toSt);
   let _fare = null;
   let primaryRoute = null;
+  let routes = [];
   try {
-    const _r = calculateRoutes(fromSt.id, toSt.id);
-    if (_r && _r.length > 0) {
-      primaryRoute = _r[0];
+    routes = calculateRoutes(fromSt.id, toSt.id) || [];
+    if (routes && routes.length > 0) {
+      primaryRoute = routes[0];
       _fare = primaryRoute.fare;
     }
   } catch(_e) {}
@@ -66,7 +67,7 @@ function renderRouteSeoHtml(fromSt, toSt) {
   html = html.replace(/<meta\s+property=["']twitter:url["'][^>]*>/i, `<meta property="twitter:url" content="${canonicalUrl}" />`);
 
   if (primaryRoute) {
-    const bodyHtml = buildRouteSsrHtml(fromSt, toSt, primaryRoute, 'Kochi Metro');
+    const bodyHtml = buildRouteSsrHtml(fromSt, toSt, routes, 'Kochi Metro');
     html = html.replace('<div id="root"></div>', `<div id="root">${bodyHtml}</div>`);
   }
   return html;

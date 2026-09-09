@@ -1,23 +1,38 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { getStationBySlug } from "../utils/slugify.js";
 import { calculateRoutes } from "../routing/routeEngine.js";
 import { StationTimeline } from "../components/StationTimeline.jsx";
+import { StationGates } from "../components/StationGates.jsx";
 import { AdSenseUnit } from "../components/AdSenseUnit.jsx";
-import { Clock, Banknote, MapPin, ArrowLeft, Repeat, Navigation } from "lucide-react";
+import { Clock, Banknote, MapPin, ArrowLeft, Repeat, Navigation, ChevronDown, ChevronUp } from "lucide-react";
 
-export function RouteSeoPage({ fromSlug, toSlug, onResetSearch, onOpenPlanner  }) {
+export function RouteSeoPage({ fromSlug, toSlug, onResetSearch, onOpenPlanner }) {
   const fromStation = getStationBySlug(fromSlug);
   const toStation = getStationBySlug(toSlug);
 
   const routes = (fromStation && toStation) ? calculateRoutes(fromStation.id, toStation.id) : [];
   const primaryRoute = routes[0];
-  const distFormatted = primaryRoute ? (Number(primaryRoute.totalDistanceKm) || 0).toFixed(1) : '0';
+
+  const [expandedRouteIds, setExpandedRouteIds] = useState(() => {
+    return routes.length > 0 ? new Set([routes[0].id]) : new Set();
+  });
+
+  const toggleRouteExpand = (id) => {
+    setExpandedRouteIds(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
 
   useEffect(() => {
     if (!fromStation || !toStation || !primaryRoute) return;
 
-    const pageTitle = `${fromStation.name} to ${toStation.name} Metro Route, Fare (₹${primaryRoute.fare}) & Time - Kochi Metro`;
-    const pageDesc = `Kochi Metro route from ${fromStation.name} to ${toStation.name}. Distance: ${distFormatted} km, Token Fare: ₹${primaryRoute.fare} (Smart Card: ₹${primaryRoute.smartCardFare}), Travel Time: ${primaryRoute.totalTimeMins} mins with ${primaryRoute.switches} line changes.`;
+    const pageTitle = `${fromStation.name} to ${toStation.name} Metro Route, Fare (₹${primaryRoute.fare}) & Travel Time | Kochi Metro`;
+    const pageDesc = routes.length > 1
+      ? `Kochi Metro route from ${fromStation.name} to ${toStation.name}. Compare ${routes.length} available route options: Fastest takes ${primaryRoute.totalTimeMins} mins (₹${primaryRoute.fare}, ${primaryRoute.switches} switches). Full station list, fares & platform interchange guide.`
+      : `Kochi Metro route from ${fromStation.name} to ${toStation.name}. Distance: ${primaryRoute.totalDistanceKm} km, Token Fare: ₹${primaryRoute.fare} (Smart Card: ₹${primaryRoute.smartCardFare || primaryRoute.fare}), Travel Time: ${primaryRoute.totalTimeMins} mins with ${primaryRoute.switches} line changes.`;
     const canonicalUrl = `https://kochi.metro.org.in/route/${fromSlug}/${toSlug}/`;
 
     document.title = pageTitle;
@@ -53,55 +68,392 @@ export function RouteSeoPage({ fromSlug, toSlug, onResetSearch, onOpenPlanner  }
           "@type": "Trip",
           "name": `${fromStation.name} to ${toStation.name} Metro Route`,
           "description": pageDesc,
-          "offers": {
+          "offers": routes.map(r => ({
             "@type": "Offer",
-            "price": primaryRoute.fare.toString(),
+            "price": r.fare.toString(),
             "priceCurrency": "INR"
-          }
+          }))
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": `What is the metro fare from ${fromStation.name} to ${toStation.name}?`,
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": `The standard token fare from ${fromStation.name} to ${toStation.name} is ₹${primaryRoute.fare}. If using a Metro Smart Card, the discounted fare is ₹${primaryRoute.smartCardFare || primaryRoute.fare}.`
+              }
+            },
+            {
+              "@type": "Question",
+              "name": `How long does it take from ${fromStation.name} to ${toStation.name} by metro?`,
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": `The fastest journey takes approximately ${primaryRoute.totalTimeMins} minutes covering ${primaryRoute.totalDistanceKm} km with ${primaryRoute.switches} interchange switch(es).`
+              }
+            },
+            {
+              "@type": "Question",
+              "name": `How many routes are available from ${fromStation.name} to ${toStation.name}?`,
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": `There ${routes.length === 1 ? 'is 1 direct or optimal route' : `are ${routes.length} route options`} available between ${fromStation.name} and ${toStation.name}.`
+              }
+            }
+          ]
         }
       ]
     };
     schemaEl.textContent = JSON.stringify(schemaData);
-
-    window.scrollTo(0, 0);
-  }, [fromStation, toStation, primaryRoute, fromSlug, toSlug]);
+  }, [fromStation, toStation, primaryRoute, routes]);
 
   if (!fromStation || !toStation || !primaryRoute) {
     return (
-      <div style={{ padding: '40px 20px', textAlign: 'center' }}>
-        <h2>Route Not Found</h2>
-        <button onClick={onResetSearch} style={{ padding: '10px 20px', borderRadius: '8px', cursor: 'pointer' }}>
-          Back to Home
+      <div style={{ padding: "40px 20px", textAlign: "center", maxWidth: "600px", margin: "0 auto" }}>
+        <h2 style={{ fontSize: "1.5rem", fontWeight: 700, marginBottom: "12px" }}>Route Not Found</h2>
+        <p style={{ color: "var(--text-secondary)", marginBottom: "24px" }}>
+          We could not find active route details between the selected stations.
+        </p>
+        <button
+          onClick={onResetSearch}
+          style={{
+            background: "var(--accent-primary)",
+            color: "#FFF",
+            padding: "10px 20px",
+            borderRadius: "10px",
+            border: "none",
+            cursor: "pointer",
+            fontWeight: 600
+          }}
+        >
+          Open Route Planner
         </button>
       </div>
     );
   }
 
   return (
-    <div className="animate-fade-in" style={{ maxWidth: '960px', margin: '0 auto', paddingBottom: '40px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
+    <div style={{ maxWidth: "800px", margin: "0 auto", padding: "16px 16px 40px 16px" }}>
+      {/* Top Breadcrumb / Nav */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
         <button
           onClick={onResetSearch}
           style={{
-            background: 'transparent', border: 'none', color: 'var(--accent-primary)',
-            display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.95rem', fontWeight: 600, cursor: 'pointer'
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+            background: "transparent",
+            border: "none",
+            color: "var(--accent-primary)",
+            fontWeight: 600,
+            fontSize: "0.9rem",
+            cursor: "pointer",
+            padding: 0
           }}
         >
-          <ArrowLeft size={18} />
-          <span>Back to Home</span>
+          <ArrowLeft size={16} />
+          Back to Planner
+        </button>
+
+        <button
+          onClick={() => onOpenPlanner && onOpenPlanner(fromStation, toStation)}
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+            background: "var(--accent-primary)",
+            border: "none",
+            color: "#FFFFFF",
+            fontWeight: 600,
+            fontSize: "0.85rem",
+            padding: "6px 14px",
+            borderRadius: "8px",
+            cursor: "pointer"
+          }}
+        >
+          <Navigation size={14} />
+          Open Interactive Map
         </button>
       </div>
 
-      <div className="glass-panel" style={{ padding: '24px', borderRadius: '20px', marginBottom: '24px' }}>
-        <h1 style={{ fontSize: '1.6rem', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>
-          {fromStation.name} to {toStation.name} Metro Route
+      {/* Main Header */}
+      <div className="glass-panel" style={{ padding: "24px", marginBottom: "24px", borderRadius: "20px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "12px" }}>
+          <span style={{
+            background: "rgba(16, 185, 129, 0.12)",
+            color: "#10B981",
+            padding: "4px 10px",
+            borderRadius: "20px",
+            fontSize: "0.75rem",
+            fontWeight: 700,
+            letterSpacing: "0.5px"
+          }}>
+            {routes.length > 1 ? `${routes.length} ROUTES AVAILABLE` : 'DIRECT & FASTEST ROUTE'}
+          </span>
+        </div>
+
+        <h1 style={{
+          fontSize: "1.65rem",
+          fontWeight: 800,
+          margin: "0 0 10px 0",
+          color: "var(--text-primary)",
+          lineHeight: 1.3
+        }}>
+          {fromStation.name} <span style={{ color: "var(--text-muted)" }}>to</span> {toStation.name}
         </h1>
-        <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', margin: '6px 0 0 0' }}>
-          Travel Time: <strong>{primaryRoute.totalTimeMins} mins</strong> • Distance: <strong>{distFormatted} km</strong> • Fare: <strong>₹{primaryRoute.fare}</strong>
+
+        <p style={{
+          fontSize: "0.92rem",
+          color: "var(--text-secondary)",
+          margin: 0,
+          lineHeight: 1.5
+        }}>
+          Compare all available {appName} routes from <strong>{fromStation.name}</strong> to <strong>{toStation.name}</strong>.
+          Check token fare, smart card discount rates, total travel time, passing stations, and platform interchange instructions.
         </p>
       </div>
 
-      <StationTimeline route={primaryRoute} />
+      {/* All Available Route Options */}
+      {routes.map((route, idx) => {
+        const isFastest = idx === 0;
+        const isExpanded = expandedRouteIds.has(route.id);
+        const optionLabel = isFastest ? "Option 1: Fastest Route" : `Option ${idx + 1}: Alternative Route`;
+
+        return (
+          <div
+            key={route.id || idx}
+            className="glass-panel"
+            style={{
+              padding: "20px",
+              marginBottom: "20px",
+              borderRadius: "18px",
+              border: isFastest ? "1px solid rgba(16, 185, 129, 0.3)" : "1px solid var(--border-color)"
+            }}
+          >
+            {/* Option Header */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px", flexWrap: "wrap", gap: "8px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <span style={{
+                  background: isFastest ? "var(--accent-primary)" : "rgba(255, 255, 255, 0.08)",
+                  color: "#FFFFFF",
+                  padding: "4px 10px",
+                  borderRadius: "12px",
+                  fontSize: "0.78rem",
+                  fontWeight: 700
+                }}>
+                  {optionLabel}
+                </span>
+                {isFastest && (
+                  <span style={{ fontSize: "0.75rem", color: "#10B981", fontWeight: 600 }}>
+                    ★ Recommended
+                  </span>
+                )}
+              </div>
+
+              {/* Line Summary Pills */}
+              <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap" }}>
+                {(route.linesUsed || []).map((lName, lIdx) => (
+                  <span
+                    key={lIdx}
+                    style={{
+                      fontSize: "0.75rem",
+                      fontWeight: 600,
+                      padding: "2px 8px",
+                      borderRadius: "6px",
+                      background: "rgba(255, 255, 255, 0.06)",
+                      color: "var(--text-secondary)",
+                      border: "1px solid var(--border-color)"
+                    }}
+                  >
+                    {lName}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* 4 Stats Grid */}
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))",
+              gap: "10px",
+              marginBottom: "16px"
+            }}>
+              <div style={{
+                background: "var(--bg-card)",
+                padding: "12px",
+                borderRadius: "12px",
+                border: "1px solid var(--border-color)",
+                display: "flex",
+                flexDirection: "column",
+                gap: "4px"
+              }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "var(--text-muted)", fontSize: "0.75rem" }}>
+                  <Banknote size={14} /> Fare
+                </div>
+                <div style={{ fontSize: "1.15rem", fontWeight: 700, color: "var(--text-primary)" }}>
+                  ₹{route.fare}
+                </div>
+                <div style={{ fontSize: "0.7rem", color: "#10B981", fontWeight: 500 }}>
+                  Smart Card: ₹{route.smartCardFare || route.fare}
+                </div>
+              </div>
+
+              <div style={{
+                background: "var(--bg-card)",
+                padding: "12px",
+                borderRadius: "12px",
+                border: "1px solid var(--border-color)",
+                display: "flex",
+                flexDirection: "column",
+                gap: "4px"
+              }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "var(--text-muted)", fontSize: "0.75rem" }}>
+                  <Clock size={14} /> Time
+                </div>
+                <div style={{ fontSize: "1.15rem", fontWeight: 700, color: "var(--text-primary)" }}>
+                  {route.totalTimeMins} mins
+                </div>
+                <div style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>
+                  Estimated
+                </div>
+              </div>
+
+              <div style={{
+                background: "var(--bg-card)",
+                padding: "12px",
+                borderRadius: "12px",
+                border: "1px solid var(--border-color)",
+                display: "flex",
+                flexDirection: "column",
+                gap: "4px"
+              }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "var(--text-muted)", fontSize: "0.75rem" }}>
+                  <MapPin size={14} /> Distance
+                </div>
+                <div style={{ fontSize: "1.15rem", fontWeight: 700, color: "var(--text-primary)" }}>
+                  {route.totalDistanceKm} km
+                </div>
+                <div style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>
+                  {route.totalStops} stations
+                </div>
+              </div>
+
+              <div style={{
+                background: "var(--bg-card)",
+                padding: "12px",
+                borderRadius: "12px",
+                border: "1px solid var(--border-color)",
+                display: "flex",
+                flexDirection: "column",
+                gap: "4px"
+              }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "var(--text-muted)", fontSize: "0.75rem" }}>
+                  <Repeat size={14} /> Interchanges
+                </div>
+                <div style={{ fontSize: "1.15rem", fontWeight: 700, color: "var(--text-primary)" }}>
+                  {route.switches}
+                </div>
+                <div style={{ fontSize: "0.7rem", color: route.switches === 0 ? "#10B981" : "var(--text-muted)" }}>
+                  {route.switches === 0 ? "Direct Line" : "Transfer Required"}
+                </div>
+              </div>
+            </div>
+
+            {/* Expand / Collapse Journey Button */}
+            <button
+              onClick={() => toggleRouteExpand(route.id)}
+              style={{
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "6px",
+                background: isExpanded ? "rgba(255, 255, 255, 0.04)" : "rgba(255, 255, 255, 0.08)",
+                border: "1px solid var(--border-color)",
+                color: "var(--text-primary)",
+                padding: "10px",
+                borderRadius: "10px",
+                fontSize: "0.85rem",
+                fontWeight: 600,
+                cursor: "pointer",
+                transition: "all 0.2s ease"
+              }}
+            >
+              {isExpanded ? (
+                <>
+                  <span>Hide Journey Details</span>
+                  <ChevronUp size={16} />
+                </>
+              ) : (
+                <>
+                  <span>View Full Journey ({route.totalStops} Stations &amp; Interchanges)</span>
+                  <ChevronDown size={16} />
+                </>
+              )}
+            </button>
+
+            {/* Station Timeline */}
+            {isExpanded && (
+              <div style={{ marginTop: "16px", paddingTop: "16px", borderTop: "1px dashed var(--border-color)" }}>
+                <StationTimeline route={route} />
+              </div>
+            )}
+          </div>
+        );
+      })}
+
+      {/* Entry / Exit Gates Directory */}
+      <div style={{ marginBottom: "24px" }}>
+        <StationGates fromStation={fromStation} toStation={toStation} />
+      </div>
+
+      {/* FAQs */}
+      <div className="glass-panel" style={{ padding: "24px", marginBottom: "24px", borderRadius: "20px" }}>
+        <h3 style={{ fontSize: "1.1rem", fontWeight: 700, margin: "0 0 16px 0", color: "var(--text-primary)" }}>
+          Frequently Asked Questions ({fromStation.name} to {toStation.name})
+        </h3>
+        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+          <div>
+            <h4 style={{ fontSize: "0.95rem", fontWeight: 600, color: "var(--text-primary)", margin: "0 0 4px 0" }}>
+              What is the metro fare from {fromStation.name} to {toStation.name}?
+            </h4>
+            <p style={{ fontSize: "0.88rem", color: "var(--text-secondary)", margin: 0, lineHeight: 1.5 }}>
+              The standard token fare is ₹{primaryRoute.fare}. Passengers using a Metro Smart Card receive a discount (₹{primaryRoute.smartCardFare || primaryRoute.fare}).
+            </p>
+          </div>
+          <div>
+            <h4 style={{ fontSize: "0.95rem", fontWeight: 600, color: "var(--text-primary)", margin: "0 0 4px 0" }}>
+              What is the travel time from {fromStation.name} to {toStation.name}?
+            </h4>
+            <p style={{ fontSize: "0.88rem", color: "var(--text-secondary)", margin: 0, lineHeight: 1.5 }}>
+              The fastest route takes approximately {primaryRoute.totalTimeMins} minutes across {primaryRoute.totalStops} stops and {primaryRoute.switches} line change(s).
+              {routes.length > 1 && ` Alternative routes take up to ${Math.max(...routes.map(r => r.totalTimeMins))} minutes.`}
+            </p>
+          </div>
+          {routes.length > 1 && (
+            <div>
+              <h4 style={{ fontSize: "0.95rem", fontWeight: 600, color: "var(--text-primary)", margin: "0 0 4px 0" }}>
+                Are there alternative metro routes between {fromStation.name} and {toStation.name}?
+              </h4>
+              <p style={{ fontSize: "0.88rem", color: "var(--text-secondary)", margin: 0, lineHeight: 1.5 }}>
+                Yes, there are {routes.length} route options available. You can choose between the fastest route ({primaryRoute.totalTimeMins} mins, ₹{primaryRoute.fare}) or alternative routes depending on your preference for fewer transfers or lower fare.
+              </p>
+            </div>
+          )}
+          <div>
+            <h4 style={{ fontSize: "0.95rem", fontWeight: 600, color: "var(--text-primary)", margin: "0 0 4px 0" }}>
+              What are the first and last train timings?
+            </h4>
+            <p style={{ fontSize: "0.88rem", color: "var(--text-secondary)", margin: 0, lineHeight: 1.5 }}>
+              First metro trains generally start around 05:45 AM, and last trains depart around 11:00 PM. (Times may vary slightly on Sundays).
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Manual AdSense / AdMob Unit */}
+      <AdSenseUnit slot="7690647086" />
     </div>
   );
 }

@@ -65,7 +65,7 @@ export async function onRequest(context) {
   });
 
 
-  const ssrBodyHtml = buildRouteSsrHtml(fromSt, toSt, primaryRoute, 'Kochi Metro');
+  const ssrBodyHtml = buildRouteSsrHtml(fromSt, toSt, routes, 'Kochi Metro');
 
   let html = await assetResponse.text();
   html = html.replace(/<title>.*?<\/title>/i, `<title>${title}<\/title>`);
