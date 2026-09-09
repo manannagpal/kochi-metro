@@ -85,7 +85,7 @@ export function Footer({ onInstallPWA, deferredPrompt, onNavigate, theme }) {
         fontSize: '0.8rem',
         color: 'var(--text-muted)'
       }}>
-        <span style={{ fontWeight: 600, color: 'var(--text-secondary)' }}>Official Portals:</span>
+        <span style={{ fontWeight: 600, color: 'var(--text-secondary)' }}>Official Portal:</span>
         <a
           href="https://kochimetro.org/"
           target="_blank"
