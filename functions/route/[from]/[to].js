@@ -73,17 +73,22 @@ export async function onRequest(context) {
   html = html.replace(/<meta name="keywords" content=".*?" \/?>/i, `<meta name="keywords" content="${keywords}" />`);
   html = html.replace(/<link rel="canonical" href=".*?" \/?>/i, `<link rel="canonical" href="${canonicalUrl}" />`);
 
-  const fullOg = `
-  <meta property="og:title" content="${title.replace(/"/g, '&quot;')}" />
-  <meta property="og:description" content="${description.replace(/"/g, '&quot;')}" />
-  <meta property="og:url" content="${canonicalUrl}" />
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="${title.replace(/"/g, '&quot;')}" />
-  <meta name="twitter:description" content="${description.replace(/"/g, '&quot;')}" />
-  <script type="application/ld+json">${faqSchema}</script>
-  `;
-  html = html.replace('</head>', `${fullOg}\n</head>`);
-  html = html.replace('<div id="root"></div>', `<div id="root">${ssrBodyHtml}</div>`);
+  // Replace existing OG tags
+  html = html.replace(/<meta\s+property=["']og:title["'][^>]*>/i, `<meta property="og:title" content="${title.replace(/"/g, '&quot;')}" />`);
+  html = html.replace(/<meta\s+property=["']og:description["'][^>]*>/i, `<meta property="og:description" content="${description.replace(/"/g, '&quot;')}" />`);
+  html = html.replace(/<meta\s+property=["']og:url["'][^>]*>/i, `<meta property="og:url" content="${canonicalUrl}" />`);
+
+  // Replace existing Twitter tags
+  html = html.replace(/<meta\s+(?:name|property)=["']twitter:title["'][^>]*>/i, `<meta name="twitter:title" content="${title.replace(/"/g, '&quot;')}" />`);
+  html = html.replace(/<meta\s+(?:name|property)=["']twitter:description["'][^>]*>/i, `<meta name="twitter:description" content="${description.replace(/"/g, '&quot;')}" />`);
+  html = html.replace(/<meta\s+(?:name|property)=["']twitter:url["'][^>]*>/i, `<meta name="twitter:url" content="${canonicalUrl}" />`);
+
+  const schemaTag = `<script type="application/ld+json">${faqSchema}</script>\n`;
+  html = html.replace('</head>', `${schemaTag}</head>`);
+
+  if (ssrBodyHtml) {
+    html = html.replace('<div id="root"></div>', `<div id="root">${ssrBodyHtml}</div>`);
+  }
 
   const response = new Response(html, {
     status: 200,

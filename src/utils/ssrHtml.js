@@ -20,13 +20,15 @@ export function formatKm(val) {
   return isNaN(n) ? String(val) : (n % 1 === 0 ? n.toFixed(0) : n.toFixed(1));
 }
 
+// ─── Route SSR HTML Builder ───────────────────────────────────────────────────
 export function buildRouteSsrHtml(fromStation, toStation, primaryRoute, appName = "Kochi Metro") {
   const fare = primaryRoute.fare;
-  const smartCardFare = primaryRoute.smartCardFare;
+  const smartCardFare = primaryRoute.smartCardFare || primaryRoute.fare;
   const time = primaryRoute.totalTimeMins;
   const distance = formatKm(primaryRoute.totalDistanceKm);
   const stops = primaryRoute.totalStops || (primaryRoute.stations ? primaryRoute.stations.length : 'Multiple');
   const switches = primaryRoute.switches;
+  const interchangeText = switches === 0 ? 'Direct Train' : (primaryRoute.interchangeStations ? primaryRoute.interchangeStations.map(i => i.stationName || i.name || i).join(', ') : `${switches} Switch(es)`);
 
   const legsHtml = (primaryRoute.legs || []).map((leg, idx) => {
     const lineName = leg.lineDef?.name || leg.lineName || 'Metro Line';
@@ -35,11 +37,11 @@ export function buildRouteSsrHtml(fromStation, toStation, primaryRoute, appName 
     const stopsCount = leg.stopsCount || (leg.stations ? leg.stations.length : '');
 
     return `
-      <div style="margin-bottom:12px;padding:12px 14px;background:#f8fafc;border-left:4px solid ${lineColor};border-radius:8px;">
-        <div style="font-weight:700;color:#0f172a;font-size:0.95rem;">
+      <div style="margin-bottom:14px;padding:16px;background:var(--input-bg);border-left:4px solid ${lineColor};border-radius:12px;">
+        <div style="font-weight:700;font-size:0.98rem;color:var(--text-primary);margin-bottom:4px;">
           Leg ${idx + 1}: ${escapeHtml(lineName)} (Towards ${escapeHtml(leg.direction || 'Destination')})
         </div>
-        <div style="font-size:0.85rem;color:#64748b;margin-top:4px;">
+        <div style="font-size:0.86rem;color:var(--text-secondary);margin-bottom:8px;">
           Board at <strong>${escapeHtml(leg.fromStationName || fromStation.name)}</strong> &rarr; Alight at <strong>${escapeHtml(leg.toStationName || toStation.name)}</strong> (${stopsCount} stops, ${legDistance} km)
         </div>
       </div>
@@ -47,85 +49,137 @@ export function buildRouteSsrHtml(fromStation, toStation, primaryRoute, appName 
   }).join('');
 
   return `
-    <div style="max-width:900px;margin:0 auto;padding:24px 16px;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#1e293b;line-height:1.5;">
-      <header style="margin-bottom:20px;">
-        <h1 style="font-size:1.6rem;font-weight:800;color:#0f172a;margin:0 0 8px 0;">
-          ${escapeHtml(fromStation.name)} to ${escapeHtml(toStation.name)} Metro Route
-        </h1>
-        <p style="color:#475569;font-size:0.95rem;margin:0;">
-          Complete travel guide with token fare, travel duration, stops, and line switches.
-        </p>
-      </header>
+    <header style="background:var(--bg-surface);border-bottom:1px solid var(--border-color);position:sticky;top:0;z-index:100;">
+      <div style="max-width:1100px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;">
+        <a href="/" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text-primary);">
+          <img src="/icon-192.png" alt="${escapeAttr(appName)}" style="width:36px;height:36px;border-radius:50%;" />
+          <div>
+            <div style="font-weight:800;font-size:1.05rem;line-height:1.2;color:var(--text-primary);">${escapeHtml(appName)}</div>
+            <div style="font-size:0.72rem;color:var(--text-muted);">Route Finder &amp; Guide</div>
+          </div>
+        </a>
+        <a href="/" style="background:var(--accent-primary);color:#FFFFFF;padding:8px 14px;border-radius:10px;text-decoration:none;font-size:0.85rem;font-weight:600;">Plan Route</a>
+      </div>
+    </header>
 
-      <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px;">
-        <div style="background:#f1f5f9;padding:12px;border-radius:8px;">
-          <div style="font-size:0.75rem;font-weight:700;color:#059669;">TOKEN FARE</div>
-          <div style="font-size:1.4rem;font-weight:800;color:#0f172a;">₹${fare}</div>
-          <div style="font-size:0.75rem;color:#059669;">Smart Card: ₹${smartCardFare}</div>
+    <main style="max-width:900px;margin:0 auto;padding:24px 16px 40px 16px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px;">
+        <a href="/" style="color:var(--accent-primary);text-decoration:none;font-size:0.92rem;font-weight:600;display:flex;align-items:center;gap:6px;">
+          &larr; <span>Search Other Routes</span>
+        </a>
+        <a href="/" style="background:var(--accent-primary);color:#FFF;padding:8px 14px;border-radius:10px;text-decoration:none;font-size:0.85rem;font-weight:600;">
+          Open in Interactive Route Planner
+        </a>
+      </div>
+
+      <div class="glass-panel" style="padding:24px;margin-bottom:24px;border-radius:20px;">
+        <h1 style="font-size:1.6rem;font-weight:800;margin:0 0 10px 0;color:var(--text-primary);line-height:1.3;">
+          ${escapeHtml(fromStation.name)} <span style="color:var(--accent-primary);">&rarr;</span> ${escapeHtml(toStation.name)} Metro Route
+        </h1>
+        <p style="color:var(--text-secondary);font-size:0.95rem;margin:0;">
+          Complete travel guide with token fare, smart card discount, total travel time, stops, and line interchanges.
+        </p>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:20px;">
+          <div style="background:var(--input-bg);padding:14px;border-radius:12px;">
+            <div style="color:var(--accent-success);font-size:0.85rem;font-weight:600;">Token Fare</div>
+            <div style="font-size:1.4rem;font-weight:800;color:var(--text-primary);margin-top:4px;">₹${fare}</div>
+            <div style="font-size:0.75rem;color:var(--accent-success);font-weight:500;">Smart Card: ₹${smartCardFare}</div>
+          </div>
+          <div style="background:var(--input-bg);padding:14px;border-radius:12px;">
+            <div style="color:var(--accent-primary);font-size:0.85rem;font-weight:600;">Travel Time</div>
+            <div style="font-size:1.4rem;font-weight:800;color:var(--text-primary);margin-top:4px;">${time} mins</div>
+            <div style="font-size:0.75rem;color:var(--text-muted);">Approx journey duration</div>
+          </div>
+          <div style="background:var(--input-bg);padding:14px;border-radius:12px;">
+            <div style="color:var(--accent-warning);font-size:0.85rem;font-weight:600;">Total Distance</div>
+            <div style="font-size:1.4rem;font-weight:800;color:var(--text-primary);margin-top:4px;">${distance} km</div>
+            <div style="font-size:0.75rem;color:var(--text-muted);">${stops} metro stops</div>
+          </div>
+          <div style="background:var(--input-bg);padding:14px;border-radius:12px;">
+            <div style="color:var(--accent-secondary);font-size:0.85rem;font-weight:600;">Line Changes</div>
+            <div style="font-size:1.4rem;font-weight:800;color:var(--text-primary);margin-top:4px;">${switches} Switch${switches !== 1 ? 'es' : ''}</div>
+            <div style="font-size:0.75rem;color:var(--text-muted);">${escapeHtml(interchangeText)}</div>
+          </div>
         </div>
-        <div style="background:#f1f5f9;padding:12px;border-radius:8px;">
-          <div style="font-size:0.75rem;font-weight:700;color:#2563eb;">TRAVEL TIME</div>
-          <div style="font-size:1.4rem;font-weight:800;color:#0f172a;">${time} mins</div>
-          <div style="font-size:0.75rem;color:#64748b;">Approx duration</div>
-        </div>
-        <div style="background:#f1f5f9;padding:12px;border-radius:8px;">
-          <div style="font-size:0.75rem;font-weight:700;color:#d97706;">DISTANCE</div>
-          <div style="font-size:1.4rem;font-weight:800;color:#0f172a;">${distance} km</div>
-          <div style="font-size:0.75rem;color:#64748b;">${stops} stops</div>
-        </div>
-        <div style="background:#f1f5f9;padding:12px;border-radius:8px;">
-          <div style="font-size:0.75rem;font-weight:700;color:#7c3aed;">INTERCHANGE</div>
-          <div style="font-size:1.4rem;font-weight:800;color:#0f172a;">${switches} Switch${switches !== 1 ? 'es' : ''}</div>
-          <div style="font-size:0.75rem;color:#64748b;">${switches === 0 ? 'Direct train' : 'Line change'}</div>
-        </div>
-      </section>
+      </div>
 
       ${legsHtml ? `
-        <section style="margin-bottom:20px;">
-          <h2 style="font-size:1.2rem;font-weight:700;color:#0f172a;margin:0 0 12px 0;">Route &amp; Interchange Guide</h2>
+        <div class="glass-panel" style="padding:24px;margin-bottom:24px;border-radius:20px;">
+          <h2 style="font-size:1.2rem;font-weight:700;margin:0 0 16px 0;color:var(--text-primary);">
+            Step-by-Step Route &amp; Station Stops
+          </h2>
           ${legsHtml}
-        </section>
+        </div>
       ` : ''}
 
-      <section style="background:#f8fafc;padding:16px;border-radius:10px;border:1px solid #e2e8f0;margin-bottom:20px;">
-        <h2 style="font-size:1.1rem;font-weight:700;color:#0f172a;margin:0 0 12px 0;">Frequently Asked Questions</h2>
-        <div>
-          <h3 style="font-size:0.9rem;font-weight:700;color:#0f172a;margin:0 0 4px 0;">What is the metro fare from ${escapeHtml(fromStation.name)} to ${escapeHtml(toStation.name)}?</h3>
-          <p style="font-size:0.85rem;color:#475569;margin:0;">The standard token fare is ₹${fare} (Smart Card: ₹${smartCardFare}).</p>
+      <div class="glass-panel" style="padding:24px;margin-bottom:24px;border-radius:20px;">
+        <h3 style="font-size:1.1rem;font-weight:700;margin:0 0 16px 0;color:var(--text-primary);">
+          Frequently Asked Questions (${escapeHtml(fromStation.name)} to ${escapeHtml(toStation.name)})
+        </h3>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div>
+            <h4 style="font-size:0.92rem;font-weight:700;color:var(--text-primary);margin:0 0 4px 0;">
+              What is the metro fare from ${escapeHtml(fromStation.name)} to ${escapeHtml(toStation.name)}?
+            </h4>
+            <p style="font-size:0.88rem;color:var(--text-secondary);margin:0;line-height:1.5;">
+              The standard token fare is ₹${fare}. Passengers using a Metro Smart Card receive a discount (₹${smartCardFare}).
+            </p>
+          </div>
+          <div>
+            <h4 style="font-size:0.92rem;font-weight:700;color:var(--text-primary);margin:0 0 4px 0;">
+              How long does it take from ${escapeHtml(fromStation.name)} to ${escapeHtml(toStation.name)} by metro?
+            </h4>
+            <p style="font-size:0.88rem;color:var(--text-secondary);margin:0;line-height:1.5;">
+              The journey takes approximately ${time} minutes covering ${distance} km with ${switches} line switch(es).
+            </p>
+          </div>
         </div>
-        <div style="margin-top:10px;">
-          <h3 style="font-size:0.9rem;font-weight:700;color:#0f172a;margin:0 0 4px 0;">How long does it take by metro?</h3>
-          <p style="font-size:0.85rem;color:#475569;margin:0;">The journey takes approximately ${time} minutes covering ${distance} km with ${switches} line switch(es).</p>
-        </div>
-      </section>
+      </div>
+    </main>
 
-      <section style="margin-top:20px;padding-top:16px;border-top:1px solid #e2e8f0;font-size:0.85rem;color:#64748b;">
-        <p><a href="/" style="color:#2563eb;text-decoration:none;font-weight:600;">Plan your journey with ${escapeHtml(appName)} Route Finder &rarr;</a></p>
-      </section>
-    </div>
+    <footer style="margin-top:48px;padding:28px 24px;border-top:1px solid var(--border-color);text-align:center;color:var(--text-muted);font-size:0.85rem;background:var(--bg-surface);">
+      <p style="margin:0;">&copy; 2026 ${escapeHtml(appName)} Route Finder</p>
+    </footer>
   `;
 }
 
+// ─── Station SSR HTML Builder ─────────────────────────────────────────────────
 export function buildStationSsrHtml(station, lineNames, appName = "Kochi Metro") {
   return `
-    <div style="max-width:900px;margin:0 auto;padding:24px 16px;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#1e293b;line-height:1.5;">
-      <header style="margin-bottom:20px;">
-        <h1 style="font-size:1.6rem;font-weight:800;color:#0f172a;margin:0 0 8px 0;">
+    <header style="background:var(--bg-surface);border-bottom:1px solid var(--border-color);position:sticky;top:0;z-index:100;">
+      <div style="max-width:1100px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;">
+        <a href="/" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text-primary);">
+          <img src="/icon-192.png" alt="${escapeAttr(appName)}" style="width:36px;height:36px;border-radius:50%;" />
+          <div>
+            <div style="font-weight:800;font-size:1.05rem;line-height:1.2;color:var(--text-primary);">${escapeHtml(appName)}</div>
+            <div style="font-size:0.72rem;color:var(--text-muted);">Station Directory &amp; Guide</div>
+          </div>
+        </a>
+        <a href="/" style="background:var(--accent-primary);color:#FFFFFF;padding:8px 14px;border-radius:10px;text-decoration:none;font-size:0.85rem;font-weight:600;">Plan Route</a>
+      </div>
+    </header>
+
+    <main style="max-width:900px;margin:0 auto;padding:24px 16px 40px 16px;">
+      <div class="glass-panel" style="padding:24px;margin-bottom:24px;border-radius:20px;">
+        <h1 style="font-size:1.6rem;font-weight:800;margin:0 0 8px 0;color:var(--text-primary);line-height:1.3;">
           ${escapeHtml(station.name)} Metro Station
         </h1>
-        <p style="color:#475569;font-size:0.95rem;margin:0;">
-          Connected lines: <strong>${escapeHtml(lineNames)}</strong>. Timetable, line info, and route connections.
+        <p style="color:var(--text-secondary);font-size:0.95rem;margin:0;">
+          Connected lines: <strong>${escapeHtml(lineNames)}</strong>. First and last train timetable, gate guide, and route directions.
         </p>
-      </header>
-      <section style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px;">
-        <h2 style="font-size:1.1rem;font-weight:700;color:#0f172a;margin:0 0 8px 0;">Station Overview</h2>
-        <p style="font-size:0.88rem;color:#334155;margin:0;">
+      </div>
+
+      <div class="glass-panel" style="padding:24px;margin-bottom:24px;border-radius:20px;">
+        <h2 style="font-size:1.15rem;font-weight:700;color:var(--text-primary);margin:0 0 8px 0;">Station Overview</h2>
+        <p style="font-size:0.88rem;color:var(--text-secondary);margin:0;">
           Station Code: <strong>${escapeHtml(station.code || station.id)}</strong> &bull; Connected Lines: <strong>${escapeHtml(lineNames)}</strong>
         </p>
-      </section>
-      <section style="margin-top:20px;padding-top:16px;border-top:1px solid #e2e8f0;font-size:0.85rem;color:#64748b;">
-        <p><a href="/" style="color:#2563eb;text-decoration:none;font-weight:600;">Plan your journey with ${escapeHtml(appName)} Route Finder &rarr;</a></p>
-      </section>
-    </div>
+      </div>
+    </main>
+
+    <footer style="margin-top:48px;padding:28px 24px;border-top:1px solid var(--border-color);text-align:center;color:var(--text-muted);font-size:0.85rem;background:var(--bg-surface);">
+      <p style="margin:0;">&copy; 2026 ${escapeHtml(appName)} Route Finder</p>
+    </footer>
   `;
 }
