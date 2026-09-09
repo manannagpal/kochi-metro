@@ -73,7 +73,30 @@ export function Footer({ onInstallPWA, deferredPrompt, onNavigate, theme }) {
         </a>
       </nav>
 
-      <p style={{
+            {/* Official Transit Portals */}
+      <div style={{
+        margin: '14px auto',
+        maxWidth: '850px',
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: '8px 16px',
+        fontSize: '0.8rem',
+        color: 'var(--text-muted)'
+      }}>
+        <span style={{ fontWeight: 600, color: 'var(--text-secondary)' }}>Official Portals:</span>
+        <a
+          href="https://kochimetro.org/"
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+          style={{ color: 'var(--accent-primary)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '3px' }}
+        >
+          Kochi Metro Rail (KMRL) ↗
+        </a>
+      </div>
+
+<p style={{
         margin: '14px auto',
         maxWidth: '850px',
         fontSize: '0.78rem',
