@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { getStationBySlug } from "../utils/slugify.js";
 import { calculateRoutes } from "../routing/routeEngine.js";
 import { StationTimeline } from "../components/StationTimeline.jsx";
@@ -10,18 +10,20 @@ export function RouteSeoPage({ fromSlug, toSlug, onResetSearch, onOpenPlanner })
   const fromStation = getStationBySlug(fromSlug);
   const toStation = getStationBySlug(toSlug);
 
-  const routes = (fromStation && toStation) ? calculateRoutes(fromStation.id, toStation.id) : [];
+  const routes = useMemo(() => {
+    return (fromStation && toStation) ? calculateRoutes(fromStation.id, toStation.id) : [];
+  }, [fromStation?.id, toStation?.id]);
+
   const primaryRoute = routes[0];
 
-  const [expandedRouteIds, setExpandedRouteIds] = useState(() => {
-    return routes.length > 0 ? new Set([routes[0].id]) : new Set();
-  });
+  // Option 1 (index 0) expanded by default!
+  const [expandedIndices, setExpandedIndices] = useState(() => new Set([0]));
 
-  const toggleRouteExpand = (id) => {
-    setExpandedRouteIds(prev => {
+  const toggleRouteExpand = (idx) => {
+    setExpandedIndices(prev => {
       const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
+      if (next.has(idx)) next.delete(idx);
+      else next.add(idx);
       return next;
     });
   };
@@ -209,7 +211,7 @@ export function RouteSeoPage({ fromSlug, toSlug, onResetSearch, onOpenPlanner })
           margin: 0,
           lineHeight: 1.5
         }}>
-          Compare all available {appName} routes from <strong>{fromStation.name}</strong> to <strong>{toStation.name}</strong>.
+          Compare all available Kochi Metro routes from <strong>{fromStation.name}</strong> to <strong>{toStation.name}</strong>.
           Check token fare, smart card discount rates, total travel time, passing stations, and platform interchange instructions.
         </p>
       </div>
@@ -217,8 +219,8 @@ export function RouteSeoPage({ fromSlug, toSlug, onResetSearch, onOpenPlanner })
       {/* All Available Route Options */}
       {routes.map((route, idx) => {
         const isFastest = idx === 0;
-        const isExpanded = expandedRouteIds.has(route.id);
-        const optionLabel = isFastest ? "Option 1: Fastest Route" : `Option ${idx + 1}: Alternative Route`;
+        const isExpanded = expandedIndices.has(idx);
+        const optionLabel = isFastest ? "Option 1: Fastest Route (Recommended)" : `Option ${idx + 1}: Alternative Route`;
 
         return (
           <div
@@ -231,45 +233,51 @@ export function RouteSeoPage({ fromSlug, toSlug, onResetSearch, onOpenPlanner })
               border: isFastest ? "1px solid rgba(16, 185, 129, 0.3)" : "1px solid var(--border-color)"
             }}
           >
-            {/* Option Header */}
+            {/* Option Header Bar with Toggle Button */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px", flexWrap: "wrap", gap: "8px" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                 <span style={{
                   background: isFastest ? "var(--accent-primary)" : "rgba(255, 255, 255, 0.08)",
                   color: "#FFFFFF",
-                  padding: "4px 10px",
-                  borderRadius: "12px",
-                  fontSize: "0.78rem",
+                  padding: "5px 12px",
+                  borderRadius: "10px",
+                  fontSize: "0.82rem",
                   fontWeight: 700
                 }}>
                   {optionLabel}
                 </span>
-                {isFastest && (
-                  <span style={{ fontSize: "0.75rem", color: "#10B981", fontWeight: 600 }}>
-                    ★ Recommended
-                  </span>
-                )}
               </div>
 
-              {/* Line Summary Pills */}
-              <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap" }}>
-                {(route.linesUsed || []).map((lName, lIdx) => (
-                  <span
-                    key={lIdx}
-                    style={{
-                      fontSize: "0.75rem",
-                      fontWeight: 600,
-                      padding: "2px 8px",
-                      borderRadius: "6px",
-                      background: "rgba(255, 255, 255, 0.06)",
-                      color: "var(--text-secondary)",
-                      border: "1px solid var(--border-color)"
-                    }}
-                  >
-                    {lName}
-                  </span>
-                ))}
-              </div>
+              {/* View Full Journey / Hide Journey Button */}
+              <button
+                type="button"
+                onClick={() => toggleRouteExpand(idx)}
+                style={{
+                  background: "var(--input-bg, rgba(255, 255, 255, 0.08))",
+                  border: "1px solid var(--border-color)",
+                  color: "var(--text-primary)",
+                  padding: "6px 14px",
+                  borderRadius: "8px",
+                  fontSize: "0.82rem",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px"
+                }}
+              >
+                {isExpanded ? (
+                  <>
+                    <span>Hide Journey</span>
+                    <ChevronUp size={16} />
+                  </>
+                ) : (
+                  <>
+                    <span>View Full Journey</span>
+                    <ChevronDown size={16} />
+                  </>
+                )}
+              </button>
             </div>
 
             {/* 4 Stats Grid */}
@@ -277,7 +285,7 @@ export function RouteSeoPage({ fromSlug, toSlug, onResetSearch, onOpenPlanner })
               display: "grid",
               gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))",
               gap: "10px",
-              marginBottom: "16px"
+              marginBottom: isExpanded ? "18px" : "0"
             }}>
               <div style={{
                 background: "var(--bg-card)",
@@ -360,42 +368,12 @@ export function RouteSeoPage({ fromSlug, toSlug, onResetSearch, onOpenPlanner })
               </div>
             </div>
 
-            {/* Expand / Collapse Journey Button */}
-            <button
-              onClick={() => toggleRouteExpand(route.id)}
-              style={{
-                width: "100%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "6px",
-                background: isExpanded ? "rgba(255, 255, 255, 0.04)" : "rgba(255, 255, 255, 0.08)",
-                border: "1px solid var(--border-color)",
-                color: "var(--text-primary)",
-                padding: "10px",
-                borderRadius: "10px",
-                fontSize: "0.85rem",
-                fontWeight: 600,
-                cursor: "pointer",
-                transition: "all 0.2s ease"
-              }}
-            >
-              {isExpanded ? (
-                <>
-                  <span>Hide Journey Details</span>
-                  <ChevronUp size={16} />
-                </>
-              ) : (
-                <>
-                  <span>View Full Journey ({route.totalStops} Stations &amp; Interchanges)</span>
-                  <ChevronDown size={16} />
-                </>
-              )}
-            </button>
-
-            {/* Station Timeline */}
+            {/* Station Timeline (Visible by default for Option 1, or when toggled) */}
             {isExpanded && (
               <div style={{ marginTop: "16px", paddingTop: "16px", borderTop: "1px dashed var(--border-color)" }}>
+                <h4 style={{ fontSize: "0.95rem", fontWeight: 700, margin: "0 0 12px 0", color: "var(--text-primary)" }}>
+                  Step-by-Step Route &amp; Station Stops ({optionLabel})
+                </h4>
                 <StationTimeline route={route} />
               </div>
             )}
