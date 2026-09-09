@@ -57,6 +57,17 @@ export function App() {
   const [theme, setTheme] = useState(getThemePref());
   const [lang, setLang] = useState(getLangPref());
 
+  const [routeSeoSlugs, setRouteSeoSlugs] = useState(() => {
+    const p = window.location.pathname.replace(/\/$/, '');
+    if (p.startsWith('/route/')) {
+      const parts = p.replace(/^\/route\//, '').split('/').filter(Boolean);
+      if (parts.length >= 2) {
+        return { fromSlug: parts[0], toSlug: parts[1] };
+      }
+    }
+    return null;
+  });
+
   const [stationSeoSlug, setStationSeoSlug] = useState(() => {
     const p = window.location.pathname.replace(/\/$/, '');
     if (p.startsWith('/station/')) {
@@ -95,14 +106,14 @@ export function App() {
         const f = getStationBySlug(parts[0]);
         const tSt = getStationBySlug(parts[1]);
         if (!f || !tSt) return '404';
-        return null;
+        return 'routeSeo';
       } else if (parts.length === 1) {
         const st = getStationBySlug(parts[0]);
         if (!st) return '404';
         if (typeof window !== 'undefined') {
           window.history.replaceState(null, '', `/station/${getStationSlug(st)}/`);
         }
-        return null;
+        return 'stationSeo';
       }
     }
 
@@ -257,6 +268,7 @@ export function App() {
     // Update SEO friendly route URL path without page reload
     const fromSlug = getStationSlug(fromSt);
     const toSlug = getStationSlug(toSt);
+    setRouteSeoSlugs({ fromSlug, toSlug });
     if (window.location.pathname !== `/route/${fromSlug}/${toSlug}/`) {
       window.history.pushState({}, '', `/route/${fromSlug}/${toSlug}/`);
     }
@@ -307,7 +319,8 @@ export function App() {
           setRoutes(calculated);
           setHasSearched(true);
           if (calculated.length > 0) setOpenRouteIds(new Set([calculated[0].id]));
-          setActivePageView(null);
+          setRouteSeoSlugs({ fromSlug: parts[0], toSlug: parts[1] });
+          setActivePageView('routeSeo');
           setStationSeoSlug(null);
           return;
         } else {
@@ -359,6 +372,7 @@ export function App() {
   const handleResetSearch = () => {
     setActivePageView(null);
     setStationSeoSlug(null);
+    setRouteSeoSlugs(null);
     let defaultFrom = STATIONS[0];
     let defaultTo = STATIONS[1] || STATIONS[0];
     if (typeof PRESET_ROUTES !== 'undefined' && PRESET_ROUTES.length > 0) {
@@ -554,8 +568,16 @@ export function App() {
         <DisclaimerPage onBackToHome={handleResetSearch} />
       ) : activePageView === 'stations' ? (
         <StationsDirectoryPage onSelectStation={(st) => handleOpenStationPage(st)} onBackToHome={handleResetSearch} />
-      ) : activePageView === 'routeSeo' ? (
-        <RouteSeoPage fromSlug={routeSeoFromSlug} toSlug={routeSeoToSlug} onResetSearch={handleResetSearch} lang={lang} />
+      ) : (activePageView === 'routeSeo' && routeSeoSlugs) ? (
+        <RouteSeoPage
+          fromSlug={routeSeoSlugs.fromSlug}
+          toSlug={routeSeoSlugs.toSlug}
+          onResetSearch={handleResetSearch}
+          onOpenPlanner={() => {
+            setActivePageView(null);
+          }}
+          lang={lang}
+        />
       ) : activePageView === 'sitemap' ? (
         <SitemapPage onSelectStation={(st) => handleOpenStationPage(st)} onBackToHome={handleResetSearch} />
       ) : activePageView === 'stationSeo' ? (

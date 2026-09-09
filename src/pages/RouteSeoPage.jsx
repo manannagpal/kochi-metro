@@ -3,20 +3,21 @@ import { getStationBySlug } from "../utils/slugify.js";
 import { calculateRoutes } from "../routing/routeEngine.js";
 import { StationTimeline } from "../components/StationTimeline.jsx";
 import { AdSenseUnit } from "../components/AdSenseUnit.jsx";
-import { Clock, Banknote, MapPin, ArrowLeft, Repeat } from "lucide-react";
+import { Clock, Banknote, MapPin, ArrowLeft, Repeat, Navigation } from "lucide-react";
 
-export function RouteSeoPage({ fromSlug, toSlug, onResetSearch }) {
+export function RouteSeoPage({ fromSlug, toSlug, onResetSearch, onOpenPlanner  }) {
   const fromStation = getStationBySlug(fromSlug);
   const toStation = getStationBySlug(toSlug);
 
   const routes = (fromStation && toStation) ? calculateRoutes(fromStation.id, toStation.id) : [];
   const primaryRoute = routes[0];
+  const distFormatted = primaryRoute ? (Number(primaryRoute.totalDistanceKm) || 0).toFixed(1) : '0';
 
   useEffect(() => {
     if (!fromStation || !toStation || !primaryRoute) return;
 
     const pageTitle = `${fromStation.name} to ${toStation.name} Metro Route, Fare (₹${primaryRoute.fare}) & Time - Kochi Metro`;
-    const pageDesc = `Kochi Metro route from ${fromStation.name} to ${toStation.name}. Distance: ${primaryRoute.totalDistanceKm} km, Token Fare: ₹${primaryRoute.fare} (Smart Card: ₹${primaryRoute.smartCardFare}), Travel Time: ${primaryRoute.totalTimeMins} mins with ${primaryRoute.switches} line changes.`;
+    const pageDesc = `Kochi Metro route from ${fromStation.name} to ${toStation.name}. Distance: ${distFormatted} km, Token Fare: ₹${primaryRoute.fare} (Smart Card: ₹${primaryRoute.smartCardFare}), Travel Time: ${primaryRoute.totalTimeMins} mins with ${primaryRoute.switches} line changes.`;
     const canonicalUrl = `https://kochi.metro.org.in/route/${fromSlug}/${toSlug}/`;
 
     document.title = pageTitle;
@@ -96,7 +97,7 @@ export function RouteSeoPage({ fromSlug, toSlug, onResetSearch }) {
           {fromStation.name} to {toStation.name} Metro Route
         </h1>
         <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', margin: '6px 0 0 0' }}>
-          Travel Time: <strong>{primaryRoute.totalTimeMins} mins</strong> • Distance: <strong>{primaryRoute.totalDistanceKm} km</strong> • Fare: <strong>₹{primaryRoute.fare}</strong>
+          Travel Time: <strong>{primaryRoute.totalTimeMins} mins</strong> • Distance: <strong>{distFormatted} km</strong> • Fare: <strong>₹{primaryRoute.fare}</strong>
         </p>
       </div>
 

@@ -1,3 +1,4 @@
+import { buildRouteSsrHtml, buildStationSsrHtml } from "../src/utils/ssrHtml.js";
 import fs from "fs";
 import path from "path";
 import { stations, lines } from "../src/data/kochiMetroData.js";
@@ -38,7 +39,14 @@ function renderRouteSeoHtml(fromSt, toSt) {
   const fromSlug = getStationSlug(fromSt);
   const toSlug = getStationSlug(toSt);
   let _fare = null;
-  try { const _r = calculateRoutes(fromSt.id, toSt.id); if (_r && _r.length > 0) _fare = _r[0].fare; } catch(_e) {}
+  let primaryRoute = null;
+  try {
+    const _r = calculateRoutes(fromSt.id, toSt.id);
+    if (_r && _r.length > 0) {
+      primaryRoute = _r[0];
+      _fare = primaryRoute.fare;
+    }
+  } catch(_e) {}
   const pageTitle = _fare !== null
     ? `${fromName} to ${toName} Metro Route, Fare (₹${_fare}) & Travel Time | Kochi Metro (KMRL)`
     : `${fromName} to ${toName} Metro Route, Fare & Travel Time | Kochi Metro (KMRL)`;
@@ -49,6 +57,18 @@ function renderRouteSeoHtml(fromSt, toSt) {
   html = html.replace(/<title>.*?<\/title>/, `<title>${pageTitle}</title>`);
   html = html.replace(/<meta name="description" content=".*?"\s*\/?>/, `<meta name="description" content="${pageDesc}" />`);
   html = html.replace(/<link rel="canonical" href=".*?"\s*\/?>/, `<link rel="canonical" href="${canonicalUrl}" />`);
+    // In-place OG and Twitter replacements
+  html = html.replace(/<meta\s+property=["']og:title["'][^>]*>/i, `<meta property="og:title" content="${pageTitle.replace(/"/g, '&quot;')}" />`);
+  html = html.replace(/<meta\s+property=["']og:description["'][^>]*>/i, `<meta property="og:description" content="${pageDesc.replace(/"/g, '&quot;')}" />`);
+  html = html.replace(/<meta\s+property=["']og:url["'][^>]*>/i, `<meta property="og:url" content="${canonicalUrl}" />`);
+  html = html.replace(/<meta\s+property=["']twitter:title["'][^>]*>/i, `<meta property="twitter:title" content="${pageTitle.replace(/"/g, '&quot;')}" />`);
+  html = html.replace(/<meta\s+property=["']twitter:description["'][^>]*>/i, `<meta property="twitter:description" content="${pageDesc.replace(/"/g, '&quot;')}" />`);
+  html = html.replace(/<meta\s+property=["']twitter:url["'][^>]*>/i, `<meta property="twitter:url" content="${canonicalUrl}" />`);
+
+  if (primaryRoute) {
+    const bodyHtml = buildRouteSsrHtml(fromSt, toSt, primaryRoute, 'Kochi Metro');
+    html = html.replace('<div id="root"></div>', `<div id="root">${bodyHtml}</div>`);
+  }
   return html;
 }
 
@@ -63,6 +83,19 @@ function renderStationSeoHtml(st) {
   html = html.replace(/<title>.*?<\/title>/, `<title>${pageTitle}</title>`);
   html = html.replace(/<meta name="description" content=".*?"\s*\/?>/, `<meta name="description" content="${pageDesc}" />`);
   html = html.replace(/<link rel="canonical" href=".*?"\s*\/?>/, `<link rel="canonical" href="${canonicalUrl}" />`);
+    const lineIds = Array.isArray(st.lines) ? st.lines : (st.line ? [st.line] : []);
+  const lineName = lineIds.map(id => (lines[id] ? lines[id].name : id)).filter(Boolean).join(', ') || 'Metro';
+  const bodyHtml = buildStationSsrHtml(st, lineName, 'Kochi Metro');
+
+  // In-place OG and Twitter replacements
+  html = html.replace(/<meta\s+property=["']og:title["'][^>]*>/i, `<meta property="og:title" content="${pageTitle.replace(/"/g, '&quot;')}" />`);
+  html = html.replace(/<meta\s+property=["']og:description["'][^>]*>/i, `<meta property="og:description" content="${pageDesc.replace(/"/g, '&quot;')}" />`);
+  html = html.replace(/<meta\s+property=["']og:url["'][^>]*>/i, `<meta property="og:url" content="${canonicalUrl}" />`);
+  html = html.replace(/<meta\s+property=["']twitter:title["'][^>]*>/i, `<meta property="twitter:title" content="${pageTitle.replace(/"/g, '&quot;')}" />`);
+  html = html.replace(/<meta\s+property=["']twitter:description["'][^>]*>/i, `<meta property="twitter:description" content="${pageDesc.replace(/"/g, '&quot;')}" />`);
+  html = html.replace(/<meta\s+property=["']twitter:url["'][^>]*>/i, `<meta property="twitter:url" content="${canonicalUrl}" />`);
+
+  html = html.replace('<div id="root"></div>', `<div id="root">${bodyHtml}</div>`);
   return html;
 }
 
