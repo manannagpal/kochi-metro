@@ -29,7 +29,7 @@ export const TRANSLATIONS = {
     switchPlural: "INTERCHANGES"
   },
   hi: {
-    appTitle: "कोलकाता मेट्रो",
+    appTitle: "कोच्चि मेट्रो",
     appSubtitle: "इंटरएक्टिव रूट और स्टेशन गाइड",
     fromStation: "प्रारंभिक स्टेशन",
     toStation: "गंतव्य स्टेशन",
