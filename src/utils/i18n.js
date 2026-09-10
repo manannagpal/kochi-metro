@@ -1,7 +1,7 @@
 export const TRANSLATIONS = {
   en: {
     appTitle: "Kochi Metro",
-    appSubtitle: "Official Route & Station Guide",
+    appSubtitle: "Interactive Route & Station Guide",
     fromStation: "From Station",
     toStation: "To Station",
     searchPlaceholder: "Select or search station (e.g. Aluva, MG Road, Maharajas College)...",
@@ -30,7 +30,7 @@ export const TRANSLATIONS = {
   },
   hi: {
     appTitle: "कोलकाता मेट्रो",
-    appSubtitle: "आधिकारिक रूट और स्टेशन गाइड",
+    appSubtitle: "इंटरएक्टिव रूट और स्टेशन गाइड",
     fromStation: "प्रारंभिक स्टेशन",
     toStation: "गंतव्य स्टेशन",
     searchPlaceholder: "स्टेशन खोजें (उदा. अलुवा, एमजी रोड, महाराजा कॉलेज)...",

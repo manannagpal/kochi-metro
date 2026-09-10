@@ -2,7 +2,7 @@
 export const CITY_CONFIG = {
   cityName: 'Kochi',
   systemName: 'Kochi Metro',
-  tagline: 'Official Route & Station Guide',
+  tagline: 'Interactive Route & Station Guide',
   operatorName: 'Kochi Metro Rail Limited (KMRL)',
   domain: 'kochi.metro.org.in',
   storagePrefix: 'km_',

@@ -87,7 +87,7 @@ export function Navbar({
                 Kochi Metro Route Finder
               </h1>
               <p className="navbar-subtitle">
-                Official Route & Station Guide
+                Interactive Route & Station Guide
               </p>
             </div>
           </div>
