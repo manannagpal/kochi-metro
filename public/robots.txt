@@ -1,4 +1,24 @@
 User-agent: *
 Allow: /
 
+# Explicitly Allow AI Search Engines (Brings referral traffic from ChatGPT Search & Perplexity)
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+# Block Aggressive AI Training Scrapers (No referral traffic, just data scraping)
+User-agent: Bytespider
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
 Sitemap: https://kochi.metro.org.in/sitemap.xml
