@@ -136,7 +136,7 @@ export function RouteSeoPage({ fromSlug, toSlug, onResetSearch, onOpenPlanner })
   }
 
   return (
-    <div style={{ maxWidth: "800px", margin: "0 auto", padding: "16px 16px 40px 16px" }}>
+    <div style={{ maxWidth: "800px", margin: "0 auto", padding: "16px 16px 0 16px" }}>
       {/* Top Breadcrumb / Nav */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
         <button
@@ -280,90 +280,82 @@ export function RouteSeoPage({ fromSlug, toSlug, onResetSearch, onOpenPlanner })
               </button>
             </div>
 
-            {/* 4 Stats Grid */}
+            {/* 4 Stats Grid in a single compact row */}
             <div style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))",
-              gap: "10px",
-              marginBottom: isExpanded ? "18px" : "0"
+              gridTemplateColumns: "repeat(4, 1fr)",
+              gap: "8px",
+              marginBottom: "16px"
             }}>
               <div style={{
                 background: "var(--bg-card)",
-                padding: "12px",
+                padding: "10px 4px",
                 borderRadius: "12px",
                 border: "1px solid var(--border-color)",
-                display: "flex",
-                flexDirection: "column",
-                gap: "4px"
+                textAlign: "center"
               }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "var(--text-muted)", fontSize: "0.75rem" }}>
-                  <Banknote size={14} /> Fare
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "4px", color: "#10B981", fontSize: "0.72rem", fontWeight: 700 }}>
+                  <Banknote size={13} /> Token
                 </div>
-                <div style={{ fontSize: "1.15rem", fontWeight: 700, color: "var(--text-primary)" }}>
+                <div style={{ fontSize: "1.25rem", fontWeight: 800, color: "var(--text-primary)", margin: "4px 0 2px 0", lineHeight: 1 }}>
                   ₹{route.fare}
                 </div>
-                <div style={{ fontSize: "0.7rem", color: "#10B981", fontWeight: 500 }}>
-                  Smart Card: ₹{route.smartCardFare || route.fare}
+                <div style={{ fontSize: "0.68rem", color: "#10B981", fontWeight: 600, whiteSpace: "nowrap" }}>
+                  Card: ₹{route.smartCardFare || route.fare}
                 </div>
               </div>
 
               <div style={{
                 background: "var(--bg-card)",
-                padding: "12px",
+                padding: "10px 4px",
                 borderRadius: "12px",
                 border: "1px solid var(--border-color)",
-                display: "flex",
-                flexDirection: "column",
-                gap: "4px"
+                textAlign: "center"
               }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "var(--text-muted)", fontSize: "0.75rem" }}>
-                  <Clock size={14} /> Time
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "4px", color: "var(--accent-primary)", fontSize: "0.72rem", fontWeight: 700 }}>
+                  <Clock size={13} /> Time
                 </div>
-                <div style={{ fontSize: "1.15rem", fontWeight: 700, color: "var(--text-primary)" }}>
-                  {route.totalTimeMins} mins
+                <div style={{ fontSize: "1.25rem", fontWeight: 800, color: "var(--text-primary)", margin: "4px 0 2px 0", lineHeight: 1, whiteSpace: "nowrap" }}>
+                  {route.totalTimeMins} <span style={{ fontSize: "0.75rem", fontWeight: 600 }}>min</span>
                 </div>
-                <div style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>
-                  Estimated
+                <div style={{ fontSize: "0.68rem", color: "var(--text-muted)", whiteSpace: "nowrap" }}>
+                  Duration
                 </div>
               </div>
 
               <div style={{
                 background: "var(--bg-card)",
-                padding: "12px",
+                padding: "10px 4px",
                 borderRadius: "12px",
                 border: "1px solid var(--border-color)",
-                display: "flex",
-                flexDirection: "column",
-                gap: "4px"
+                textAlign: "center"
               }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "var(--text-muted)", fontSize: "0.75rem" }}>
-                  <MapPin size={14} /> Distance
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "4px", color: "var(--text-muted)", fontSize: "0.72rem", fontWeight: 700 }}>
+                  <MapPin size={13} /> Distance
                 </div>
-                <div style={{ fontSize: "1.15rem", fontWeight: 700, color: "var(--text-primary)" }}>
-                  {route.totalDistanceKm} km
+                <div style={{ fontSize: "1.25rem", fontWeight: 800, color: "var(--text-primary)", margin: "4px 0 2px 0", lineHeight: 1, whiteSpace: "nowrap" }}>
+                  {route.totalDistanceKm} <span style={{ fontSize: "0.75rem", fontWeight: 600 }}>km</span>
                 </div>
-                <div style={{ fontSize: "0.7rem", color: "var(--text-muted)" }}>
-                  {route.totalStops} stations
+                <div style={{ fontSize: "0.68rem", color: "var(--text-muted)", whiteSpace: "nowrap" }}>
+                  {route.totalStops} stops
                 </div>
               </div>
 
               <div style={{
                 background: "var(--bg-card)",
-                padding: "12px",
+                padding: "10px 4px",
                 borderRadius: "12px",
                 border: "1px solid var(--border-color)",
-                display: "flex",
-                flexDirection: "column",
-                gap: "4px"
+                textAlign: "center"
               }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "var(--text-muted)", fontSize: "0.75rem" }}>
-                  <Repeat size={14} /> Interchanges
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "4px", color: "var(--text-muted)", fontSize: "0.72rem", fontWeight: 700 }}>
+                  <Repeat size={13} /> Switch
                 </div>
-                <div style={{ fontSize: "1.15rem", fontWeight: 700, color: "var(--text-primary)" }}>
+                <div style={{ fontSize: "1.25rem", fontWeight: 800, color: "var(--text-primary)", margin: "4px 0 2px 0", lineHeight: 1, whiteSpace: "nowrap" }}>
                   {route.switches}
                 </div>
-                <div style={{ fontSize: "0.7rem", color: route.switches === 0 ? "#10B981" : "var(--text-muted)" }}>
-                  {route.switches === 0 ? "Direct Line" : "Transfer Required"}
+                <div style={{ fontSize: "0.68rem", color: route.switches === 0 ? "#10B981" : "var(--text-muted)", whiteSpace: "nowrap" }}>
+                  {route.switches === 0 ? "Direct" : `${route.switches} Switch`}
                 </div>
               </div>
             </div>
@@ -387,7 +379,7 @@ export function RouteSeoPage({ fromSlug, toSlug, onResetSearch, onOpenPlanner })
       </div>
 
       {/* FAQs */}
-      <div className="glass-panel" style={{ padding: "24px", marginBottom: "24px", borderRadius: "20px" }}>
+      <div className="glass-panel" style={{ padding: "24px", marginBottom: "0px", borderRadius: "20px" }}>
         <h3 style={{ fontSize: "1.1rem", fontWeight: 700, margin: "0 0 16px 0", color: "var(--text-primary)" }}>
           Frequently Asked Questions ({fromStation.name} to {toStation.name})
         </h3>
@@ -429,9 +421,6 @@ export function RouteSeoPage({ fromSlug, toSlug, onResetSearch, onOpenPlanner })
           </div>
         </div>
       </div>
-
-      {/* Manual AdSense / AdMob Unit */}
-      <AdSenseUnit slot="7690647086" />
     </div>
   );
 }

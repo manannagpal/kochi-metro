@@ -23,7 +23,7 @@ export function Footer({ onInstallPWA, deferredPrompt, onNavigate, theme }) {
   }
   return (
     <footer style={{
-      marginTop: '48px',
+      marginTop: '16px',
       padding: '28px 24px',
       borderTop: '1px solid var(--border-color)',
       textAlign: 'center',

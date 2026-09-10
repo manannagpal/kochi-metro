@@ -77,26 +77,26 @@ export function buildRouteSsrHtml(fromStation, toStation, routesInput, appName =
           </div>
         </div>
 
-        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:10px;margin-bottom:16px;">
-          <div style="background:var(--bg-card);padding:10px 12px;border-radius:10px;border:1px solid var(--border-color);">
-            <div style="color:var(--text-muted);font-size:0.72rem;margin-bottom:2px;">Token Fare</div>
-            <div style="font-size:1.15rem;font-weight:700;color:var(--text-primary);">₹${fare ?? '—'}</div>
-            <div style="font-size:0.68rem;color:#10B981;">Smart Card: ₹${smartCardFare ?? '—'}</div>
+        <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:8px;margin-bottom:16px;">
+          <div style="background:var(--bg-card);padding:10px 4px;border-radius:10px;border:1px solid var(--border-color);text-align:center;">
+            <div style="color:#10B981;font-size:0.72rem;font-weight:700;">Token</div>
+            <div style="font-size:1.25rem;font-weight:800;color:var(--text-primary);margin:4px 0 2px 0;line-height:1;">₹${fare ?? '—'}</div>
+            <div style="font-size:0.68rem;color:#10B981;font-weight:600;white-space:nowrap;">Card: ₹${smartCardFare ?? '—'}</div>
           </div>
-          <div style="background:var(--bg-card);padding:10px 12px;border-radius:10px;border:1px solid var(--border-color);">
-            <div style="color:var(--text-muted);font-size:0.72rem;margin-bottom:2px;">Travel Time</div>
-            <div style="font-size:1.15rem;font-weight:700;color:var(--text-primary);">${time ? time + ' mins' : '—'}</div>
-            <div style="font-size:0.68rem;color:var(--text-muted);">Estimated</div>
+          <div style="background:var(--bg-card);padding:10px 4px;border-radius:10px;border:1px solid var(--border-color);text-align:center;">
+            <div style="color:var(--accent-primary);font-size:0.72rem;font-weight:700;">Time</div>
+            <div style="font-size:1.25rem;font-weight:800;color:var(--text-primary);margin:4px 0 2px 0;line-height:1;white-space:nowrap;">${time ? time + ' <span style="font-size:0.75rem;font-weight:600;">min</span>' : '—'}</div>
+            <div style="font-size:0.68rem;color:var(--text-muted);white-space:nowrap;">Duration</div>
           </div>
-          <div style="background:var(--bg-card);padding:10px 12px;border-radius:10px;border:1px solid var(--border-color);">
-            <div style="color:var(--text-muted);font-size:0.72rem;margin-bottom:2px;">Distance</div>
-            <div style="font-size:1.15rem;font-weight:700;color:var(--text-primary);">${distance ? distance + ' km' : '—'}</div>
-            <div style="font-size:0.68rem;color:var(--text-muted);">${stops} stops</div>
+          <div style="background:var(--bg-card);padding:10px 4px;border-radius:10px;border:1px solid var(--border-color);text-align:center;">
+            <div style="color:var(--text-muted);font-size:0.72rem;font-weight:700;">Distance</div>
+            <div style="font-size:1.25rem;font-weight:800;color:var(--text-primary);margin:4px 0 2px 0;line-height:1;white-space:nowrap;">${distance ? distance + ' <span style="font-size:0.75rem;font-weight:600;">km</span>' : '—'}</div>
+            <div style="font-size:0.68rem;color:var(--text-muted);white-space:nowrap;">${stops} stops</div>
           </div>
-          <div style="background:var(--bg-card);padding:10px 12px;border-radius:10px;border:1px solid var(--border-color);">
-            <div style="color:var(--text-muted);font-size:0.72rem;margin-bottom:2px;">Line Changes</div>
-            <div style="font-size:1.15rem;font-weight:700;color:var(--text-primary);">${switches !== undefined ? switches : '—'}</div>
-            <div style="font-size:0.68rem;color:${switches === 0 ? '#10B981' : 'var(--text-muted)'};">${switches === 0 ? 'Direct Line' : 'Transfer'}</div>
+          <div style="background:var(--bg-card);padding:10px 4px;border-radius:10px;border:1px solid var(--border-color);text-align:center;">
+            <div style="color:var(--text-muted);font-size:0.72rem;font-weight:700;">Switch</div>
+            <div style="font-size:1.25rem;font-weight:800;color:var(--text-primary);margin:4px 0 2px 0;line-height:1;white-space:nowrap;">${switches !== undefined ? switches : '—'}</div>
+            <div style="font-size:0.68rem;color:${switches === 0 ? '#10B981' : 'var(--text-muted)'};white-space:nowrap;">${switches === 0 ? 'Direct' : switches + ' Switch'}</div>
           </div>
         </div>
 
@@ -124,7 +124,7 @@ export function buildRouteSsrHtml(fromStation, toStation, routesInput, appName =
       </div>
     </header>
 
-    <main style="max-width:900px;margin:0 auto;padding:24px 16px 40px 16px;">
+    <main style="max-width:900px;margin:0 auto;padding:24px 16px 0 16px;">
       <div class="glass-panel" style="padding:24px;margin-bottom:24px;border-radius:20px;">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
           <span style="background:rgba(16, 185, 129, 0.12);color:#10B981;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:700;letter-spacing:0.5px;">
@@ -143,7 +143,7 @@ export function buildRouteSsrHtml(fromStation, toStation, routesInput, appName =
 
       ${routesHtml}
 
-      <div class="glass-panel" style="padding:24px;margin-bottom:24px;border-radius:20px;">
+      <div class="glass-panel" style="padding:24px;margin-bottom:0px;border-radius:20px;">
         <h3 style="font-size:1.1rem;font-weight:700;margin:0 0 16px 0;color:var(--text-primary);">
           Frequently Asked Questions (${escapeHtml(fromStation.name)} to ${escapeHtml(toStation.name)})
         </h3>
@@ -179,7 +179,7 @@ export function buildRouteSsrHtml(fromStation, toStation, routesInput, appName =
       </div>
     </main>
 
-    <footer style="margin-top:48px;padding:28px 24px;border-top:1px solid var(--border-color);text-align:center;color:var(--text-muted);font-size:0.85rem;background:var(--bg-surface);">
+    <footer style="margin-top:16px;padding:28px 24px;border-top:1px solid var(--border-color);text-align:center;color:var(--text-muted);font-size:0.85rem;background:var(--bg-surface);">
       <p style="margin:0;">&copy; 2026 ${escapeHtml(appName)} Route Finder</p>
     </footer>
   `;
@@ -219,7 +219,7 @@ export function buildStationSsrHtml(station, lineNames, appName = "Kochi Metro")
       </div>
     </main>
 
-    <footer style="margin-top:48px;padding:28px 24px;border-top:1px solid var(--border-color);text-align:center;color:var(--text-muted);font-size:0.85rem;background:var(--bg-surface);">
+    <footer style="margin-top:16px;padding:28px 24px;border-top:1px solid var(--border-color);text-align:center;color:var(--text-muted);font-size:0.85rem;background:var(--bg-surface);">
       <p style="margin:0;">&copy; 2026 ${escapeHtml(appName)} Route Finder</p>
     </footer>
   `;
