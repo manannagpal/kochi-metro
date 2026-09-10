@@ -32,7 +32,7 @@ export function Footer({ onInstallPWA, deferredPrompt, onNavigate, theme }) {
       background: 'var(--bg-surface)'
     }}>
       <nav className="footer-links-container" aria-label="Footer Navigation">
-        <a href={theme ? `https://metro.org.in/?theme=${theme}` : "https://metro.org.in"} className="footer-link-item"
+        <a href="https://metro.org.in/" className="footer-link-item"
         >
           All India Metros
         </a>

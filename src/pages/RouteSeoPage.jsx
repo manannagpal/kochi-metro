@@ -31,7 +31,7 @@ export function RouteSeoPage({ fromSlug, toSlug, onResetSearch, onOpenPlanner })
   useEffect(() => {
     if (!fromStation || !toStation || !primaryRoute) return;
 
-    const pageTitle = `${fromStation.name} to ${toStation.name} Metro Route, Fare (₹${primaryRoute.fare}) & Travel Time | Kochi Metro`;
+    const pageTitle = `${fromStation.name} to ${toStation.name} Metro Route & Fare (₹${primaryRoute.fare})`;
     const pageDesc = routes.length > 1
       ? `Kochi Metro route from ${fromStation.name} to ${toStation.name}. Compare ${routes.length} available route options: Fastest takes ${primaryRoute.totalTimeMins} mins (₹${primaryRoute.fare}, ${primaryRoute.switches} switches). Full station list, fares & platform interchange guide.`
       : `Kochi Metro route from ${fromStation.name} to ${toStation.name}. Distance: ${primaryRoute.totalDistanceKm} km, Token Fare: ₹${primaryRoute.fare} (Smart Card: ₹${primaryRoute.smartCardFare || primaryRoute.fare}), Travel Time: ${primaryRoute.totalTimeMins} mins with ${primaryRoute.switches} line changes.`;
