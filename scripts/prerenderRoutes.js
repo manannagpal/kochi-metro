@@ -148,3 +148,113 @@ staticPages.forEach(p => {
 fs.copyFileSync(distIndexHtmlPath, path.resolve("dist/404.html"));
 
 console.log(`Successfully pre-rendered static HTML for ${stations.length} stations, ${count} hub routes, and static pages into dist/`);
+
+// Helper for home SSR
+function buildHomeSsrHtml(appName, stationsList = [], hubList = []) {
+  const hubs = (hubList && hubList.length >= 2) ? hubList : stationsList.slice(0, 10);
+  const routeLinks = [];
+  for (let i = 0; i < hubs.length && routeLinks.length < 16; i++) {
+    for (let j = 0; j < hubs.length && routeLinks.length < 16; j++) {
+      if (i !== j) {
+        const fromSt = hubs[i];
+        const toSt = hubs[j];
+        const fromSlug = getStationSlug(fromSt);
+        const toSlug = getStationSlug(toSt);
+        routeLinks.push(
+          `<a href="/route/${fromSlug}/${toSlug}/" style="padding:10px 14px;background:var(--input-bg);border:1px solid var(--border-color);border-radius:10px;text-decoration:none;color:var(--text-primary);font-size:0.86rem;font-weight:600;display:flex;align-items:center;justify-content:space-between;gap:8px;">` +
+          `<span>${fromSt.name || ''} &rarr; ${toSt.name || ''}</span>` +
+          `<span style="font-size:0.75rem;color:var(--accent-primary);font-weight:700;">Route &rarr;</span>` +
+          `</a>`
+        );
+      }
+    }
+  }
+
+  const sampleStations = hubs.slice(0, 16);
+  const stationLinks = sampleStations.map(st => {
+    const sSlug = getStationSlug(st);
+    return `<a href="/station/${sSlug}/" style="padding:8px 12px;background:var(--input-bg);border:1px solid var(--border-color);border-radius:8px;text-decoration:none;color:var(--text-primary);font-size:0.82rem;font-weight:600;display:inline-block;">🚉 ${st.name || ''}</a>`;
+  }).join('\n');
+
+  return `
+    <header style="background:var(--bg-surface);border-bottom:1px solid var(--border-color);position:sticky;top:0;z-index:100;">
+      <div style="max-width:1100px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;">
+        <a href="/" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text-primary);">
+          <img src="/icon-192.png" alt="${appName}" style="width:36px;height:36px;border-radius:50%;" />
+          <div>
+            <div style="font-weight:800;font-size:1.05rem;line-height:1.2;color:var(--text-primary);">${appName}</div>
+            <div style="font-size:0.72rem;color:var(--text-muted);">Route Finder &amp; Journey Planner</div>
+          </div>
+        </a>
+        <nav style="display:flex;align-items:center;gap:12px;">
+          <a href="/stations/" style="color:var(--accent-primary);text-decoration:none;font-weight:600;font-size:0.85rem;">Stations Directory</a>
+          <a href="https://metro.org.in/" style="color:var(--text-secondary);text-decoration:none;font-weight:600;font-size:0.85rem;">All India Metros</a>
+        </nav>
+      </div>
+    </header>
+
+    <main style="max-width:900px;margin:0 auto;padding:24px 16px 40px 16px;">
+      <div class="glass-panel" style="padding:28px 24px;border-radius:20px;margin-bottom:24px;text-align:center;">
+        <h1 style="font-size:1.75rem;font-weight:800;margin:0 0 10px 0;color:var(--text-primary);line-height:1.3;">
+          ${appName} Route Finder &amp; Interactive Guide
+        </h1>
+        <p style="color:var(--text-secondary);font-size:0.92rem;line-height:1.5;margin:0 auto;max-width:620px;">
+          Fast, accurate metro route calculations, live token &amp; smart card fares, travel time estimates, platform line interchanges, and station train timetables across ${appName}.
+        </p>
+      </div>
+
+      <!-- Popular Routes -->
+      <div class="glass-panel" style="padding:24px;border-radius:20px;margin-bottom:24px;">
+        <h2 style="font-size:1.15rem;font-weight:700;margin:0 0 16px 0;color:var(--text-primary);">
+          Popular Metro Routes
+        </h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));gap:10px;">
+          ${routeLinks.join('\n')}
+        </div>
+      </div>
+
+      <!-- Key Stations -->
+      <div class="glass-panel" style="padding:24px;border-radius:20px;margin-bottom:24px;">
+        <h2 style="font-size:1.15rem;font-weight:700;margin:0 0 16px 0;color:var(--text-primary);">
+          Key Metro Stations &amp; Interchanges
+        </h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));gap:8px;">
+          ${stationLinks}
+        </div>
+      </div>
+
+      <!-- Directory & Legal Guides -->
+      <div class="glass-panel" style="padding:20px 24px;border-radius:18px;margin-bottom:24px;">
+        <h3 style="font-size:0.98rem;font-weight:700;margin:0 0 12px 0;color:var(--text-primary);">
+          Transit Navigation &amp; Official Directories
+        </h3>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <a href="/stations/" style="padding:7px 12px;background:var(--input-bg);border:1px solid var(--border-color);color:var(--text-primary);text-decoration:none;border-radius:8px;font-size:0.82rem;font-weight:600;">🚉 All Stations</a>
+          <a href="/about/" style="padding:7px 12px;background:var(--input-bg);border:1px solid var(--border-color);color:var(--text-primary);text-decoration:none;border-radius:8px;font-size:0.82rem;font-weight:600;">ℹ️ About Us</a>
+          <a href="/contact/" style="padding:7px 12px;background:var(--input-bg);border:1px solid var(--border-color);color:var(--text-primary);text-decoration:none;border-radius:8px;font-size:0.82rem;font-weight:600;">📞 Contact Us</a>
+          <a href="/privacy-policy/" style="padding:7px 12px;background:var(--input-bg);border:1px solid var(--border-color);color:var(--text-primary);text-decoration:none;border-radius:8px;font-size:0.82rem;font-weight:600;">🔒 Privacy Policy</a>
+          <a href="/terms-of-service/" style="padding:7px 12px;background:var(--input-bg);border:1px solid var(--border-color);color:var(--text-primary);text-decoration:none;border-radius:8px;font-size:0.82rem;font-weight:600;">📜 Terms of Service</a>
+          <a href="/disclaimer/" style="padding:7px 12px;background:var(--input-bg);border:1px solid var(--border-color);color:var(--text-primary);text-decoration:none;border-radius:8px;font-size:0.82rem;font-weight:600;">⚠️ Disclaimer</a>
+        </div>
+      </div>
+    </main>
+
+    <footer style="margin-top:16px;padding:24px;border-top:1px solid var(--border-color);text-align:center;color:var(--text-muted);font-size:0.85rem;background:var(--bg-surface);">
+      <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:16px;margin-bottom:10px;">
+        <a href="https://metro.org.in/" style="color:var(--accent-primary);text-decoration:none;font-weight:600;">All India Metros</a>
+        <a href="/stations/" style="color:var(--text-secondary);text-decoration:none;">All Stations</a>
+        <a href="/about/" style="color:var(--text-secondary);text-decoration:none;">About</a>
+        <a href="/privacy-policy/" style="color:var(--text-secondary);text-decoration:none;">Privacy</a>
+        <a href="/terms-of-service/" style="color:var(--text-secondary);text-decoration:none;">Terms</a>
+        <a href="/contact/" style="color:var(--text-secondary);text-decoration:none;">Contact</a>
+      </div>
+      <p style="margin:0;">&copy; 2026 ${appName} Route Finder</p>
+    </footer>
+  `;
+}
+
+// Pre-render Homepage Semantic Body with Outgoing Links into dist/index.html
+const homeBodyHtml = buildHomeSsrHtml("Kochi Metro", stations, hubStations);
+const homeHtml = templateHtml.replace('<div id="root"></div>', () => '<div id="root">' + homeBodyHtml + '</div>');
+fs.writeFileSync(distIndexHtmlPath, homeHtml, "utf8");
+console.log("Successfully pre-rendered semantic body with outgoing links into dist/index.html");
