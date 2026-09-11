@@ -87,7 +87,7 @@ export async function onRequest(context) {
   html = html.replace('</head>', `${schemaTag}</head>`);
 
   if (ssrBodyHtml) {
-    html = html.replace('<div id="root"></div>', `<div id="root">${ssrBodyHtml}</div>`);
+    html = html.replace(/<div id="root">[\s\S]*?<\/div>/i, `<div id="root">${ssrBodyHtml}</div>`);
   }
 
   const response = new Response(html, {

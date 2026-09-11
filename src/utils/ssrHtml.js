@@ -132,7 +132,7 @@ export function buildRouteSsrHtml(fromStation, toStation, routesInput, appName =
           </span>
         </div>
         <h1 style="font-size:1.6rem;font-weight:800;margin:0 0 10px 0;color:var(--text-primary);line-height:1.3;">
-          ${escapeHtml(fromStation.name)} to ${escapeHtml(toStation.name)} Metro Route
+          ${escapeHtml(fromStation.name)} to ${escapeHtml(toStation.name)} Metro Route &amp; Fare ${primaryRoute.fare ? `(&#8377;${primaryRoute.fare})` : ''}
         </h1>
         <p style="color:var(--text-secondary);font-size:0.92rem;line-height:1.5;margin:0;">
           ${routesCount > 1

@@ -202,7 +202,7 @@ export function RouteSeoPage({ fromSlug, toSlug, onResetSearch, onOpenPlanner })
           color: "var(--text-primary)",
           lineHeight: 1.3
         }}>
-          {fromStation.name} <span style={{ color: "var(--text-muted)" }}>to</span> {toStation.name}
+          {fromStation.name} to {toStation.name} Metro Route & Fare {primaryRoute?.fare ? `(₹${primaryRoute.fare})` : ''}
         </h1>
 
         <p style={{
