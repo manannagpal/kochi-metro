@@ -1,6 +1,35 @@
 import { stations, lines } from '../../src/data/kochiMetroData.js';
 import { getStationBySlug, getStationSlug } from '../../src/utils/slugify.js';
 
+function replaceRootContent(html, newInnerHtml) {
+  const match = html.match(/<div\b[^>]*id=["']root["'][^>]*>/i);
+  if (!match) return html;
+
+  const rootStart = match.index;
+  const openTag = match[0];
+  const contentStart = rootStart + openTag.length;
+
+  let depth = 1;
+  const tagRegex = /<!--[\s\S]*?-->|<\/?div\b[^>]*>/gi;
+  tagRegex.lastIndex = contentStart;
+  let m;
+  while ((m = tagRegex.exec(html)) !== null) {
+    const token = m[0];
+    if (token.startsWith('<!--')) continue;
+    if (token.startsWith('</')) {
+      depth--;
+      if (depth === 0) {
+        const rootEnd = tagRegex.lastIndex;
+        return html.substring(0, rootStart) + `${openTag}${newInnerHtml}</div>` + html.substring(rootEnd);
+      }
+    } else if (!token.endsWith('/>')) {
+      depth++;
+    }
+  }
+
+  return html.replace(/<div\b[^>]*id=["']root["'][^>]*>[\s\S]*?<\/body>/i, `${openTag}${newInnerHtml}</div>\n</body>`);
+}
+
 export async function onRequest(context) {
   if (context.passThroughOnException) {
     context.passThroughOnException();
@@ -48,7 +77,7 @@ export async function onRequest(context) {
   <meta name="twitter:description" content="${description.replace(/"/g, '&quot;')}" />
   `;
   html = html.replace('</head>', `${fullOg}\n</head>`);
-  html = html.replace('<div id="root"></div>', `<div id="root">${ssrStationHtml}</div>`);
+  html = replaceRootContent(html, ssrStationHtml);
 
   const response = new Response(html, {
     status: 200,

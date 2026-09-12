@@ -33,6 +33,35 @@ if (!fs.existsSync(distIndexHtmlPath)) {
 
 const templateHtml = fs.readFileSync(distIndexHtmlPath, "utf8");
 
+function replaceRootContent(html, newInnerHtml) {
+  const match = html.match(/<div\b[^>]*id=["']root["'][^>]*>/i);
+  if (!match) return html;
+
+  const rootStart = match.index;
+  const openTag = match[0];
+  const contentStart = rootStart + openTag.length;
+
+  let depth = 1;
+  const tagRegex = /<!--[\s\S]*?-->|<\/?div\b[^>]*>/gi;
+  tagRegex.lastIndex = contentStart;
+  let m;
+  while ((m = tagRegex.exec(html)) !== null) {
+    const token = m[0];
+    if (token.startsWith('<!--')) continue;
+    if (token.startsWith('</')) {
+      depth--;
+      if (depth === 0) {
+        const rootEnd = tagRegex.lastIndex;
+        return html.substring(0, rootStart) + `${openTag}${newInnerHtml}</div>` + html.substring(rootEnd);
+      }
+    } else if (!token.endsWith('/>')) {
+      depth++;
+    }
+  }
+
+  return html.replace(/<div\b[^>]*id=["']root["'][^>]*>[\s\S]*?<\/body>/i, `${openTag}${newInnerHtml}</div>\n</body>`);
+}
+
 function renderRouteSeoHtml(fromSt, toSt) {
   const fromName = fromSt.name;
   const toName = toSt.name;
@@ -68,7 +97,7 @@ function renderRouteSeoHtml(fromSt, toSt) {
 
   if (primaryRoute) {
     const bodyHtml = buildRouteSsrHtml(fromSt, toSt, routes, 'Kochi Metro');
-    html = html.replace('<div id="root"></div>', `<div id="root">${bodyHtml}</div>`);
+    html = replaceRootContent(html, bodyHtml);
   }
   return html;
 }
@@ -96,7 +125,7 @@ function renderStationSeoHtml(st) {
   html = html.replace(/<meta\s+property=["']twitter:description["'][^>]*>/i, `<meta property="twitter:description" content="${pageDesc.replace(/"/g, '&quot;')}" />`);
   html = html.replace(/<meta\s+property=["']twitter:url["'][^>]*>/i, `<meta property="twitter:url" content="${canonicalUrl}" />`);
 
-  html = html.replace('<div id="root"></div>', `<div id="root">${bodyHtml}</div>`);
+  html = replaceRootContent(html, bodyHtml);
   return html;
 }
 
@@ -300,6 +329,6 @@ function buildHomeSsrHtml(appName, stationsList = [], hubList = []) {
 
 // Pre-render Homepage Semantic Body with Outgoing Links into dist/index.html
 const homeBodyHtml = buildHomeSsrHtml("Kochi Metro", stations, hubStations);
-const homeHtml = templateHtml.replace('<div id="root"></div>', () => '<div id="root">' + homeBodyHtml + '</div>');
+const homeHtml = replaceRootContent(templateHtml, homeBodyHtml);
 fs.writeFileSync(distIndexHtmlPath, homeHtml, "utf8");
 console.log("Successfully pre-rendered semantic body with outgoing links into dist/index.html");
