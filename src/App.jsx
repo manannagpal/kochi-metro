@@ -584,6 +584,15 @@ export function App() {
         <StationSeoPage
           stationSlug={stationSeoSlug}
           onBackToHome={handleResetSearch}
+          onPlanFromStation={(st) => {
+            setFromStation(st);
+            setToStation(null);
+            setHasSearched(false);
+            setActivePageView(null);
+            if (typeof window !== 'undefined') {
+              window.history.pushState(null, '', '/');
+            }
+          }}
           lang={lang}
         />
       ) : activePageView === '404' ? (

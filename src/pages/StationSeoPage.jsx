@@ -13,7 +13,7 @@ import { NotFoundPage } from './NotFoundPage.jsx';
 import { AdSenseUnit } from '../components/AdSenseUnit.jsx';
 import { StationDetailModal } from '../components/StationDetailModal.jsx';
 
-export function StationSeoPage({ stationSlug, onBackToHome, lang = 'en' }) {
+export function StationSeoPage({ stationSlug, onBackToHome, onPlanFromStation, lang = 'en' }) {
   const station = getStationBySlug(stationSlug);
   const gates = station ? getStationGates(station.id, station.name) : [];
   const directionalTimings = station ? getStationDirectionalTimings(station) : [];
@@ -67,5 +67,55 @@ export function StationSeoPage({ stationSlug, onBackToHome, lang = 'en' }) {
     return <NotFoundPage lang={lang} onNavigate={onBackToHome} />;
   }
 
-  return <StationDetailModal station={station} onClose={onBackToHome} lang={lang} isFullPage={true} />;
+  return (
+    <div style={{ maxWidth: '850px', margin: '0 auto', padding: '0 16px 40px 16px', width: '100%', boxSizing: 'border-box' }}>
+      {/* Top Action Bar */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', gap: '12px', flexWrap: 'wrap' }}>
+        <button
+          type="button"
+          onClick={onBackToHome}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            background: 'none',
+            border: 'none',
+            color: 'var(--accent-primary)',
+            fontWeight: 600,
+            fontSize: '0.9rem',
+            cursor: 'pointer',
+            padding: 0
+          }}
+        >
+          <ArrowLeft size={16} />
+          Back to Route Planner
+        </button>
+
+        {onPlanFromStation && (
+          <button
+            type="button"
+            onClick={() => onPlanFromStation(station)}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              background: 'var(--accent-primary)',
+              border: 'none',
+              color: '#FFFFFF',
+              fontWeight: 600,
+              fontSize: '0.85rem',
+              padding: '7px 14px',
+              borderRadius: '8px',
+              cursor: 'pointer'
+            }}
+          >
+            <Compass size={14} />
+            Plan Journey from {station.name}
+          </button>
+        )}
+      </div>
+
+      <StationDetailModal station={station} onClose={onBackToHome} lang={lang} isFullPage={true} />
+    </div>
+  );
 }

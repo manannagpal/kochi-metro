@@ -44,9 +44,10 @@ export function StationDetailModal({ station, onClose, lang = 'en', isFullPage =
         }}
       >
         {/* Close Button */}
-        <button
-          type="button"
-          onClick={onClose}
+        {!isFullPage && (
+          <button
+            type="button"
+            onClick={onClose}
           aria-label="Close station modal"
           style={{
             position: 'absolute',
@@ -69,11 +70,12 @@ export function StationDetailModal({ station, onClose, lang = 'en', isFullPage =
             transition: 'all 0.2s ease'
           }}
         >
-          <X size={18} style={{ display: 'block', margin: 'auto' }} />
-        </button>
+          <X size={18} style={{ display: "block", margin: "auto" }} />
+          </button>
+        )}
 
         {/* Header */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '18px', paddingRight: '44px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '18px', paddingRight: isFullPage ? "0px" : "44px" }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
             <div style={{
               background: 'var(--accent-primary)',
@@ -99,13 +101,21 @@ export function StationDetailModal({ station, onClose, lang = 'en', isFullPage =
         </div>
 
         {/* Tabs Bar */}
-        <div style={{
-          display: 'flex',
-          gap: '8px',
-          marginBottom: '20px',
-          borderBottom: '1px solid var(--border-color)',
-          paddingBottom: '12px'
-        }}>
+        <div
+          className="no-scrollbar"
+          style={{
+            display: 'flex',
+            gap: '8px',
+            marginBottom: '20px',
+            borderBottom: '1px solid var(--border-color)',
+            paddingBottom: '12px',
+            overflowX: 'auto',
+            WebkitOverflowScrolling: 'touch',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+            width: '100%'
+          }}
+        >
           <button type="button"
             onClick={() => setActiveTab('timings')}
             style={{
@@ -115,12 +125,7 @@ export function StationDetailModal({ station, onClose, lang = 'en', isFullPage =
               background: activeTab === 'timings' ? 'var(--accent-primary)' : 'transparent',
               color: activeTab === 'timings' ? '#FFF' : 'var(--text-secondary)',
               fontWeight: 700,
-              fontSize: '0.88rem',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              transition: 'all 0.2s ease'
+              fontSize: '0.86rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0, whiteSpace: 'nowrap', transition: 'all 0.2s ease'
             }}
           >
             <Clock size={15} />
@@ -135,12 +140,7 @@ export function StationDetailModal({ station, onClose, lang = 'en', isFullPage =
               background: activeTab === 'gates' ? 'var(--accent-primary)' : 'transparent',
               color: activeTab === 'gates' ? '#FFF' : 'var(--text-secondary)',
               fontWeight: 700,
-              fontSize: '0.88rem',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              transition: 'all 0.2s ease'
+              fontSize: '0.86rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0, whiteSpace: 'nowrap', transition: 'all 0.2s ease'
             }}
           >
             <DoorOpen size={15} />
@@ -155,12 +155,7 @@ export function StationDetailModal({ station, onClose, lang = 'en', isFullPage =
               background: activeTab === 'parking' ? 'var(--accent-primary)' : 'transparent',
               color: activeTab === 'parking' ? '#FFF' : 'var(--text-secondary)',
               fontWeight: 700,
-              fontSize: '0.88rem',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              transition: 'all 0.2s ease'
+              fontSize: '0.86rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0, whiteSpace: 'nowrap', transition: 'all 0.2s ease'
             }}
           >
             <Car size={15} />
@@ -352,7 +347,8 @@ export function StationDetailModal({ station, onClose, lang = 'en', isFullPage =
               <span>Official Parking Rates & Tariffs ({parkingData.operator})</span>
             </h4>
 
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
+            <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', width: '100%' }} className="no-scrollbar">
+              <table style={{ width: '100%', minWidth: '380px', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
               <thead>
                 <tr style={{ background: 'var(--input-bg)', textAlign: 'left', borderBottom: '1px solid var(--border-color)' }}>
                   <th style={{ padding: '8px 10px', fontWeight: 700 }}>Vehicle</th>
@@ -386,6 +382,7 @@ export function StationDetailModal({ station, onClose, lang = 'en', isFullPage =
                 </tr>
               </tbody>
             </table>
+            </div>
 
             <div style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', background: 'var(--input-bg)', padding: '12px', borderRadius: '10px' }}>
               <div style={{ fontWeight: 700, marginBottom: '4px' }}>Night Parking Policy:</div>
@@ -402,7 +399,7 @@ export function StationDetailModal({ station, onClose, lang = 'en', isFullPage =
 
     if (isFullPage) {
       return (
-        <div style={{ padding: '24px 16px 40px 16px', maxWidth: '850px', margin: '0 auto' }}>
+        <div style={{ padding: '0 0 40px 0', maxWidth: '850px', margin: '0 auto' }}>
           {cardContent}
         </div>
       );
