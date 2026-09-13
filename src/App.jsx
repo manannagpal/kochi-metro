@@ -243,9 +243,6 @@ export function App() {
     if (!fromSt || !toSt) return;
 
     if (fromSt.id === toSt.id) {
-      setRoutes([]);
-      setOpenRouteIds(new Set());
-      setHasSearched(true);
       showToast(t.sameDestination);
       return;
     }
@@ -646,9 +643,46 @@ export function App() {
 
               {/* Same Origin and Destination */}
               {fromStation?.id === toStation?.id ? (
-                <div className="glass-panel" style={{ padding: '32px', textAlign: 'center', margin: '24px 0' }}>
-                  <AlertCircle size={32} color="var(--accent-warning)" style={{ marginBottom: '12px' }} />
-                  <h3 style={{ fontSize: '1.2rem', fontWeight: 700 }}>{t.sameDestination}</h3>
+                <div className="glass-panel" style={{ padding: '36px 24px', textAlign: 'center', margin: '24px 0', borderRadius: '16px' }}>
+                  <div style={{
+                    width: '56px',
+                    height: '56px',
+                    borderRadius: '50%',
+                    background: 'rgba(234, 179, 8, 0.12)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    margin: '0 auto 16px'
+                  }}>
+                    <AlertCircle size={28} color="#eab308" />
+                  </div>
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '8px', color: 'var(--text-primary)' }}>
+                    {t.sameDestination}
+                  </h3>
+                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', maxWidth: '420px', margin: '0 auto 20px', lineHeight: 1.5 }}>
+                    {t.sameStationWarning}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setToStation(null);
+                      setHasSearched(false);
+                    }}
+                    style={{
+                      background: 'linear-gradient(135deg, #E52E2D 0%, #DC2626 100%)',
+                      color: '#FFFFFF',
+                      border: 'none',
+                      padding: '10px 24px',
+                      borderRadius: '10px',
+                      fontSize: '0.95rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      boxShadow: '0 4px 14px rgba(229, 46, 45, 0.35)',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    {t.changeDestination}
+                  </button>
                 </div>
               ) : routes.length === 0 ? (
                 /* Graph Engine found 0 routes */

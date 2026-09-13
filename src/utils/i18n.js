@@ -26,7 +26,12 @@ export const TRANSLATIONS = {
     mins: "MINS",
     stops: "STATIONS",
     switch: "INTERCHANGE",
-    switchPlural: "INTERCHANGES"
+    switchPlural: "INTERCHANGES",
+    sameDestination: "Origin & Destination are identical",
+    sameStationWarning: "Please select a different destination to calculate routes.",
+    changeDestination: "Change Destination",
+    selectDestination: "Select Destination",
+    noRoutesFound: "No routes found between these stations."
   },
   hi: {
     appTitle: "कोच्चि मेट्रो",
@@ -55,6 +60,11 @@ export const TRANSLATIONS = {
     mins: "मिनट",
     stops: "स्टेशन",
     switch: "इंटरचेंज",
-    switchPlural: "इंटरचेंज"
+    switchPlural: "इंटरचेंज",
+    sameDestination: "शुरुआती और गंतव्य स्टेशन एक ही हैं",
+    sameStationWarning: "कृपया मार्ग की गणना करने के लिए एक अलग गंतव्य चुनें।",
+    changeDestination: "गंतव्य बदलें",
+    selectDestination: "गंतव्य चुनें",
+    noRoutesFound: "इन स्टेशनों के बीच कोई मार्ग नहीं मिला।"
   }
 };

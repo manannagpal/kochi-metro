@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Search, ArrowUpDown, MapPin, Navigation, X } from 'lucide-react';
+import { Search, ArrowUpDown, MapPin, Navigation, X, AlertCircle } from 'lucide-react';
 import { searchStations, getCleanLineName, getMetroSystemName } from '../utils/stationSearch.js';
 import { METRO_LINES } from '../data/lines.js';
 import { STATIONS } from '../data/stations.js';
@@ -38,7 +38,10 @@ export function StationInput({
 }) {
   const t = TRANSLATIONS[lang] || TRANSLATIONS.en;
 
-  const [fromQuery, setFromQuery] = useState(fromStation ? fromStation.name : '');
+  const isSameStation = Boolean(fromStation && toStation && fromStation.id === toStation.id);
+  const isSearchDisabled = !fromStation || !toStation || isSameStation;
+
+const [fromQuery, setFromQuery] = useState(fromStation ? fromStation.name : '');
   const [toQuery, setToQuery] = useState(toStation ? toStation.name : '');
 
   const [fromSuggestions, setFromSuggestions] = useState(INITIAL_SUGGESTIONS);
@@ -57,31 +60,31 @@ export function StationInput({
 
   useEffect(() => {
     if (toStation) setToQuery(toStation.name);
-  }, [toStation]);// Debounced search for from-station
+  }, [toStation]);// Debounced search for from-station (excluding already selected toStation)
   useEffect(() => {
     const trimmed = fromQuery.trim();
     if (!trimmed) {
-      setFromSuggestions(INITIAL_SUGGESTIONS);
+      setFromSuggestions((INITIAL_SUGGESTIONS || []).filter(item => item.station.id !== toStation?.id));
       return;
     }
     const timer = setTimeout(() => {
-      setFromSuggestions(searchStations(trimmed, 12));
+      setFromSuggestions(searchStations(trimmed, 12).filter(item => item.station.id !== toStation?.id));
     }, 60);
     return () => clearTimeout(timer);
-  }, [fromQuery]);
+  }, [fromQuery, toStation?.id]);
 
-  // Debounced search for to-station
+  // Debounced search for to-station (excluding already selected fromStation)
   useEffect(() => {
     const trimmed = toQuery.trim();
     if (!trimmed) {
-      setToSuggestions(INITIAL_SUGGESTIONS);
+      setToSuggestions((INITIAL_SUGGESTIONS || []).filter(item => item.station.id !== fromStation?.id));
       return;
     }
     const timer = setTimeout(() => {
-      setToSuggestions(searchStations(trimmed, 12));
+      setToSuggestions(searchStations(trimmed, 12).filter(item => item.station.id !== fromStation?.id));
     }, 60);
     return () => clearTimeout(timer);
-  }, [toQuery]);
+  }, [toQuery, fromStation?.id]);
 
   
 
@@ -103,10 +106,11 @@ export function StationInput({
     if (e && e.target && e.target.select) {
       e.target.select();
     }
+    const filterOutOpposite = (list) => (list || []).filter(item => item.station.id !== toStation?.id);
     if (!fromQuery.trim()) {
-      setFromSuggestions(INITIAL_SUGGESTIONS);
+      setFromSuggestions(filterOutOpposite(INITIAL_SUGGESTIONS));
     } else {
-      setFromSuggestions(searchStations(fromQuery.trim(), 12));
+      setFromSuggestions(filterOutOpposite(searchStations(fromQuery.trim(), 12)));
     }
     setShowFromDropdown(true);
     setShowToDropdown(false);
@@ -116,22 +120,37 @@ export function StationInput({
     if (e && e.target && e.target.select) {
       e.target.select();
     }
+    const filterOutOpposite = (list) => (list || []).filter(item => item.station.id !== fromStation?.id);
     if (!toQuery.trim()) {
-      setToSuggestions(INITIAL_SUGGESTIONS);
+      setToSuggestions(filterOutOpposite(INITIAL_SUGGESTIONS));
     } else {
-      setToSuggestions(searchStations(toQuery.trim(), 12));
+      setToSuggestions(filterOutOpposite(searchStations(toQuery.trim(), 12)));
     }
     setShowToDropdown(true);
     setShowFromDropdown(false);
   };
 
   const handleFromInputChange = (e) => {
-    setFromQuery(e.target.value);
+    const val = e.target.value;
+    setFromQuery(val);
+    const filterOutOpposite = (list) => (list || []).filter(item => item.station.id !== toStation?.id);
+    if (!val.trim()) {
+      setFromSuggestions(filterOutOpposite(INITIAL_SUGGESTIONS));
+    } else {
+      setFromSuggestions(filterOutOpposite(searchStations(val.trim(), 12)));
+    }
     setShowFromDropdown(true);
   };
 
   const handleToInputChange = (e) => {
-    setToQuery(e.target.value);
+    const val = e.target.value;
+    setToQuery(val);
+    const filterOutOpposite = (list) => (list || []).filter(item => item.station.id !== fromStation?.id);
+    if (!val.trim()) {
+      setToSuggestions(filterOutOpposite(INITIAL_SUGGESTIONS));
+    } else {
+      setToSuggestions(filterOutOpposite(searchStations(val.trim(), 12)));
+    }
     setShowToDropdown(true);
   };
 
@@ -148,6 +167,9 @@ export function StationInput({
   };
 
   const handleSwap = () => {
+    if (!fromStation && !toStation) return;
+    if (fromStation && toStation && fromStation.id === toStation.id) return;
+
     const tempStation = fromStation;
     const tempQuery = fromQuery;
 
@@ -472,13 +494,35 @@ export function StationInput({
         </div>
       </div>
 
+      {/* PREVENTATIVE INLINE WARNING WHEN FROM === TO */}
+      {isSameStation && (
+        <div style={{
+          marginTop: '16px',
+          padding: '12px 18px',
+          borderRadius: '12px',
+          background: 'rgba(234, 179, 8, 0.12)',
+          border: '1px solid rgba(234, 179, 8, 0.35)',
+          color: '#EAB308',
+          fontSize: '0.88rem',
+          fontWeight: 600,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '8px',
+          textAlign: 'center'
+        }}>
+          <AlertCircle size={18} style={{ flexShrink: 0 }} />
+          <span>{t.sameStationWarning || "Please choose a different destination station to calculate route and fare."}</span>
+        </div>
+      )}
+
       {/* FIND ROUTES SUBMIT BUTTON */}
-      <div style={{ marginTop: '24px', textAlign: 'center' }}>
+      <div style={{ marginTop: isSameStation ? '16px' : '24px', textAlign: 'center' }}>
         <button type="button"
           onClick={onSearch}
-          disabled={!fromStation || !toStation}
+          disabled={isSearchDisabled}
           style={{
-            background: (!fromStation || !toStation)
+            background: isSearchDisabled
               ? 'var(--text-muted)'
               : 'linear-gradient(135deg, #E52E2D 0%, #DC2626 50%, #B91C1C 100%)',
             color: '#FFFFFF',
@@ -487,17 +531,18 @@ export function StationInput({
             borderRadius: '14px',
             fontSize: '1.05rem',
             fontWeight: 700,
-            cursor: (!fromStation || !toStation) ? 'not-allowed' : 'pointer',
-            boxShadow: (!fromStation || !toStation) ? 'none' : '0 6px 20px rgba(229, 46, 45, 0.4)',
+            cursor: isSearchDisabled ? 'not-allowed' : 'pointer',
+            boxShadow: isSearchDisabled ? 'none' : '0 6px 20px rgba(229, 46, 45, 0.4)',
             transition: 'all 0.25s ease',
             width: '100%',
-            maxWidth: '320px'
+            maxWidth: '320px',
+            opacity: isSearchDisabled ? 0.6 : 1
           }}
           onMouseEnter={(e) => {
-            if (fromStation && toStation) e.currentTarget.style.transform = 'translateY(-2px)';
+            if (!isSearchDisabled) e.currentTarget.style.transform = 'translateY(-2px)';
           }}
           onMouseLeave={(e) => {
-            if (fromStation && toStation) e.currentTarget.style.transform = 'translateY(0)';
+            if (!isSearchDisabled) e.currentTarget.style.transform = 'translateY(0)';
           }}
         >
           {t.findRoutes}
