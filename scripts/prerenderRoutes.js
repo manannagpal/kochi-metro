@@ -157,12 +157,12 @@ stations.forEach(st => {
 const staticPages = [
   { path: "about", title: "About Us | Kochi Metro Route Finder", desc: "Learn about Kochi Metro Route Finder (kochi.metro.org.in) - your trusted independent guide for KMRL transit." },
   { path: "contact", title: "Contact Us | Kochi Metro Route Finder", desc: "Get in touch with Kochi Metro Route Finder team for queries, feedback, or transit data corrections." },
-  { path: "privacy-policy", title: "Privacy Policy | Kochi Metro Route Finder", desc: "Privacy Policy for Kochi Metro Route Finder detailing our data handling practices." }
-  { path: "privacy", title: "Privacy Policy | Kochi Metro Route Finder", desc: "Official Privacy Policy & Data Handling guidelines for Kochi Metro Route Finder." },,
-  { path: "terms-of-service", title: "Terms of Service | Kochi Metro Route Finder", desc: "Terms of Service and terms of use for Kochi Metro Route Finder website." }
-  { path: "terms", title: "Terms of Service | Kochi Metro Route Finder", desc: "Terms of Service & Usage conditions for Kochi Metro Route Finder." },,
+  { path: "privacy-policy", title: "Privacy Policy | Kochi Metro Route Finder", desc: "Privacy Policy for Kochi Metro Route Finder detailing our data handling practices." },
+  { path: "privacy", title: "Privacy Policy | Kochi Metro Route Finder", desc: "Official Privacy Policy & Data Handling guidelines for Kochi Metro Route Finder." },
+  { path: "terms-of-service", title: "Terms of Service | Kochi Metro Route Finder", desc: "Terms of Service and terms of use for Kochi Metro Route Finder website." },
+  { path: "terms", title: "Terms of Service | Kochi Metro Route Finder", desc: "Terms of Service & Usage conditions for Kochi Metro Route Finder." },
   { path: "disclaimer", title: "Disclaimer | Kochi Metro Route Finder", desc: "Official disclaimer regarding independent nature of Kochi Metro Route Finder website." },
-  { path: "stations", title: "All Kochi Metro Stations Directory | KMRL Lines & Routes", desc: "Explore all 25 operational Kochi Metro stations across Blue Line." }
+  { path: "stations", title: "All Kochi Metro Stations Directory | KMRL Lines & Routes", desc: "Explore all 25 operational Kochi Metro stations across Blue Line." },
   { path: "sitemap", title: "Sitemap | Kochi Metro Route Finder", desc: "Complete sitemap and navigation directory for Kochi Metro Route Finder." }
 ];
 
