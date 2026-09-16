@@ -277,21 +277,6 @@ function buildHomeSsrHtml(appName, stationsList = [], hubList = []) {
             </div>
           </div>
         </div>
-
-        <!-- Directory & Legal Guides -->
-        <div class="glass-panel" style="padding:20px 24px;border-radius:18px;margin-bottom:24px;background:var(--bg-surface);border:1px solid var(--border-color);">
-          <h3 style="font-size:0.98rem;font-weight:700;margin:0 0 12px 0;color:var(--text-primary);">
-            Transit Navigation &amp; Directories
-          </h3>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;">
-            <a href="/stations/" style="padding:7px 12px;background:var(--input-bg);border:1px solid var(--border-color);color:var(--text-primary);text-decoration:none;border-radius:8px;font-size:0.82rem;font-weight:600;">🚉 All Stations</a>
-            <a href="/about/" style="padding:7px 12px;background:var(--input-bg);border:1px solid var(--border-color);color:var(--text-primary);text-decoration:none;border-radius:8px;font-size:0.82rem;font-weight:600;">ℹ️ About Us</a>
-            <a href="/contact/" style="padding:7px 12px;background:var(--input-bg);border:1px solid var(--border-color);color:var(--text-primary);text-decoration:none;border-radius:8px;font-size:0.82rem;font-weight:600;">📞 Contact Us</a>
-            <a href="/privacy-policy/" style="padding:7px 12px;background:var(--input-bg);border:1px solid var(--border-color);color:var(--text-primary);text-decoration:none;border-radius:8px;font-size:0.82rem;font-weight:600;">🔒 Privacy Policy</a>
-            <a href="/terms-of-service/" style="padding:7px 12px;background:var(--input-bg);border:1px solid var(--border-color);color:var(--text-primary);text-decoration:none;border-radius:8px;font-size:0.82rem;font-weight:600;">📜 Terms of Service</a>
-            <a href="/disclaimer/" style="padding:7px 12px;background:var(--input-bg);border:1px solid var(--border-color);color:var(--text-primary);text-decoration:none;border-radius:8px;font-size:0.82rem;font-weight:600;">⚠️ Disclaimer</a>
-          </div>
-        </div>
       </main>
 
       <footer style="margin-top:16px;padding:24px;border-top:1px solid var(--border-color);text-align:center;color:var(--text-muted);font-size:0.85rem;">
