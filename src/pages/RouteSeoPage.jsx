@@ -220,7 +220,7 @@ export function RouteSeoPage({ fromSlug, toSlug, onResetSearch, onOpenPlanner })
       {routes.map((route, idx) => {
         const isFastest = idx === 0;
         const isExpanded = expandedIndices.has(idx);
-        const optionLabel = isFastest ? "Option 1: Fastest Route (Recommended)" : `Option ${idx + 1}: Alternative Route`;
+        const optionLabel = isFastest ? "Option 1: Fastest Route" : `Option ${idx + 1}: Alternative Route`;
 
         return (
           <div
@@ -263,7 +263,9 @@ export function RouteSeoPage({ fromSlug, toSlug, onResetSearch, onOpenPlanner })
                   cursor: "pointer",
                   display: "inline-flex",
                   alignItems: "center",
-                  gap: "6px"
+                  gap: "6px",
+                  whiteSpace: "nowrap",
+                  flexShrink: 0
                 }}
               >
                 {isExpanded ? (
@@ -280,82 +282,48 @@ export function RouteSeoPage({ fromSlug, toSlug, onResetSearch, onOpenPlanner })
               </button>
             </div>
 
-            {/* 4 Stats Grid in a single compact row */}
+            {/* Signature Stats Summary Bar (Matching RouteResultCard) */}
             <div style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
-              gap: "8px",
-              marginBottom: "16px"
+              background: 'var(--header-summary-bg, #1E293B)',
+              padding: '14px 8px',
+              color: '#FFFFFF',
+              display: 'grid',
+              gridTemplateColumns: 'repeat(4, 1fr)',
+              textAlign: 'center',
+              alignItems: 'center',
+              borderRadius: '12px',
+              marginBottom: '16px'
             }}>
-              <div style={{
-                background: "var(--bg-card)",
-                padding: "10px 4px",
-                borderRadius: "12px",
-                border: "1px solid var(--border-color)",
-                textAlign: "center"
-              }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "4px", color: "#10B981", fontSize: "0.72rem", fontWeight: 700 }}>
-                  <Banknote size={13} /> Token
+              <div style={{ padding: '0 4px' }}>
+                <div style={{ fontSize: 'clamp(1.2rem, 4vw, 1.5rem)', fontWeight: 800, color: '#38BDF8', lineHeight: 1 }}>
+                  {route.totalTimeMins ?? '—'}
                 </div>
-                <div style={{ fontSize: "1.25rem", fontWeight: 800, color: "var(--text-primary)", margin: "4px 0 2px 0", lineHeight: 1 }}>
-                  ₹{route.fare}
-                </div>
-                <div style={{ fontSize: "0.68rem", color: "#10B981", fontWeight: 600, whiteSpace: "nowrap" }}>
-                  Card: ₹{route.smartCardFare || route.fare}
+                <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: '#94A3B8', marginTop: '4px', fontWeight: 600, letterSpacing: '0.02em', whiteSpace: 'nowrap' }}>
+                  MINS
                 </div>
               </div>
-
-              <div style={{
-                background: "var(--bg-card)",
-                padding: "10px 4px",
-                borderRadius: "12px",
-                border: "1px solid var(--border-color)",
-                textAlign: "center"
-              }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "4px", color: "var(--accent-primary)", fontSize: "0.72rem", fontWeight: 700 }}>
-                  <Clock size={13} /> Time
+              <div style={{ borderLeft: '1px solid rgba(255,255,255,0.12)', padding: '0 4px' }}>
+                <div style={{ fontSize: 'clamp(1.2rem, 4vw, 1.5rem)', fontWeight: 800, color: '#4ADE80', lineHeight: 1 }}>
+                  ₹{route.fare ?? '—'}
                 </div>
-                <div style={{ fontSize: "1.25rem", fontWeight: 800, color: "var(--text-primary)", margin: "4px 0 2px 0", lineHeight: 1, whiteSpace: "nowrap" }}>
-                  {route.totalTimeMins} <span style={{ fontSize: "0.75rem", fontWeight: 600 }}>min</span>
-                </div>
-                <div style={{ fontSize: "0.68rem", color: "var(--text-muted)", whiteSpace: "nowrap" }}>
-                  Duration
+                <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: '#94A3B8', marginTop: '4px', fontWeight: 600, letterSpacing: '0.02em', whiteSpace: 'nowrap' }}>
+                  FARE
                 </div>
               </div>
-
-              <div style={{
-                background: "var(--bg-card)",
-                padding: "10px 4px",
-                borderRadius: "12px",
-                border: "1px solid var(--border-color)",
-                textAlign: "center"
-              }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "4px", color: "var(--text-muted)", fontSize: "0.72rem", fontWeight: 700 }}>
-                  <MapPin size={13} /> Distance
+              <div style={{ borderLeft: '1px solid rgba(255,255,255,0.12)', padding: '0 4px' }}>
+                <div style={{ fontSize: 'clamp(1.2rem, 4vw, 1.5rem)', fontWeight: 800, color: '#FACC15', lineHeight: 1 }}>
+                  {route.totalStops ?? '—'}
                 </div>
-                <div style={{ fontSize: "1.25rem", fontWeight: 800, color: "var(--text-primary)", margin: "4px 0 2px 0", lineHeight: 1, whiteSpace: "nowrap" }}>
-                  {route.totalDistanceKm} <span style={{ fontSize: "0.75rem", fontWeight: 600 }}>km</span>
-                </div>
-                <div style={{ fontSize: "0.68rem", color: "var(--text-muted)", whiteSpace: "nowrap" }}>
-                  {route.totalStops} stops
+                <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: '#94A3B8', marginTop: '4px', fontWeight: 600, letterSpacing: '0.02em', whiteSpace: 'nowrap' }}>
+                  STOPS
                 </div>
               </div>
-
-              <div style={{
-                background: "var(--bg-card)",
-                padding: "10px 4px",
-                borderRadius: "12px",
-                border: "1px solid var(--border-color)",
-                textAlign: "center"
-              }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "4px", color: "var(--text-muted)", fontSize: "0.72rem", fontWeight: 700 }}>
-                  <Repeat size={13} /> Switch
+              <div style={{ borderLeft: '1px solid rgba(255,255,255,0.12)', padding: '0 4px' }}>
+                <div style={{ fontSize: 'clamp(1.2rem, 4vw, 1.5rem)', fontWeight: 800, color: '#F472B6', lineHeight: 1 }}>
+                  {route.switches ?? 0}
                 </div>
-                <div style={{ fontSize: "1.25rem", fontWeight: 800, color: "var(--text-primary)", margin: "4px 0 2px 0", lineHeight: 1, whiteSpace: "nowrap" }}>
-                  {route.switches}
-                </div>
-                <div style={{ fontSize: "0.68rem", color: route.switches === 0 ? "#10B981" : "var(--text-muted)", whiteSpace: "nowrap" }}>
-                  {route.switches === 0 ? "Direct" : `${route.switches} Switch`}
+                <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: '#94A3B8', marginTop: '4px', fontWeight: 600, letterSpacing: '0.02em', whiteSpace: 'nowrap' }}>
+                  {route.switches === 1 ? 'SWITCH' : 'SWITCHES'}
                 </div>
               </div>
             </div>
