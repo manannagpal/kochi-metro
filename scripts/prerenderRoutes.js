@@ -243,7 +243,7 @@ function buildHomeSsrHtml(appName, stationsList = [], hubList = []) {
       </header>
 
       <!-- Main Search Card Matching App UI -->
-      <main style="max-width:900px;margin:0 auto;">
+      <main style="width:100%;margin:0 auto;">
         <div class="glass-panel" style="padding:24px;border-radius:20px;margin-bottom:24px;background:var(--bg-surface);border:1px solid var(--border-color);box-shadow:var(--shadow-sm);">
           <div style="display:flex;flex-direction:column;gap:12px;">
             <div>

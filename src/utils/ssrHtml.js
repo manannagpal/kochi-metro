@@ -112,7 +112,7 @@ export function buildRouteSsrHtml(fromStation, toStation, routesInput, appName =
 
   return `
     <header style="background:var(--bg-surface);border-bottom:1px solid var(--border-color);position:sticky;top:0;z-index:100;">
-      <div style="max-width:1100px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="width:100%;margin:0 auto;padding:24px 0 0 0">
         <a href="/" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text-primary);">
           <img src="/icon-192.png" alt="${escapeAttr(appName)}" style="width:36px;height:36px;border-radius:50%;" />
           <div>
@@ -124,7 +124,7 @@ export function buildRouteSsrHtml(fromStation, toStation, routesInput, appName =
       </div>
     </header>
 
-    <main style="max-width:900px;margin:0 auto;padding:24px 16px 0 16px;">
+    <main style="width:100%;margin:0 auto;padding:24px 16px 0 16px;">
       <div class="glass-panel" style="padding:24px;margin-bottom:24px;border-radius:20px;">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
           <span style="background:rgba(16, 185, 129, 0.12);color:#10B981;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:700;letter-spacing:0.5px;">
@@ -189,7 +189,7 @@ export function buildRouteSsrHtml(fromStation, toStation, routesInput, appName =
 export function buildStationSsrHtml(station, lineNames, appName = "Kochi Metro") {
   return `
     <header style="background:var(--bg-surface);border-bottom:1px solid var(--border-color);position:sticky;top:0;z-index:100;">
-      <div style="max-width:1100px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="width:100%;margin:0 auto;padding:24px 0 0 0">
         <a href="/" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text-primary);">
           <img src="/icon-192.png" alt="${escapeAttr(appName)}" style="width:36px;height:36px;border-radius:50%;" />
           <div>
@@ -201,7 +201,7 @@ export function buildStationSsrHtml(station, lineNames, appName = "Kochi Metro")
       </div>
     </header>
 
-    <main style="max-width:900px;margin:0 auto;padding:24px 16px 40px 16px;">
+    <main style="width:100%;margin:0 auto;padding:24px 16px 40px 16px;">
       <div class="glass-panel" style="padding:24px;margin-bottom:24px;border-radius:20px;">
         <h1 style="font-size:1.6rem;font-weight:800;margin:0 0 8px 0;color:var(--text-primary);line-height:1.3;">
           ${escapeHtml(station.name)} Metro Station
