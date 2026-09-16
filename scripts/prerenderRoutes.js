@@ -278,26 +278,6 @@ function buildHomeSsrHtml(appName, stationsList = [], hubList = []) {
           </div>
         </div>
 
-        <!-- Popular Metro Routes (Semantic internal links for search crawlers) -->
-        <div class="glass-panel" style="padding:24px;border-radius:20px;margin-bottom:24px;background:var(--bg-surface);border:1px solid var(--border-color);">
-          <h2 style="font-size:1.15rem;font-weight:700;margin:0 0 16px 0;color:var(--text-primary);">
-            Popular Metro Routes
-          </h2>
-          <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));gap:10px;">
-            ${routeLinks.join('\n')}
-          </div>
-        </div>
-
-        <!-- Key Stations -->
-        <div class="glass-panel" style="padding:24px;border-radius:20px;margin-bottom:24px;background:var(--bg-surface);border:1px solid var(--border-color);">
-          <h2 style="font-size:1.15rem;font-weight:700;margin:0 0 16px 0;color:var(--text-primary);">
-            Key Metro Stations &amp; Interchanges
-          </h2>
-          <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));gap:8px;">
-            ${stationLinks}
-          </div>
-        </div>
-
         <!-- Directory & Legal Guides -->
         <div class="glass-panel" style="padding:20px 24px;border-radius:18px;margin-bottom:24px;background:var(--bg-surface);border:1px solid var(--border-color);">
           <h3 style="font-size:0.98rem;font-weight:700;margin:0 0 12px 0;color:var(--text-primary);">
