@@ -178,7 +178,7 @@ export function buildRouteDetail(rawPath, fromStationId, toStationId, overrideDm
     legs.push(currentLeg);
   }
 
-  const fareResult = calculateFare(totalStops);
+  const fareResult = calculateFare(totalDistance);
   const finalStandardFare = fareResult.standardFare || fareResult.tokenFare || fareResult;
   const finalSmartCardFare = fareResult.smartCardFare || fareResult.cardFare || fareResult;
 
