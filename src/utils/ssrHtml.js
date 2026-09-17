@@ -144,7 +144,7 @@ export function buildRouteSsrHtml(fromStation, toStation, routesInput, appName =
     <div class="app-container" style="max-width:1200px;margin:0 auto;padding:16px;">
       ${buildAppHeaderHtml(appName)}
 
-      <main style="width:100%;margin:0 auto;">
+      <main style="max-width:900px;width:100%;margin:0 auto;">
         <!-- Sub-header Controls matching RouteSeoPage -->
         <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
           <a href="/" style="color:var(--accent-primary);text-decoration:none;font-size:0.9rem;font-weight:600;display:inline-flex;align-items:center;gap:6px;padding:6px 0;">
@@ -221,7 +221,7 @@ export function buildStationSsrHtml(station, lineNames, appName = "Kochi Metro")
     <div class="app-container" style="max-width:1200px;margin:0 auto;padding:16px;">
       ${buildAppHeaderHtml(appName)}
 
-      <main style="width:100%;margin:0 auto;padding:8px 0 40px 0;">
+      <main style="max-width:900px;width:100%;margin:0 auto;padding:8px 0 40px 0;">
       <div class="glass-panel" style="padding:24px;margin-bottom:24px;border-radius:20px;">
         <h1 style="font-size:1.6rem;font-weight:800;margin:0 0 8px 0;color:var(--text-primary);line-height:1.3;">
           ${escapeHtml(station.name)} Metro Station

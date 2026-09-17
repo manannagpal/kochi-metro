@@ -68,7 +68,7 @@ export function StationSeoPage({ stationSlug, onBackToHome, onPlanFromStation, l
   }
 
   return (
-    <div style={{ maxWidth: '850px', margin: '0 auto', padding: '0 16px 40px 16px', width: '100%', boxSizing: 'border-box' }}>
+    <div style={{ maxWidth: '900px', margin: '0 auto', padding: '0 16px 40px 16px', width: '100%', boxSizing: 'border-box' }}>
       {/* Top Action Bar */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', gap: '12px', flexWrap: 'wrap' }}>
         <button
