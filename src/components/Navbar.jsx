@@ -58,7 +58,7 @@ export function Navbar({
   {/* CLASSIC WEB NAVBAR */}
   if (!isNativeApp) {
     return (
-      <header className="glass-panel" style={{ margin: '0 0 24px 0', borderRadius: '16px', overflow: 'hidden', background: 'var(--bg-surface)', border: '1px solid var(--border-color)' }}>
+      <header data-nosnippet className="glass-panel" style={{ margin: '0 0 24px 0', borderRadius: '16px', overflow: 'hidden', background: 'var(--bg-surface)', border: '1px solid var(--border-color)' }}>
         {/* Top Bar: Logo & Actions */}
         <div className="navbar-top">
           {/* Logo & Title */}
@@ -210,7 +210,7 @@ export function Navbar({
   {/* NATIVE MOBILE ACTION BAR HEADER */}
   return (
     <>
-      <header className="glass-panel" style={{
+      <header data-nosnippet className="glass-panel" style={{
         margin: '0 0 20px 0',
         borderRadius: '16px',
         overflow: 'visible',

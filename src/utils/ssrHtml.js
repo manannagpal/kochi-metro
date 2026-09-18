@@ -24,7 +24,7 @@ export function formatKm(val) {
 export function buildAppHeaderHtml(appName = "Kochi Metro") {
   return `
     <!-- Top Navbar Matching App UI -->
-    <header class="glass-panel" style="margin:0 0 20px 0;border-radius:16px;overflow:hidden;background:var(--bg-surface);border:1px solid var(--border-color);">
+    <header data-nosnippet class="glass-panel" style="margin:0 0 20px 0;border-radius:16px;overflow:hidden;background:var(--bg-surface);border:1px solid var(--border-color);">
       <div style="padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
         <a href="/" class="navbar-logo" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;cursor:pointer;">
           <img src="/logo.svg?v=2" alt="${escapeAttr(appName)} Logo" class="navbar-logo-img" style="width:42px;height:42px;border-radius:10px;object-fit:contain;background:#FFFFFF;padding:2px;" />
@@ -146,7 +146,7 @@ export function buildRouteSsrHtml(fromStation, toStation, routesInput, appName =
 
       <main style="max-width:900px;width:100%;margin:0 auto;">
         <!-- Sub-header Controls matching RouteSeoPage -->
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
+        <div data-nosnippet style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
           <a href="/" style="color:var(--accent-primary);text-decoration:none;font-size:0.9rem;font-weight:600;display:inline-flex;align-items:center;gap:6px;padding:6px 0;">
             &larr; Back to Planner
           </a>
@@ -209,7 +209,7 @@ export function buildRouteSsrHtml(fromStation, toStation, routesInput, appName =
     </main>
     </div>
 
-    <footer style="margin-top:16px;padding:28px 24px;border-top:1px solid var(--border-color);text-align:center;color:var(--text-muted);font-size:0.85rem;background:var(--bg-surface);">
+    <footer data-nosnippet style="margin-top:16px;padding:28px 24px;border-top:1px solid var(--border-color);text-align:center;color:var(--text-muted);font-size:0.85rem;background:var(--bg-surface);">
       <p style="margin:0;">&copy; 2026 ${escapeHtml(appName)} Route Finder</p>
     </footer>
   `;
@@ -240,7 +240,7 @@ export function buildStationSsrHtml(station, lineNames, appName = "Kochi Metro")
     </main>
     </div>
 
-    <footer style="margin-top:16px;padding:28px 24px;border-top:1px solid var(--border-color);text-align:center;color:var(--text-muted);font-size:0.85rem;background:var(--bg-surface);">
+    <footer data-nosnippet style="margin-top:16px;padding:28px 24px;border-top:1px solid var(--border-color);text-align:center;color:var(--text-muted);font-size:0.85rem;background:var(--bg-surface);">
       <p style="margin:0;">&copy; 2026 ${escapeHtml(appName)} Route Finder</p>
     </footer>
   `;

@@ -5,7 +5,7 @@ import { Capacitor } from '@capacitor/core';
 export function Footer({ onInstallPWA, deferredPrompt, onNavigate, theme }) {
   if (Capacitor.isNativePlatform()) {
     return (
-      <footer style={{
+      <footer data-nosnippet style={{
         marginTop: '8px',
         padding: '6px 12px 12px 12px',
         textAlign: 'center',
@@ -22,7 +22,7 @@ export function Footer({ onInstallPWA, deferredPrompt, onNavigate, theme }) {
     );
   }
   return (
-    <footer style={{
+    <footer data-nosnippet style={{
       marginTop: '16px',
       padding: '28px 24px',
       borderTop: '1px solid var(--border-color)',
