@@ -29,7 +29,22 @@ export function RouteSeoPage({ fromSlug, toSlug, onResetSearch, onOpenPlanner })
   };
 
   useEffect(() => {
-    if (!fromStation || !toStation || !primaryRoute) return;
+    if (!fromStation || !toStation || !primaryRoute) {
+      document.title = "Route Not Found";
+      let robotsEl = document.querySelector("meta[name=\"robots\"]");
+      if (!robotsEl) {
+        robotsEl = document.createElement("meta");
+        robotsEl.name = "robots";
+        document.head.appendChild(robotsEl);
+      }
+      robotsEl.content = "noindex, follow";
+      return;
+    }
+
+    let robotsEl = document.querySelector("meta[name=\"robots\"]");
+    if (robotsEl && robotsEl.content === "noindex, follow") {
+      robotsEl.remove();
+    }
 
     const pageTitle = `${fromStation.name} to ${toStation.name} Metro Route & Fare (₹${primaryRoute.fare})`;
     const pageDesc = routes.length > 1

@@ -1,3 +1,4 @@
+import { calculateRoutes } from "../src/routing/routeEngine.js";
 ﻿import fs from "fs";
 import path from "path";
 import { STATIONS } from "../src/data/stations.js";
@@ -23,14 +24,27 @@ const today = new Date().toISOString().split("T")[0];
 
 console.log(`Starting Instant Complete Sitemap Generation for ${stations.length} stations...`);
 
+const publicDir = path.resolve("public");
+if (fs.existsSync(publicDir)) {
+  fs.readdirSync(publicDir).forEach(f => {
+    if (/^sitemap-\d+\.xml$/.test(f)) {
+      try { fs.unlinkSync(path.join(publicDir, f)); } catch (_) {}
+    }
+  });
+}
+
+
 const allRouteUrls = [];
 
 stations.forEach(fromSt => {
   const fromSlug = getStationSlug(fromSt);
   stations.forEach(toSt => {
     if (fromSt.id !== toSt.id) {
-      const toSlug = getStationSlug(toSt);
-      allRouteUrls.push(`${BASE_URL}/route/${fromSlug}/${toSlug}/`);
+      const routes = calculateRoutes(fromSt.id, toSt.id);
+      if (routes && routes.length > 0) {
+        const toSlug = getStationSlug(toSt);
+        allRouteUrls.push(`${BASE_URL}/route/${fromSlug}/${toSlug}/`);
+      }
     }
   });
 });

@@ -77,7 +77,9 @@ function renderRouteSeoHtml(fromSt, toSt) {
       _fare = primaryRoute.fare;
     }
   } catch(_e) {}
-  const pageTitle = _fare !== null
+  
+  if (!primaryRoute) return null;
+const pageTitle = _fare !== null
     ? `${fromName} to ${toName} Metro Route, Fare (₹${_fare}) & Travel Time | Kochi Metro (KMRL)`
     : `${fromName} to ${toName} Metro Route, Fare & Travel Time | Kochi Metro (KMRL)`;
   const pageDesc = `Fastest metro route from ${fromName} to ${toName}: Calculate fare, travel time, line interchanges, and platform guide for Kochi Metro (Blue Line).`;
@@ -139,7 +141,11 @@ hubStations.forEach(fromSt => {
       const toSlug = getStationSlug(toSt);
       const routeDir = path.resolve(`dist/route/${fromSlug}/${toSlug}`);
       fs.mkdirSync(routeDir, { recursive: true });
-      fs.writeFileSync(path.join(routeDir, "index.html"), renderRouteSeoHtml(fromSt, toSt), "utf8");
+      const routeHtml = renderRouteSeoHtml(fromSt, toSt);
+      if (routeHtml) {
+        fs.writeFileSync(path.join(routeDir, "index.html"), routeHtml, "utf8");
+        count++;
+      }
       count++;
     }
   });
@@ -177,7 +183,23 @@ staticPages.forEach(p => {
 });
 
 // Copy 404
-fs.copyFileSync(distIndexHtmlPath, path.resolve("dist/404.html"));
+
+// Static 404 Page Generation
+const notFoundBody = `
+  <div style="max-width:700px;margin:80px auto;padding:24px;text-align:center;color:var(--text-primary);font-family:system-ui,-apple-system,sans-serif;">
+    <h1 style="font-size:2rem;font-weight:800;color:#EF4444;margin-bottom:12px;">404 - Page Not Found</h1>
+    <p style="color:var(--text-secondary);font-size:1rem;margin-bottom:24px;">The requested metro station, route, or transit guide could not be found.</p>
+    <a href="/" style="display:inline-block;padding:10px 20px;background:var(--accent-primary, #2563EB);color:#fff;text-decoration:none;border-radius:8px;font-weight:600;">Back to Route Finder &rarr;</a>
+  </div>
+`;
+const notFoundHtml = (typeof replaceSeoTags === 'function' ? replaceSeoTags(templateHtml, {
+  title: "404 - Page Not Found",
+  description: "The requested station or route could not be found.",
+  canonicalUrl: "https://metro.org.in/404.html",
+  bodyHtml: notFoundBody
+}) : templateHtml).replace("</head>", '<meta name="robots" content="noindex, follow" />\n</head>');
+fs.writeFileSync(path.resolve("dist/404.html"), notFoundHtml, "utf8");
+
 
 console.log(`Successfully pre-rendered static HTML for ${stations.length} stations, ${count} hub routes, and static pages into dist/`);
 
