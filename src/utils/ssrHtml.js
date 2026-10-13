@@ -1,3 +1,4 @@
+import { getStationSlug } from './slugify.js';
 export function escapeHtml(str) {
   return String(str || '')
     .replace(/&/g, '&amp;')
@@ -60,6 +61,8 @@ export function buildRouteSsrHtml(fromStation, toStation, routesInput, appName =
   const routesList = Array.isArray(routesInput) ? routesInput : (routesInput ? [routesInput] : []);
   const primaryRoute = routesList[0] || {};
   const routesCount = routesList.length;
+  const fromSlug = getStationSlug(fromStation);
+  const toSlug = getStationSlug(toStation);
 
   const routesHtml = routesList.map((route, rIdx) => {
     const fare = route.fare;
@@ -154,7 +157,15 @@ export function buildRouteSsrHtml(fromStation, toStation, routesInput, appName =
             Open Interactive Map
           </a>
         </div>
-      <div class="glass-panel" style="padding:24px;margin-bottom:24px;border-radius:20px;">
+              <!-- Hierarchical Breadcrumb Navigation -->
+        <nav data-nosnippet style="margin-bottom:14px;font-size:0.85rem;color:var(--text-muted,#64748b);">
+          <a href="/" style="color:var(--accent-primary,#2563eb);text-decoration:none;">Home</a> &rsaquo;
+          <a href="/stations/" style="color:var(--accent-primary,#2563eb);text-decoration:none;">Stations</a> &rsaquo;
+          <a href="/station/${fromSlug}/" style="color:var(--accent-primary,#2563eb);text-decoration:none;">${escapeHtml(fromStation.name)} Station</a> &rsaquo;
+          <span style="color:var(--text-secondary,#475569);">${escapeHtml(fromStation.name)} to ${escapeHtml(toStation.name)}</span>
+        </nav>
+
+<div class="glass-panel" style="padding:24px;margin-bottom:24px;border-radius:20px;">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
           <span style="background:rgba(16, 185, 129, 0.12);color:#10B981;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:700;letter-spacing:0.5px;">
             ${routesCount > 1 ? `${routesCount} ROUTE OPTIONS AVAILABLE` : 'DIRECT & FASTEST ROUTE'}
@@ -168,6 +179,16 @@ export function buildRouteSsrHtml(fromStation, toStation, routesInput, appName =
             ? `Compare all ${routesCount} available route options from ${escapeHtml(fromStation.name)} to ${escapeHtml(toStation.name)}. Check fares, travel times, station stops, and platform transfers.`
             : 'Complete travel guide with token fare, smart card discount, total travel time, stops, and line interchanges.'}
         </p>
+        <!-- Return Route / Reverse Journey Link -->
+        <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border-color, rgba(226,232,240,0.8));display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+          <div style="font-size:0.86rem;color:var(--text-secondary,#475569);">
+            Traveling in the opposite direction?
+          </div>
+          <a href="/route/${toSlug}/${fromSlug}/" style="display:inline-flex;align-items:center;gap:6px;background:var(--bg-surface,#f8fafc);color:var(--accent-primary,#2563eb);border:1px solid var(--border-color,#cbd5e1);padding:6px 14px;border-radius:10px;font-size:0.85rem;font-weight:700;text-decoration:none;transition:all 0.15s ease;">
+            <span>&#8646; Return: ${escapeHtml(toStation.name)} to ${escapeHtml(fromStation.name)}</span>
+            <span style="font-size:0.8rem;color:var(--text-muted,#64748b);">${primaryRoute.fare ? `(₹${primaryRoute.fare})` : ''} &rarr;</span>
+          </a>
+        </div>
       </div>
 
       ${routesHtml}

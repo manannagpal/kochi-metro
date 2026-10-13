@@ -62,7 +62,37 @@ export async function onRequest(context) {
   const keywords = `${fromSt.name} to ${toSt.name} metro route, ${fromSt.name} metro fare, Kochi metro fare calculator, ${fromSt.name} to ${toSt.name} distance`;
   const canonicalUrl = `https://kochi.metro.org.in/route/${canonicalFromSlug}/${canonicalToSlug}/`;
 
-  const faqSchema = JSON.stringify({
+      const breadcrumbSchema = {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": `${origin}/`
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Stations",
+          "item": `${origin}/stations/`
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": `${fromSt.name} Metro Station`,
+          "item": `${origin}/station/${canonicalFromSlug}/`
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": `${fromSt.name} to ${toSt.name}`,
+          "item": canonicalUrl
+        }
+      ]
+    };
+
+const faqSchema = JSON.stringify({
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [
@@ -112,7 +142,7 @@ export async function onRequest(context) {
   html = html.replace(/<meta\s+(?:name|property)=["']twitter:description["'][^>]*>/i, `<meta name="twitter:description" content="${description.replace(/"/g, '&quot;')}" />`);
   html = html.replace(/<meta\s+(?:name|property)=["']twitter:url["'][^>]*>/i, `<meta name="twitter:url" content="${canonicalUrl}" />`);
 
-  const schemaTag = `<script type="application/ld+json">${faqSchema}</script>\n`;
+  const schemaTag = `<script type="application/ld+json">${JSON.stringify({ "@context": "https://schema.org", "@graph": [breadcrumbSchema, JSON.parse(faqSchema || "{}")] })}</script>\n`;
   html = html.replace('</head>', `${schemaTag}</head>`);
 
   if (ssrBodyHtml) {

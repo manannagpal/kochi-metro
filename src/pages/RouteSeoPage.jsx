@@ -81,7 +81,36 @@ export function RouteSeoPage({ fromSlug, toSlug, onResetSearch, onOpenPlanner })
     const schemaData = {
       "@context": "https://schema.org",
       "@graph": [
-        {
+                {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://kochi.metro.org.in/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Stations",
+              "item": "https://kochi.metro.org.in/stations/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": `${fromStation.name} Metro Station`,
+              "item": `https://kochi.metro.org.in/station/${fromSlug}/`
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": `${fromStation.name} to ${toStation.name}`,
+              "item": canonicalUrl
+            }
+          ]
+        },
+{
           "@type": "Trip",
           "name": `${fromStation.name} to ${toStation.name} Metro Route`,
           "description": pageDesc,
@@ -195,7 +224,15 @@ export function RouteSeoPage({ fromSlug, toSlug, onResetSearch, onOpenPlanner })
       </div>
 
       {/* Main Header */}
-      <div className="glass-panel" style={{ padding: "24px", marginBottom: "24px", borderRadius: "20px" }}>
+            {/* Breadcrumb Navigation */}
+      <nav data-nosnippet style={{ marginBottom: "14px", fontSize: "0.85rem", color: "var(--text-muted, #64748b)" }}>
+        <a href="/" style={{ color: "var(--accent-primary)", textDecoration: "none" }}>Home</a> &rsaquo;{" "}
+        <a href="/stations/" style={{ color: "var(--accent-primary)", textDecoration: "none" }}>Stations</a> &rsaquo;{" "}
+        <a href={`/station/${fromSlug}/`} style={{ color: "var(--accent-primary)", textDecoration: "none" }}>{fromStation.name} Station</a> &rsaquo;{" "}
+        <span style={{ color: "var(--text-secondary)" }}>{fromStation.name} to {toStation.name}</span>
+      </nav>
+
+<div className="glass-panel" style={{ padding: "24px", marginBottom: "24px", borderRadius: "20px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "12px" }}>
           <span style={{
             background: "rgba(16, 185, 129, 0.12)",
@@ -229,6 +266,42 @@ export function RouteSeoPage({ fromSlug, toSlug, onResetSearch, onOpenPlanner })
           Compare all available Kochi Metro routes from <strong>{fromStation.name}</strong> to <strong>{toStation.name}</strong>.
           Check token fare, smart card discount rates, total travel time, passing stations, and platform interchange instructions.
         </p>
+        {/* Return Route / Reverse Journey Link */}
+        <div style={{
+          marginTop: "16px",
+          paddingTop: "14px",
+          borderTop: "1px solid var(--border-color)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          gap: "10px"
+        }}>
+          <div style={{ fontSize: "0.86rem", color: "var(--text-secondary)" }}>
+            Traveling in the opposite direction?
+          </div>
+          <a
+            href={`/route/${toSlug}/${fromSlug}/`}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "6px",
+              background: "var(--bg-surface)",
+              color: "var(--accent-primary)",
+              border: "1px solid var(--border-color)",
+              padding: "6px 14px",
+              borderRadius: "10px",
+              fontSize: "0.85rem",
+              fontWeight: 700,
+              textDecoration: "none",
+              transition: "all 0.15s ease"
+            }}
+          >
+            <Repeat size={14} />
+            <span>Return: {toStation.name} to {fromStation.name}</span>
+            <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>{primaryRoute?.fare ? `(₹${primaryRoute.fare})` : ''} &rarr;</span>
+          </a>
+        </div>
       </div>
 
       {/* All Available Route Options */}
