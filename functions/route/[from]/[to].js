@@ -36,6 +36,7 @@ export async function onRequest(context) {
     context.passThroughOnException();
   }
   const { params, env, request } = context;
+  const origin = new URL(request.url).origin;
 
   const fromSlug = params.from;
   const toSlug = params.to;
