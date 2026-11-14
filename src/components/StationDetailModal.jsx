@@ -34,7 +34,7 @@ export function StationDetailModal({ station, onClose, lang = 'en', isFullPage =
           maxWidth: isFullPage ? '850px' : '560px',
           maxHeight: isFullPage ? 'none' : '90vh',
           overflowY: isFullPage ? 'visible' : 'auto',
-          padding: isFullPage ? '28px' : '24px',
+          padding: isFullPage ? '20px 16px 16px 16px' : '24px',
           position: 'relative',
           background: 'var(--bg-surface)',
           borderRadius: '24px',
@@ -399,7 +399,7 @@ export function StationDetailModal({ station, onClose, lang = 'en', isFullPage =
 
     if (isFullPage) {
       return (
-        <div style={{ padding: '0 0 40px 0', maxWidth: '850px', margin: '0 auto' }}>
+        <div style={{ padding: '0px 0px 8px 0px', maxWidth: '850px', margin: '0 auto' }}>
           {cardContent}
         </div>
       );

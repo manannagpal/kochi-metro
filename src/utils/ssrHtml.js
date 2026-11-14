@@ -287,7 +287,7 @@ export function buildRouteSsrHtml(fromStation, toStation, routesInput, appName =
       </main>
     </div>
 
-    <footer data-nosnippet style="margin-top:16px;padding:28px 24px;border-top:1px solid var(--border-color);text-align:center;color:var(--text-muted);font-size:0.85rem;background:var(--bg-surface);">
+    <footer data-nosnippet style="margin-top:16px;padding:20px 16px 8px 16px;border-top:1px solid var(--border-color);text-align:center;color:var(--text-muted);font-size:0.85rem;background:var(--bg-surface);">
       <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:16px;margin-bottom:10px;">
         <a href="https://metro.org.in/" style="color:var(--accent-primary);text-decoration:none;font-weight:600;">All India Metros</a>
         <a href="/stations/" style="color:var(--text-secondary);text-decoration:none;">All Stations</a>
@@ -351,7 +351,7 @@ export function buildStationSsrHtml(station, lineNames, appName = "Kochi Metro")
       </main>
     </div>
 
-    <footer data-nosnippet style="margin-top:16px;padding:28px 24px;border-top:1px solid var(--border-color);text-align:center;color:var(--text-muted);font-size:0.85rem;background:var(--bg-surface);">
+    <footer data-nosnippet style="margin-top:16px;padding:20px 16px 8px 16px;border-top:1px solid var(--border-color);text-align:center;color:var(--text-muted);font-size:0.85rem;background:var(--bg-surface);">
       <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:16px;margin-bottom:10px;">
         <a href="https://metro.org.in/" style="color:var(--accent-primary);text-decoration:none;font-weight:600;">All India Metros</a>
         <a href="/stations/" style="color:var(--text-secondary);text-decoration:none;">All Stations</a>
