@@ -1,4 +1,6 @@
-import { getStationSlug } from './slugify.js';
+import { stations } from '../data/kochiMetroData.js';
+import { KOCHI_HUB_IDS } from '../data/popularHubs.js';
+
 export function escapeHtml(str) {
   return String(str || '')
     .replace(/&/g, '&amp;')
@@ -19,6 +21,27 @@ export function formatKm(val) {
   if (val === null || val === undefined) return '';
   const n = parseFloat(val);
   return isNaN(n) ? String(val) : (n % 1 === 0 ? n.toFixed(0) : n.toFixed(1));
+}
+
+export function slugify(text) {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-');
+}
+
+export function getStationSlug(station) {
+  if (!station) return '';
+  return slugify(station.name);
+}
+
+// Helper to get popular destinations for lateral linking
+export function getPopularDestsForStation(station, count = 8) {
+  const hubs = stations.filter(s => KOCHI_HUB_IDS.includes(s.id) && s.id !== station.id);
+  return hubs.slice(0, count);
 }
 
 // ─── App Header SSR HTML Builder ───────────────────────────────────────────────
@@ -66,27 +89,26 @@ export function buildRouteSsrHtml(fromStation, toStation, routesInput, appName =
 
   const routesHtml = routesList.map((route, rIdx) => {
     const fare = route.fare;
-    const smartCardFare = route.smartCardFare || route.fare;
     const time = route.totalTimeMins;
     const distance = formatKm(route.totalDistanceKm);
     const stops = route.totalStops || (route.stations ? route.stations.length : 'Multiple');
-    const switches = route.switches;
+    const switches = route.switches ?? 0;
     const isPrimary = rIdx === 0;
 
     let legsHtml = '';
     if (Array.isArray(route.legs) && route.legs.length > 0) {
       legsHtml = route.legs.map((leg, lIdx) => {
-        const lineName = leg.lineName || leg.line || 'Metro Line';
-        const lineColor = leg.lineColor || '#3B82F6';
-        const legStops = leg.stops ? leg.stops.length : 0;
-        const stationList = Array.isArray(leg.stops)
-          ? leg.stops.map(s => `<li style="padding:3px 0;font-size:0.85rem;color:var(--text-secondary);list-style:disc inside;">${escapeHtml(typeof s === 'string' ? s : (s.name || ''))}</li>`).join('')
+        const lineName = leg.lineName || leg.line || 'Blue Line';
+        const lineColor = leg.lineColor || '#00A3E0';
+        const legStops = leg.stations ? leg.stations.length : '';
+        const stationList = Array.isArray(leg.stations)
+          ? leg.stations.map(st => `<li style="padding:2px 0;font-size:0.84rem;color:var(--text-secondary);list-style:disc inside;">${escapeHtml(typeof st === 'string' ? st : (st.name || ''))}</li>`).join('')
           : '';
 
         return `
-          <div style="margin-bottom:14px;border-left:3px solid ${escapeAttr(lineColor)};padding-left:12px;">
-            <div style="font-weight:700;font-size:0.92rem;color:var(--text-primary);margin-bottom:2px;">
-              Leg ${lIdx + 1}: ${escapeHtml(lineName)} (${escapeHtml(leg.fromStation?.name || leg.from || '')} &rarr; ${escapeHtml(leg.toStation?.name || leg.to || '')})
+          <div style="margin-bottom:12px;padding:12px;border-left:4px solid ${lineColor};background:var(--input-bg);border-radius:0 8px 8px 0;">
+            <div style="font-weight:700;font-size:0.9rem;color:var(--text-primary);margin-bottom:4px;">
+              ${escapeHtml(lineName)} (${escapeHtml(leg.fromStation?.name || leg.from || '')} &rarr; ${escapeHtml(leg.toStation?.name || leg.to || '')})
             </div>
             <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:6px;">
               ${legStops} stops &bull; ${leg.timeMins ? leg.timeMins + ' mins' : ''} ${leg.direction ? '&bull; Towards ' + escapeHtml(leg.direction) : ''}
@@ -106,14 +128,14 @@ export function buildRouteSsrHtml(fromStation, toStation, routesInput, appName =
       <div class="glass-panel" style="padding:20px;margin-bottom:20px;border-radius:18px;${isPrimary ? 'border:1px solid rgba(16, 185, 129, 0.3);' : ''}">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:8px;">
           <span style="background:${isPrimary ? 'var(--accent-primary)' : 'rgba(255, 255, 255, 0.08)'};color:#FFFFFF;padding:5px 12px;border-radius:8px;font-size:0.82rem;font-weight:700;white-space:nowrap;">
-            ${isPrimary ? 'Option 1: Fastest Route' : `Option ${rIdx + 1}: Alternative Route`}
+            ${isPrimary ? 'Option 1: Direct Route' : `Option ${rIdx + 1}: Alternative Route`}
           </span>
           <span style="background:var(--bg-surface);color:var(--text-secondary);border:1px solid var(--border-color);padding:4px 10px;border-radius:6px;font-size:0.8rem;font-weight:600;display:inline-flex;align-items:center;gap:4px;">
             ${isPrimary ? 'Hide Journey &#9652;' : 'View Journey &#9662;'}
           </span>
         </div>
 
-        <!-- Signature Stats Summary Bar (Matching RouteResultCard) -->
+        <!-- Signature Stats Summary Bar -->
         <div style="background:var(--header-summary-bg, #1E293B);padding:14px 8px;color:#FFFFFF;display:grid;grid-template-columns:repeat(4, 1fr);text-align:center;align-items:center;border-radius:12px;margin-bottom:16px;">
           <div style="padding:0 4px;">
             <div style="font-size:clamp(1.2rem, 4vw, 1.5rem);font-weight:800;color:#38BDF8;line-height:1;">${time ?? '—'}</div>
@@ -128,14 +150,14 @@ export function buildRouteSsrHtml(fromStation, toStation, routesInput, appName =
             <div style="font-size:0.7rem;text-transform:uppercase;color:#94A3B8;margin-top:4px;font-weight:600;letter-spacing:0.02em;white-space:nowrap;">STOPS</div>
           </div>
           <div style="border-left:1px solid rgba(255,255,255,0.12);padding:0 4px;">
-            <div style="font-size:clamp(1.2rem, 4vw, 1.5rem);font-weight:800;color:#F472B6;line-height:1;">${switches ?? 0}</div>
+            <div style="font-size:clamp(1.2rem, 4vw, 1.5rem);font-weight:800;color:#F472B6;line-height:1;">${switches}</div>
             <div style="font-size:0.7rem;text-transform:uppercase;color:#94A3B8;margin-top:4px;font-weight:600;letter-spacing:0.02em;white-space:nowrap;">${switches === 1 ? 'SWITCH' : 'SWITCHES'}</div>
           </div>
         </div>
 
         ${legsHtml ? `
           <div style="margin-top:14px;padding-top:14px;border-top:1px dashed var(--border-color);">
-            <div style="font-weight:700;font-size:0.9rem;margin-bottom:10px;color:var(--text-primary);">Route Station Timetable &amp; Interchange Guide</div>
+            <div style="font-weight:700;font-size:0.9rem;margin-bottom:10px;color:var(--text-primary);">Route Station Timetable &amp; Halts</div>
             ${legsHtml}
           </div>
         ` : ''}
@@ -143,94 +165,137 @@ export function buildRouteSsrHtml(fromStation, toStation, routesInput, appName =
     `;
   }).join('');
 
+  // Station detail links
+  const journeyStationLinks = [
+    `<a href="/station/${fromSlug}/" style="padding:10px 14px;background:var(--input-bg);border:1px solid var(--border-color);border-radius:10px;color:var(--text-primary);text-decoration:none;font-size:0.86rem;font-weight:600;display:inline-flex;align-items:center;gap:6px;"><span>📍 Origin: <strong>${escapeHtml(fromStation.name)}</strong> Station Guide &rarr;</span></a>`,
+    `<a href="/station/${toSlug}/" style="padding:10px 14px;background:var(--input-bg);border:1px solid var(--border-color);border-radius:10px;color:var(--text-primary);text-decoration:none;font-size:0.86rem;font-weight:600;display:inline-flex;align-items:center;gap:6px;"><span>🏁 Destination: <strong>${escapeHtml(toStation.name)}</strong> Station Guide &rarr;</span></a>`
+  ];
+
+  // Lateral outbound links
+  const originHubs = getPopularDestsForStation(fromStation, 6);
+  const destHubs = getPopularDestsForStation(toStation, 6);
+
+  const lateralOriginLinks = originHubs.map(h => {
+    const hSlug = getStationSlug(h);
+    return `<a href="/route/${fromSlug}/${hSlug}/" style="padding:6px 12px;background:var(--input-bg);border:1px solid var(--border-color);color:var(--text-primary);text-decoration:none;border-radius:8px;font-size:0.82rem;font-weight:600;display:inline-flex;align-items:center;gap:4px;"><span>${escapeHtml(fromStation.name)} &rarr; <strong>${escapeHtml(h.name)}</strong></span></a>`;
+  }).join('');
+
+  const lateralDestLinks = destHubs.map(h => {
+    const hSlug = getStationSlug(h);
+    return `<a href="/route/${hSlug}/${toSlug}/" style="padding:6px 12px;background:var(--input-bg);border:1px solid var(--border-color);color:var(--text-primary);text-decoration:none;border-radius:8px;font-size:0.82rem;font-weight:600;display:inline-flex;align-items:center;gap:4px;"><span>${escapeHtml(h.name)} &rarr; <strong>${escapeHtml(toStation.name)}</strong></span></a>`;
+  }).join('');
+
   return `
     <div class="app-container" style="max-width:1200px;margin:0 auto;padding:16px;">
       ${buildAppHeaderHtml(appName)}
 
-      <main style="max-width:900px;width:100%;margin:0 auto;">
-        <!-- Sub-header Controls matching RouteSeoPage -->
-        <div data-nosnippet style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
-          <a href="/" style="color:var(--accent-primary);text-decoration:none;font-size:0.9rem;font-weight:600;display:inline-flex;align-items:center;gap:6px;padding:6px 0;">
-            &larr; Back to Planner
-          </a>
-          <a href="/" style="background:var(--accent-primary);color:#FFFFFF;padding:8px 16px;border-radius:10px;text-decoration:none;font-size:0.85rem;font-weight:600;display:inline-flex;align-items:center;gap:6px;">
-            Open Interactive Map
-          </a>
-        </div>
-              <!-- Hierarchical Breadcrumb Navigation -->
+      <main style="max-width:900px;width:100%;margin:0 auto;padding:8px 0 40px 0;">
+        <!-- Hierarchical Breadcrumb Navigation -->
         <nav data-nosnippet style="margin-bottom:14px;font-size:0.85rem;color:var(--text-muted,#64748b);">
           <a href="/" style="color:var(--accent-primary,#2563eb);text-decoration:none;">Home</a> &rsaquo;
           <a href="/stations/" style="color:var(--accent-primary,#2563eb);text-decoration:none;">Stations</a> &rsaquo;
-          <a href="/station/${fromSlug}/" style="color:var(--accent-primary,#2563eb);text-decoration:none;">${escapeHtml(fromStation.name)} Station</a> &rsaquo;
-          <span style="color:var(--text-secondary,#475569);">${escapeHtml(fromStation.name)} to ${escapeHtml(toStation.name)}</span>
+          <a href="/station/${fromSlug}/" style="color:var(--accent-primary,#2563eb);text-decoration:none;">${escapeHtml(fromStation.name)}</a> &rsaquo;
+          <span style="color:var(--text-secondary,#475569);">to ${escapeHtml(toStation.name)}</span>
         </nav>
 
-<div class="glass-panel" style="padding:24px;margin-bottom:24px;border-radius:20px;">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
-          <span style="background:rgba(16, 185, 129, 0.12);color:#10B981;padding:4px 10px;border-radius:20px;font-size:0.75rem;font-weight:700;letter-spacing:0.5px;">
-            ${routesCount > 1 ? `${routesCount} ROUTE OPTIONS AVAILABLE` : 'DIRECT & FASTEST ROUTE'}
-          </span>
+        <div class="glass-panel" style="padding:24px;margin-bottom:24px;border-radius:20px;">
+          <h1 style="font-size:1.6rem;font-weight:800;margin:0 0 8px 0;color:var(--text-primary);line-height:1.3;">
+            ${escapeHtml(fromStation.name)} to ${escapeHtml(toStation.name)} Metro Route
+          </h1>
+          <p style="color:var(--text-secondary);font-size:0.95rem;margin:0 0 16px 0;">
+            ${primaryRoute.totalTimeMins
+              ? `Fastest travel time is <strong>${primaryRoute.totalTimeMins} mins</strong> covering <strong>${formatKm(primaryRoute.totalDistanceKm)} km</strong> with <strong>${primaryRoute.switches || 0} line interchange(s)</strong>.`
+              : 'Complete travel guide with token fare, total travel time, stops, and schedule.'}
+          </p>
+          <!-- Reciprocal Return Journey Link -->
+          <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border-color);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+            <div style="font-size:0.86rem;color:var(--text-secondary);">
+              Traveling in the opposite direction?
+            </div>
+            <a href="/route/${toSlug}/${fromSlug}/" style="display:inline-flex;align-items:center;gap:6px;background:var(--bg-surface);color:var(--accent-primary);border:1px solid var(--border-color);padding:6px 14px;border-radius:10px;font-size:0.85rem;font-weight:700;text-decoration:none;">
+              <span>&#8646; Return: ${escapeHtml(toStation.name)} to ${escapeHtml(fromStation.name)}</span>
+              <span style="font-size:0.8rem;color:var(--text-muted);">${primaryRoute.fare ? `(₹${primaryRoute.fare})` : ''} &rarr;</span>
+            </a>
+          </div>
         </div>
-        <h1 style="font-size:1.6rem;font-weight:800;margin:0 0 10px 0;color:var(--text-primary);line-height:1.3;">
-          ${escapeHtml(fromStation.name)} to ${escapeHtml(toStation.name)} Metro Route &amp; Fare ${primaryRoute.fare ? `(&#8377;${primaryRoute.fare})` : ''}
-        </h1>
-        <p style="color:var(--text-secondary);font-size:0.92rem;line-height:1.5;margin:0;">
-          ${routesCount > 1
-            ? `Compare all ${routesCount} available route options from ${escapeHtml(fromStation.name)} to ${escapeHtml(toStation.name)}. Check fares, travel times, station stops, and platform transfers.`
-            : 'Complete travel guide with token fare, smart card discount, total travel time, stops, and line interchanges.'}
-        </p>
-        <!-- Return Route / Reverse Journey Link -->
-        <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border-color, rgba(226,232,240,0.8));display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
-          <div style="font-size:0.86rem;color:var(--text-secondary,#475569);">
-            Traveling in the opposite direction?
+
+        ${routesHtml}
+
+        <!-- Station Guides for This Journey -->
+        <div class="glass-panel" style="padding:24px;margin-bottom:24px;border-radius:20px;">
+          <h3 style="font-size:1.1rem;font-weight:700;margin:0 0 12px 0;color:var(--text-primary);">
+            Station Guides for This Journey
+          </h3>
+          <p style="font-size:0.86rem;color:var(--text-secondary);margin:0 0 14px 0;">
+            View first/last train timetables, exit gates, feeder connections, and parking facilities:
+          </p>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            ${journeyStationLinks.join('')}
           </div>
-          <a href="/route/${toSlug}/${fromSlug}/" style="display:inline-flex;align-items:center;gap:6px;background:var(--bg-surface,#f8fafc);color:var(--accent-primary,#2563eb);border:1px solid var(--border-color,#cbd5e1);padding:6px 14px;border-radius:10px;font-size:0.85rem;font-weight:700;text-decoration:none;transition:all 0.15s ease;">
-            <span>&#8646; Return: ${escapeHtml(toStation.name)} to ${escapeHtml(fromStation.name)}</span>
-            <span style="font-size:0.8rem;color:var(--text-muted,#64748b);">${primaryRoute.fare ? `(₹${primaryRoute.fare})` : ''} &rarr;</span>
-          </a>
         </div>
-      </div>
 
-      ${routesHtml}
-
-      <div class="glass-panel" style="padding:24px;margin-bottom:0px;border-radius:20px;">
-        <h3 style="font-size:1.1rem;font-weight:700;margin:0 0 16px 0;color:var(--text-primary);">
-          Frequently Asked Questions (${escapeHtml(fromStation.name)} to ${escapeHtml(toStation.name)})
-        </h3>
-        <div style="display:flex;flex-direction:column;gap:14px;">
-          <div>
-            <h4 style="font-size:0.92rem;font-weight:700;color:var(--text-primary);margin:0 0 4px 0;">
-              What is the metro fare from ${escapeHtml(fromStation.name)} to ${escapeHtml(toStation.name)}?
-            </h4>
-            <p style="font-size:0.88rem;color:var(--text-secondary);margin:0;line-height:1.5;">
-              The standard token fare is ₹${primaryRoute.fare || 0}. Passengers using a Metro Smart Card receive a discount (₹${primaryRoute.smartCardFare || primaryRoute.fare || 0}).
-            </p>
-          </div>
-          <div>
-            <h4 style="font-size:0.92rem;font-weight:700;color:var(--text-primary);margin:0 0 4px 0;">
-              How long does it take from ${escapeHtml(fromStation.name)} to ${escapeHtml(toStation.name)} by metro?
-            </h4>
-            <p style="font-size:0.88rem;color:var(--text-secondary);margin:0;line-height:1.5;">
-              The fastest route takes approximately ${primaryRoute.totalTimeMins || 0} minutes covering ${primaryRoute.totalDistanceKm || ''} km with ${primaryRoute.switches || 0} line switch(es).
-              ${routesCount > 1 ? ` Alternative routes take up to ${Math.max(...routesList.map(r => r.totalTimeMins || 0))} minutes.` : ''}
-            </p>
-          </div>
-          ${routesCount > 1 ? `
-          <div>
-            <h4 style="font-size:0.92rem;font-weight:700;color:var(--text-primary);margin:0 0 4px 0;">
-              Are there alternative metro routes between ${escapeHtml(fromStation.name)} and ${escapeHtml(toStation.name)}?
-            </h4>
-            <p style="font-size:0.88rem;color:var(--text-secondary);margin:0;line-height:1.5;">
-              Yes, there are ${routesCount} route options available. You can compare the fastest route and alternative options above based on your preference for fewer transfers or lower fare.
-            </p>
-          </div>
+        <!-- Lateral Connecting Routes Architecture -->
+        <div class="glass-panel" style="padding:24px;margin-bottom:24px;border-radius:20px;">
+          <h3 style="font-size:1.1rem;font-weight:700;margin:0 0 16px 0;color:var(--text-primary);">
+            Explore Connecting Metro Routes
+          </h3>
+          ${lateralOriginLinks ? `
+            <div style="margin-bottom:16px;">
+              <h4 style="font-size:0.88rem;font-weight:700;color:var(--text-secondary);margin:0 0 8px 0;text-transform:uppercase;letter-spacing:0.5px;">
+                Other Popular Routes from ${escapeHtml(fromStation.name)}
+              </h4>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                ${lateralOriginLinks}
+              </div>
+            </div>
+          ` : ''}
+          ${lateralDestLinks ? `
+            <div>
+              <h4 style="font-size:0.88rem;font-weight:700;color:var(--text-secondary);margin:0 0 8px 0;text-transform:uppercase;letter-spacing:0.5px;">
+                Other Routes Arriving at ${escapeHtml(toStation.name)}
+              </h4>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                ${lateralDestLinks}
+              </div>
+            </div>
           ` : ''}
         </div>
-      </div>
-    </main>
+
+        <div class="glass-panel" style="padding:24px;margin-bottom:0px;border-radius:20px;">
+          <h3 style="font-size:1.1rem;font-weight:700;margin:0 0 16px 0;color:var(--text-primary);">
+            Frequently Asked Questions (${escapeHtml(fromStation.name)} to ${escapeHtml(toStation.name)})
+          </h3>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div>
+              <h4 style="font-size:0.92rem;font-weight:700;color:var(--text-primary);margin:0 0 4px 0;">
+                What is the metro fare from ${escapeHtml(fromStation.name)} to ${escapeHtml(toStation.name)}?
+              </h4>
+              <p style="font-size:0.88rem;color:var(--text-secondary);margin:0;line-height:1.5;">
+                The standard token fare is ₹${primaryRoute.fare || 0}. Passengers using a Kochi 1 Card receive an additional discount.
+              </p>
+            </div>
+            <div>
+              <h4 style="font-size:0.92rem;font-weight:700;color:var(--text-primary);margin:0 0 4px 0;">
+                How long does it take from ${escapeHtml(fromStation.name)} to ${escapeHtml(toStation.name)} by metro?
+              </h4>
+              <p style="font-size:0.88rem;color:var(--text-secondary);margin:0;line-height:1.5;">
+                The direct journey takes approximately ${primaryRoute.totalTimeMins || 0} minutes covering ${formatKm(primaryRoute.totalDistanceKm)} km across ${primaryRoute.totalStops || (primaryRoute.stations ? primaryRoute.stations.length : 'all intermediate')} stations.
+              </p>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
 
     <footer data-nosnippet style="margin-top:16px;padding:28px 24px;border-top:1px solid var(--border-color);text-align:center;color:var(--text-muted);font-size:0.85rem;background:var(--bg-surface);">
+      <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:16px;margin-bottom:10px;">
+        <a href="https://metro.org.in/" style="color:var(--accent-primary);text-decoration:none;font-weight:600;">All India Metros</a>
+        <a href="/stations/" style="color:var(--text-secondary);text-decoration:none;">All Stations</a>
+        <a href="/about/" style="color:var(--text-secondary);text-decoration:none;">About</a>
+        <a href="/privacy-policy/" style="color:var(--text-secondary);text-decoration:none;">Privacy</a>
+        <a href="/terms-of-service/" style="color:var(--text-secondary);text-decoration:none;">Terms</a>
+        <a href="/contact/" style="color:var(--text-secondary);text-decoration:none;">Contact</a>
+      </div>
       <p style="margin:0;">&copy; 2026 ${escapeHtml(appName)} Route Finder</p>
     </footer>
   `;
@@ -238,30 +303,63 @@ export function buildRouteSsrHtml(fromStation, toStation, routesInput, appName =
 
 // ─── Station SSR HTML Builder ─────────────────────────────────────────────────
 export function buildStationSsrHtml(station, lineNames, appName = "Kochi Metro") {
+  const slug = getStationSlug(station);
+  const popularDests = getPopularDestsForStation(station, 10);
+  const routeLinks = popularDests.map(dest => {
+    const destSlug = getStationSlug(dest);
+    return `<a href="/route/${slug}/${destSlug}/" style="padding:10px 14px;background:var(--input-bg);border:1px solid var(--border-color);color:var(--text-primary);text-decoration:none;border-radius:10px;font-size:0.86rem;font-weight:600;display:inline-flex;align-items:center;gap:6px;"><span>&rarr; to <strong>${escapeHtml(dest.name)}</strong></span><span style="font-size:0.75rem;color:var(--accent-primary);font-weight:700;">Route</span></a>`;
+  }).join('');
+
   return `
     <div class="app-container" style="max-width:1200px;margin:0 auto;padding:16px;">
       ${buildAppHeaderHtml(appName)}
 
       <main style="max-width:900px;width:100%;margin:0 auto;padding:8px 0 40px 0;">
-      <div class="glass-panel" style="padding:24px;margin-bottom:24px;border-radius:20px;">
-        <h1 style="font-size:1.6rem;font-weight:800;margin:0 0 8px 0;color:var(--text-primary);line-height:1.3;">
-          ${escapeHtml(station.name)} Metro Station
-        </h1>
-        <p style="color:var(--text-secondary);font-size:0.95rem;margin:0;">
-          Connected lines: <strong>${escapeHtml(lineNames)}</strong>. First and last train timetable, gate guide, and route directions.
-        </p>
-      </div>
+        <!-- Hierarchical Breadcrumb Navigation -->
+        <nav data-nosnippet style="margin-bottom:14px;font-size:0.85rem;color:var(--text-muted,#64748b);">
+          <a href="/" style="color:var(--accent-primary,#2563eb);text-decoration:none;">Home</a> &rsaquo;
+          <a href="/stations/" style="color:var(--accent-primary,#2563eb);text-decoration:none;">Stations Directory</a> &rsaquo;
+          <span style="color:var(--text-secondary,#475569);">${escapeHtml(station.name)}</span>
+        </nav>
 
-      <div class="glass-panel" style="padding:24px;margin-bottom:24px;border-radius:20px;">
-        <h2 style="font-size:1.15rem;font-weight:700;color:var(--text-primary);margin:0 0 8px 0;">Station Overview</h2>
-        <p style="font-size:0.88rem;color:var(--text-secondary);margin:0;">
-          Station Code: <strong>${escapeHtml(station.code || station.id)}</strong> &bull; Connected Lines: <strong>${escapeHtml(lineNames)}</strong>
-        </p>
-      </div>
-    </main>
+        <div class="glass-panel" style="padding:24px;margin-bottom:24px;border-radius:20px;">
+          <h1 style="font-size:1.6rem;font-weight:800;margin:0 0 8px 0;color:var(--text-primary);line-height:1.3;">
+            ${escapeHtml(station.name)} Metro Station
+          </h1>
+          <p style="color:var(--text-secondary);font-size:0.95rem;margin:0;">
+            Connected line: <strong>${escapeHtml(lineNames)}</strong>. First and last train timetable, terminal information, and route directions.
+          </p>
+        </div>
+
+        <div class="glass-panel" style="padding:24px;margin-bottom:24px;border-radius:20px;">
+          <h2 style="font-size:1.15rem;font-weight:700;color:var(--text-primary);margin:0 0 8px 0;">Station Overview &amp; Code</h2>
+          <p style="font-size:0.9rem;color:var(--text-secondary);margin:0;">
+            Station Code: <strong>${escapeHtml(station.code || station.id)}</strong> &bull; Line: <strong>${escapeHtml(lineNames)}</strong>
+          </p>
+        </div>
+
+        <div class="glass-panel" style="padding:24px;margin-bottom:24px;border-radius:20px;">
+          <h2 style="font-size:1.15rem;font-weight:700;color:var(--text-primary);margin:0 0 12px 0;">Popular Metro Routes from ${escapeHtml(station.name)}</h2>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            ${routeLinks}
+          </div>
+          <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border-color);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+            <span style="font-size:0.84rem;color:var(--text-muted);">Looking for routes across all Kochi metro stations?</span>
+            <a href="/stations/" style="font-size:0.86rem;color:var(--accent-primary);font-weight:700;text-decoration:none;">Browse All Stations &rarr;</a>
+          </div>
+        </div>
+      </main>
     </div>
 
     <footer data-nosnippet style="margin-top:16px;padding:28px 24px;border-top:1px solid var(--border-color);text-align:center;color:var(--text-muted);font-size:0.85rem;background:var(--bg-surface);">
+      <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:16px;margin-bottom:10px;">
+        <a href="https://metro.org.in/" style="color:var(--accent-primary);text-decoration:none;font-weight:600;">All India Metros</a>
+        <a href="/stations/" style="color:var(--text-secondary);text-decoration:none;">All Stations</a>
+        <a href="/about/" style="color:var(--text-secondary);text-decoration:none;">About</a>
+        <a href="/privacy-policy/" style="color:var(--text-secondary);text-decoration:none;">Privacy</a>
+        <a href="/terms-of-service/" style="color:var(--text-secondary);text-decoration:none;">Terms</a>
+        <a href="/contact/" style="color:var(--text-secondary);text-decoration:none;">Contact</a>
+      </div>
       <p style="margin:0;">&copy; 2026 ${escapeHtml(appName)} Route Finder</p>
     </footer>
   `;

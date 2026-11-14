@@ -1,38 +1,22 @@
-import { calculateRoutes } from "../src/routing/routeEngine.js";
-﻿import fs from "fs";
+import fs from "fs";
 import path from "path";
-import { STATIONS } from "../src/data/stations.js";
-
-const stations = STATIONS;
-
-function slugify(text) {
-  return text
-    .toString()
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, '-')
-    .replace(/[^\w\-]+/g, '')
-    .replace(/\-\-+/g, '-');
-}
-
-function getStationSlug(station) {
-  return slugify(station.name);
-}
+import { stations } from "../src/data/kochiMetroData.js";
+import { calculateRoutes } from "../src/routing/routeEngine.js";
+import { getStationSlug } from "../src/utils/slugify.js";
 
 const BASE_URL = "https://kochi.metro.org.in";
 const today = new Date().toISOString().split("T")[0];
 
-console.log(`Starting Instant Complete Sitemap Generation for ${stations.length} stations...`);
+console.log(`Starting Staged 100% Parity Sitemap Generation for Kochi Metro (${stations.length} stations)...`);
 
 const publicDir = path.resolve("public");
 if (fs.existsSync(publicDir)) {
   fs.readdirSync(publicDir).forEach(f => {
-    if (/^sitemap-\d+\.xml$/.test(f)) {
+    if (/^sitemap(-\d+)?\.xml$/.test(f) && f !== "sitemap.xml") {
       try { fs.unlinkSync(path.join(publicDir, f)); } catch (_) {}
     }
   });
 }
-
 
 const allRouteUrls = [];
 
@@ -40,98 +24,72 @@ stations.forEach(fromSt => {
   const fromSlug = getStationSlug(fromSt);
   stations.forEach(toSt => {
     if (fromSt.id !== toSt.id) {
-      const routes = calculateRoutes(fromSt.id, toSt.id);
-      if (routes && routes.length > 0) {
-        const toSlug = getStationSlug(toSt);
-        allRouteUrls.push(`${BASE_URL}/route/${fromSlug}/${toSlug}/`);
-      }
+      try {
+        const routes = calculateRoutes(fromSt.id, toSt.id);
+        if (routes && routes.length > 0) {
+          const toSlug = getStationSlug(toSt);
+          allRouteUrls.push(`${BASE_URL}/route/${fromSlug}/${toSlug}/`);
+        }
+      } catch (_) {}
     }
   });
 });
 
-console.log(`Gathered ${allRouteUrls.length} total route URLs.`);
+console.log(`Gathered ${allRouteUrls.length} valid routable pairs for Kochi Metro.`);
 
-const MAX_URLS_PER_SITEMAP = 10000;
-const sitemapFiles = [];
+// 1. Write sitemap-routes.xml
+const routesXml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${allRouteUrls.map(url => `  <url>
+    <loc>${url}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>`).join("\n")}
+</urlset>`;
 
-for (let i = 0; i < allRouteUrls.length; i += MAX_URLS_PER_SITEMAP) {
-  const chunk = allRouteUrls.slice(i, i + MAX_URLS_PER_SITEMAP);
-  const fileIndex = Math.floor(i / MAX_URLS_PER_SITEMAP) + 1;
-  const fileName = `sitemap-${fileIndex}.xml`;
+fs.writeFileSync(path.join(publicDir, "sitemap-routes.xml"), routesXml, "utf8");
+console.log(`Wrote ${allRouteUrls.length} routes to public/sitemap-routes.xml`);
 
-  let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
-  xml += `<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>\n`;
-  xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
-
-  chunk.forEach(url => {
-    xml += `  <url>\n`;
-    xml += `    <loc>${url}</loc>\n`;
-    xml += `    <lastmod>${today}</lastmod>\n`;
-    xml += `    <changefreq>weekly</changefreq>\n`;
-    xml += `    <priority>0.8</priority>\n`;
-    xml += `  </url>\n`;
-  });
-
-  xml += `</urlset>\n`;
-
-  const publicPath = path.resolve("public", fileName);
-  fs.writeFileSync(publicPath, xml, "utf8");
-  console.log(`Wrote ${chunk.length} route URLs to public/${fileName}`);
-  sitemapFiles.push(fileName);
-}
-
-// Generate Home / Static Pages Sitemap
-let homeXml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
-homeXml += `<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>\n`;
-homeXml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
-
-const staticPages = [
-  "",
-  "about/",
-  "contact/",
-  "privacy-policy/",
-  "terms-of-service/",
-  "disclaimer/",
-  "stations/"
+// 2. Write sitemap-home.xml (Core + All Stations)
+const coreUrls = [
+  `${BASE_URL}/`,
+  `${BASE_URL}/stations/`,
+  `${BASE_URL}/about/`,
+  `${BASE_URL}/contact/`,
+  `${BASE_URL}/privacy-policy/`,
+  `${BASE_URL}/terms-of-service/`,
+  `${BASE_URL}/disclaimer/`,
+  `${BASE_URL}/sitemap/`
 ];
 
-staticPages.forEach(p => {
-  homeXml += `  <url>\n`;
-  homeXml += `    <loc>${BASE_URL}/${p}</loc>\n`;
-  homeXml += `    <lastmod>${today}</lastmod>\n`;
-  homeXml += `    <changefreq>daily</changefreq>\n`;
-  homeXml += `    <priority>${p === "" ? "1.0" : "0.7"}</priority>\n`;
-  homeXml += `  </url>\n`;
-});
+const stationUrls = stations.map(s => `${BASE_URL}/station/${getStationSlug(s)}/`);
 
-// Station SEO Pages
-stations.forEach(st => {
-  homeXml += `  <url>\n`;
-  homeXml += `    <loc>${BASE_URL}/station/${getStationSlug(st)}/</loc>\n`;
-  homeXml += `    <lastmod>${today}</lastmod>\n`;
-  homeXml += `    <changefreq>weekly</changefreq>\n`;
-  homeXml += `    <priority>0.9</priority>\n`;
-  homeXml += `  </url>\n`;
-});
+const homeXml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${[...coreUrls, ...stationUrls].map(url => `  <url>
+    <loc>${url}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${url === `${BASE_URL}/` ? 'daily' : 'weekly'}</changefreq>
+    <priority>${url === `${BASE_URL}/` ? '1.0' : (url.includes('/station/') ? '0.85' : '0.5')}</priority>
+  </url>`).join("\n")}
+</urlset>`;
 
-homeXml += `</urlset>\n`;
+fs.writeFileSync(path.join(publicDir, "sitemap-home.xml"), homeXml, "utf8");
+console.log(`Wrote ${stations.length} stations and ${coreUrls.length} core pages to public/sitemap-home.xml`);
 
-fs.writeFileSync(path.resolve("public", "sitemap-home.xml"), homeXml, "utf8");
-sitemapFiles.unshift("sitemap-home.xml");
+// 3. Write sitemap index (sitemap.xml)
+const sitemapIndexXml = `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>${BASE_URL}/sitemap-home.xml</loc>
+    <lastmod>${today}</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>${BASE_URL}/sitemap-routes.xml</loc>
+    <lastmod>${today}</lastmod>
+  </sitemap>
+</sitemapindex>`;
 
-// Master Index Sitemap
-let indexXml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
-indexXml += `<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>\n`;
-indexXml += `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
-
-sitemapFiles.forEach(file => {
-  indexXml += `  <sitemap>\n`;
-  indexXml += `    <loc>${BASE_URL}/${file}</loc>\n`;
-  indexXml += `    <lastmod>${today}</lastmod>\n`;
-  indexXml += `  </sitemap>\n`;
-});
-
-indexXml += `</sitemapindex>\n`;
-
-fs.writeFileSync(path.resolve("public", "sitemap.xml"), indexXml, "utf8");
-console.log(`Successfully generated 100% Complete Sitemap Index (${stations.length} stations, ${allRouteUrls.length} route pairs, 7 core pages) at public/sitemap.xml`);
+fs.writeFileSync(path.join(publicDir, "sitemap.xml"), sitemapIndexXml, "utf8");
+console.log(`Successfully generated Staged Sitemap Index (Total URLs: ${allRouteUrls.length + coreUrls.length + stations.length}) at public/sitemap.xml`);
