@@ -49,7 +49,7 @@ export function buildAppHeaderHtml(appName = "Kochi Metro") {
   return `
     <!-- Top Navbar Matching App UI -->
     <header data-nosnippet class="glass-panel" style="margin:0 0 20px 0;border-radius:16px;overflow:hidden;background:var(--bg-surface);border:1px solid var(--border-color);">
-      <div style="padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+      <div class="navbar-top" style="padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
         <a href="/" class="navbar-logo" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;cursor:pointer;">
           <img src="/logo.svg?v=2" alt="${escapeAttr(appName)} Logo" class="navbar-logo-img" style="width:42px;height:42px;border-radius:10px;object-fit:contain;background:#FFFFFF;padding:2px;" />
           <div style="text-align:left;">
@@ -61,7 +61,7 @@ export function buildAppHeaderHtml(appName = "Kochi Metro") {
             </p>
           </div>
         </a>
-        <div class="navbar-controls" style="display:flex;align-items:center;gap:8px;">
+        <div class="navbar-controls" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
           <a href="/" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border-color);background:var(--bg-surface);color:var(--text-primary);font-size:0.82rem;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">🔗 Share</a>
           <a href="/" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border-color);background:var(--bg-surface);color:var(--text-primary);font-size:0.82rem;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:6px;">🌙 Dark Mode</a>
         </div>
@@ -113,7 +113,7 @@ export function buildRouteSsrHtml(fromStation, toStation, routesInput, appName =
             <div style="font-size:0.78rem;color:var(--text-muted);margin-bottom:6px;">
               ${legStops} stops &bull; ${leg.timeMins ? leg.timeMins + ' mins' : ''} ${leg.direction ? '&bull; Towards ' + escapeHtml(leg.direction) : ''}
             </div>
-            ${stationList ? `<ul style="margin:4px 0 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));gap:2px;">${stationList}</ul>` : ''}
+            ${stationList ? `<ul style="margin:4px 0 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill, minmax(min(180px, 100%), 1fr));gap:2px;">${stationList}</ul>` : ''}
           </div>
         `;
       }).join('');
@@ -121,13 +121,13 @@ export function buildRouteSsrHtml(fromStation, toStation, routesInput, appName =
       const sItems = route.stations.map(st =>
         `<li style="padding:2px 0;font-size:0.85rem;color:var(--text-secondary);list-style:disc inside;">${escapeHtml(typeof st === 'string' ? st : (st.name || ''))}</li>`
       ).join('');
-      legsHtml = `<ul style="margin:6px 0 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));gap:2px;">${sItems}</ul>`;
+      legsHtml = `<ul style="margin:6px 0 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill, minmax(min(180px, 100%), 1fr));gap:2px;">${sItems}</ul>`;
     }
 
     return `
-      <div class="glass-panel" style="padding:20px;margin-bottom:20px;border-radius:18px;${isPrimary ? 'border:1px solid rgba(16, 185, 129, 0.3);' : ''}">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:8px;">
-          <span style="background:${isPrimary ? 'var(--accent-primary)' : 'rgba(255, 255, 255, 0.08)'};color:#FFFFFF;padding:5px 12px;border-radius:8px;font-size:0.82rem;font-weight:700;white-space:nowrap;">
+      <div class="glass-panel route-seo-card" style="margin-bottom:20px;border-radius:18px;overflow:hidden;${isPrimary ? 'border:1px solid rgba(16, 185, 129, 0.3);' : ''}">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:14px;gap:8px 10px;">
+          <span style="background:${isPrimary ? 'var(--accent-primary)' : 'var(--header-summary-bg, #1E293B)'};color:#FFFFFF;padding:5px 12px;border-radius:8px;font-size:0.82rem;font-weight:700;max-width:100%;">
             ${isPrimary ? 'Option 1: Direct Route' : `Option ${rIdx + 1}: Alternative Route`}
           </span>
           <span style="background:var(--bg-surface);color:var(--text-secondary);border:1px solid var(--border-color);padding:4px 10px;border-radius:6px;font-size:0.8rem;font-weight:600;display:inline-flex;align-items:center;gap:4px;">
@@ -136,7 +136,7 @@ export function buildRouteSsrHtml(fromStation, toStation, routesInput, appName =
         </div>
 
         <!-- Signature Stats Summary Bar -->
-        <div style="background:var(--header-summary-bg, #1E293B);padding:14px 8px;color:#FFFFFF;display:grid;grid-template-columns:repeat(4, 1fr);text-align:center;align-items:center;border-radius:12px;margin-bottom:16px;">
+        <div style="background:var(--header-summary-bg, #1E293B);padding:14px 8px;color:#FFFFFF;display:grid;grid-template-columns:repeat(4, minmax(0, 1fr));text-align:center;align-items:center;border-radius:12px;margin-bottom:16px;">
           <div style="padding:0 4px;">
             <div style="font-size:clamp(1.2rem, 4vw, 1.5rem);font-weight:800;color:#38BDF8;line-height:1;">${time ?? '—'}</div>
             <div style="font-size:0.7rem;text-transform:uppercase;color:#94A3B8;margin-top:4px;font-weight:600;letter-spacing:0.02em;white-space:nowrap;">MINS</div>
@@ -212,9 +212,9 @@ export function buildRouteSsrHtml(fromStation, toStation, routesInput, appName =
             <div style="font-size:0.86rem;color:var(--text-secondary);">
               Traveling in the opposite direction?
             </div>
-            <a href="/route/${toSlug}/${fromSlug}/" style="display:inline-flex;align-items:center;gap:6px;background:var(--bg-surface);color:var(--accent-primary);border:1px solid var(--border-color);padding:6px 14px;border-radius:10px;font-size:0.85rem;font-weight:700;text-decoration:none;">
+            <a href="/route/${toSlug}/${fromSlug}/" style="display:inline-flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px 10px;max-width:100%;background:var(--bg-surface,#f8fafc);color:var(--accent-primary,#2563eb);border:1px solid var(--border-color,#cbd5e1);padding:8px 12px;border-radius:10px;font-size:0.85rem;font-weight:700;text-decoration:none;transition:all 0.15s ease;">
               <span>&#8646; Return: ${escapeHtml(toStation.name)} to ${escapeHtml(fromStation.name)}</span>
-              <span style="font-size:0.8rem;color:var(--text-muted);">${primaryRoute.fare ? `(₹${primaryRoute.fare})` : ''} &rarr;</span>
+              <span style="font-size:0.8rem;color:var(--text-muted,#64748b);white-space:nowrap;flex-shrink:0;margin-left:auto;">${primaryRoute.fare ? `(₹${primaryRoute.fare}) ` : ''}&rarr;</span>
             </a>
           </div>
         </div>

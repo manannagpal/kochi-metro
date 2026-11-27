@@ -42,8 +42,10 @@ export function StationTimeline({ route, onStationClick, lang = 'en' }) {
 
   return (
     <div style={{
-      padding: '4px 6px',
-      position: 'relative'
+      padding: '4px 2px',
+      position: 'relative',
+      width: '100%',
+      boxSizing: 'border-box'
     }}>
       <div style={{ display: 'flex', flexDirection: 'column', position: 'relative' }}>
         {timelineItems.map((item, idx) => {
@@ -58,7 +60,7 @@ export function StationTimeline({ route, onStationClick, lang = 'en' }) {
               style={{
                 display: 'flex',
                 alignItems: 'stretch',
-                gap: '14px',
+                gap: '12px',
                 position: 'relative',
                 minHeight: item.isOrigin || item.isDestination || item.isInterchange ? '44px' : '30px',
                 cursor: 'pointer'
@@ -116,6 +118,7 @@ export function StationTimeline({ route, onStationClick, lang = 'en' }) {
               {/* Station Info Column */}
               <div style={{
                 flex: 1,
+                minWidth: 0,
                 paddingBottom: isLast ? '0' : '6px',
                 display: 'flex',
                 flexDirection: 'column',
@@ -174,7 +177,7 @@ export function StationTimeline({ route, onStationClick, lang = 'en' }) {
                     <span style={{
                       fontSize: '0.66rem',
                       background: lineColor,
-                      color: '#FFFFFF',
+                      color: item.lineDef.textColor || '#FFFFFF',
                       padding: '1px 7px',
                       borderRadius: '10px',
                       fontWeight: 700,
@@ -189,14 +192,16 @@ export function StationTimeline({ route, onStationClick, lang = 'en' }) {
                 {/* Direction pill */}
                 {item.isOrigin && item.direction && (
                   <div style={{
-                    fontSize: '0.76rem',
-                    color: 'var(--text-muted)',
-                    marginTop: '2px',
+                    fontSize: '0.78rem',
+                    color: 'var(--text-secondary)',
+                    marginTop: '3px',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '4px'
+                    gap: '4px',
+                    flexWrap: 'wrap',
+                    lineHeight: 1.35
                   }}>
-                    <span>{t.towards} <strong>{item.direction}</strong></span>
+                    <span>{t.towards || 'Towards'} <strong style={{ color: 'var(--text-primary)' }}>{item.direction}</strong></span>
                   </div>
                 )}
 
@@ -204,31 +209,45 @@ export function StationTimeline({ route, onStationClick, lang = 'en' }) {
                 {item.isInterchange && item.nextLeg && (
                   <div style={{
                     marginTop: '6px',
-                    padding: '6px 12px',
+                    padding: '8px 10px',
                     background: 'var(--input-bg)',
                     border: '1px solid var(--border-color)',
-                    borderRadius: '8px',
+                    borderRadius: '10px',
                     display: 'inline-flex',
+                    flexWrap: 'wrap',
                     alignItems: 'center',
-                    gap: '8px',
+                    gap: '6px 8px',
+                    maxWidth: '100%',
                     fontSize: '0.8rem',
                     color: 'var(--text-primary)',
                     boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
                   }}>
                     <span style={{
-                      fontSize: '0.68rem',
+                      fontSize: '0.72rem',
                       background: item.nextLeg.lineDef?.color || '#3B82F6',
-                      color: '#FFF',
-                      padding: '2px 8px',
+                      color: item.nextLeg.lineDef?.textColor || '#FFFFFF',
+                      padding: '3px 8px',
                       borderRadius: '6px',
                       fontWeight: 700,
-                      letterSpacing: '0.02em'
+                      letterSpacing: '0.02em',
+                      lineHeight: 1.3,
+                      maxWidth: '100%'
                     }}>
                       Change to {item.nextLeg.lineDef?.name}
                     </span>
-                    <ArrowRight size={12} color="var(--text-muted)" />
-                    <span style={{ color: 'var(--text-secondary)' }}>
-                      {t.towards} <strong>{item.nextLeg.direction}</strong>
+                    <span style={{
+                      display: 'inline-flex',
+                      alignItems: 'flex-start',
+                      gap: '5px',
+                      color: 'var(--text-secondary)',
+                      lineHeight: 1.35,
+                      minWidth: 0,
+                      maxWidth: '100%'
+                    }}>
+                      <ArrowRight size={13} color="var(--text-muted)" style={{ flexShrink: 0, marginTop: '3px' }} />
+                      <span>
+                        {t.towards || 'Towards'} <strong style={{ color: 'var(--text-primary)' }}>{item.nextLeg.direction}</strong>
+                      </span>
                     </span>
                   </div>
                 )}

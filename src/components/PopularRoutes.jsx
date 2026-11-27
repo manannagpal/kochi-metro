@@ -56,7 +56,7 @@ export function PopularRoutes({ onSelectRoute, lang = 'en' }) {
         <span>{t.popularSearches || 'Popular Routes'}</span>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '12px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(240px, 100%), 1fr))', gap: '12px' }}>
         {PRESET_ROUTES.map((preset, idx) => {
           const fromSt = getStationById(preset.fromId);
           const toSt = getStationById(preset.toId);

@@ -98,7 +98,7 @@ export function StationsDirectory({ onClose, onSelectStation }) {
 
         {/* Station Cards Grid */}
         <div style={{ flex: 1, overflowY: 'auto', padding: '20px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '12px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(220px, 100%), 1fr))', gap: '12px' }}>
             {filteredStations.map(st => {
               const lineDef = METRO_LINES[st.line];
               const badgeColor = lineDef ? lineDef.color : 'var(--accent-primary)';

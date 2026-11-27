@@ -43,7 +43,7 @@ export function RouteFilters({
       </div>
 
       {/* Max Switches Filter */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)' }}>
           <SlidersHorizontal size={16} color="var(--accent-primary)" />
           <span>{t.maxSwitches || 'Max Changes'}:</span>

@@ -71,7 +71,7 @@ export function SitemapPage({ onBackToHome, onSelectStation }) {
               <Compass size={18} color="var(--accent-primary)" />
               Core Navigation Pages
             </h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '10px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(200px, 100%), 1fr))', gap: '10px' }}>
               <a href="/" style={linkStyle}>🏠 Home Page</a>
               <a href="/stations/" style={linkStyle}>🚉 Stations Directory</a>
               <a href="/about/" style={linkStyle}>ℹ️ About Us</a>
@@ -89,7 +89,7 @@ export function SitemapPage({ onBackToHome, onSelectStation }) {
               <FileCode size={18} color="var(--accent-primary)" />
               Official XML Sitemaps
             </h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '10px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(260px, 100%), 1fr))', gap: '10px' }}>
               {xmlSitemaps.map((item, idx) => (
                 <a key={idx} href={item.url} target="_blank" rel="noopener noreferrer" style={linkStyle}>
                   📄 {item.title}
@@ -110,7 +110,7 @@ export function SitemapPage({ onBackToHome, onSelectStation }) {
                 <div style={{ fontWeight: 800, fontSize: '1.1rem', color: 'var(--accent-primary)', marginBottom: '8px', borderBottom: '1px solid var(--border-color)', paddingBottom: '4px' }}>
                   {letter}
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '8px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(220px, 100%), 1fr))', gap: '8px' }}>
                   {groupedStations[letter].map(st => (
                     <a
                       key={st.id}

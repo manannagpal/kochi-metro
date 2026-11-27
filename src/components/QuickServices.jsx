@@ -24,7 +24,7 @@ export function QuickServices({ lang = 'en', onOpenMap }) {
         <span>Station Services & Maps</span>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '12px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(240px, 100%), 1fr))', gap: '12px' }}>
         
         {/* INTERACTIVE METRO MAP BUTTON */}
         <button type="button"

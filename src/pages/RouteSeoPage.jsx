@@ -180,9 +180,9 @@ export function RouteSeoPage({ fromSlug, toSlug, onResetSearch, onOpenPlanner })
   }
 
   return (
-    <div style={{ maxWidth: "800px", margin: "0 auto", padding: "16px 16px 0 16px" }}>
+    <div className="animate-fade-in" style={{ maxWidth: "860px", margin: "0 auto", padding: 0 }}>
       {/* Top Breadcrumb / Nav */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "10px", marginBottom: "16px" }}>
         <button
           onClick={onResetSearch}
           style={{
@@ -232,7 +232,7 @@ export function RouteSeoPage({ fromSlug, toSlug, onResetSearch, onOpenPlanner })
         <span style={{ color: "var(--text-secondary)" }}>{fromStation.name} to {toStation.name}</span>
       </nav>
 
-<div className="glass-panel" style={{ padding: "24px", marginBottom: "24px", borderRadius: "20px" }}>
+<div className="glass-panel route-seo-card" style={{ marginBottom: "20px", borderRadius: "20px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "12px" }}>
           <span style={{
             background: "rgba(16, 185, 129, 0.12)",
@@ -285,11 +285,14 @@ export function RouteSeoPage({ fromSlug, toSlug, onResetSearch, onOpenPlanner })
             style={{
               display: "inline-flex",
               alignItems: "center",
-              gap: "6px",
+              justifyContent: "space-between",
+              flexWrap: "wrap",
+              gap: "6px 10px",
+              maxWidth: "100%",
               background: "var(--bg-surface)",
               color: "var(--accent-primary)",
               border: "1px solid var(--border-color)",
-              padding: "6px 14px",
+              padding: "8px 12px",
               borderRadius: "10px",
               fontSize: "0.85rem",
               fontWeight: 700,
@@ -297,9 +300,13 @@ export function RouteSeoPage({ fromSlug, toSlug, onResetSearch, onOpenPlanner })
               transition: "all 0.15s ease"
             }}
           >
-            <Repeat size={14} />
-            <span>Return: {toStation.name} to {fromStation.name}</span>
-            <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>{primaryRoute?.fare ? `(₹${primaryRoute.fare})` : ''} &rarr;</span>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", minWidth: 0 }}>
+              <Repeat size={14} style={{ flexShrink: 0 }} />
+              <span>Return: {toStation.name} to {fromStation.name}</span>
+            </span>
+            <span style={{ fontSize: "0.8rem", color: "var(--text-muted)", whiteSpace: "nowrap", flexShrink: 0, marginLeft: "auto" }}>
+              {primaryRoute?.fare ? `(₹${primaryRoute.fare}) ` : ''}&rarr;
+            </span>
           </a>
         </div>
       </div>
@@ -313,23 +320,23 @@ export function RouteSeoPage({ fromSlug, toSlug, onResetSearch, onOpenPlanner })
         return (
           <div
             key={route.id || idx}
-            className="glass-panel"
+            className="glass-panel route-seo-card"
             style={{
-              padding: "20px",
               marginBottom: "20px",
               borderRadius: "18px",
+              overflow: "hidden",
               border: isFastest ? "1px solid rgba(16, 185, 129, 0.3)" : "1px solid var(--border-color)"
             }}
           >
             {/* Option Header Bar with Toggle Button */}
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px", flexWrap: "wrap", gap: "8px" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "14px", flexWrap: "wrap", gap: "8px 10px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "8px", minWidth: 0 }}>
                 <span style={{
-                  background: isFastest ? "var(--accent-primary)" : "rgba(255, 255, 255, 0.08)",
+                  background: isFastest ? "var(--accent-primary)" : "var(--header-summary-bg, #1E293B)",
                   color: "#FFFFFF",
-                  padding: "5px 12px",
-                  borderRadius: "10px",
-                  fontSize: "0.82rem",
+                  padding: "5px 10px",
+                  borderRadius: "8px",
+                  fontSize: "0.78rem",
                   fontWeight: 700
                 }}>
                   {optionLabel}
@@ -344,9 +351,9 @@ export function RouteSeoPage({ fromSlug, toSlug, onResetSearch, onOpenPlanner })
                   background: "var(--input-bg, rgba(255, 255, 255, 0.08))",
                   border: "1px solid var(--border-color)",
                   color: "var(--text-primary)",
-                  padding: "6px 14px",
+                  padding: "5px 10px",
                   borderRadius: "8px",
-                  fontSize: "0.82rem",
+                  fontSize: "0.78rem",
                   fontWeight: 600,
                   cursor: "pointer",
                   display: "inline-flex",
@@ -376,11 +383,11 @@ export function RouteSeoPage({ fromSlug, toSlug, onResetSearch, onOpenPlanner })
               padding: '14px 8px',
               color: '#FFFFFF',
               display: 'grid',
-              gridTemplateColumns: 'repeat(4, 1fr)',
+              gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
               textAlign: 'center',
               alignItems: 'center',
               borderRadius: '12px',
-              marginBottom: '16px'
+              marginBottom: isExpanded ? '18px' : '0'
             }}>
               <div style={{ padding: '0 4px' }}>
                 <div style={{ fontSize: 'clamp(1.2rem, 4vw, 1.5rem)', fontWeight: 800, color: '#38BDF8', lineHeight: 1 }}>
@@ -435,7 +442,7 @@ export function RouteSeoPage({ fromSlug, toSlug, onResetSearch, onOpenPlanner })
       </div>
 
       {/* FAQs */}
-      <div className="glass-panel" style={{ padding: "24px", marginBottom: "0px", borderRadius: "20px" }}>
+      <div className="glass-panel route-seo-card" style={{ marginBottom: "0px", borderRadius: "20px" }}>
         <h3 style={{ fontSize: "1.1rem", fontWeight: 700, margin: "0 0 16px 0", color: "var(--text-primary)" }}>
           Frequently Asked Questions ({fromStation.name} to {toStation.name})
         </h3>

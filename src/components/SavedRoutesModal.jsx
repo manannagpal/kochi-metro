@@ -115,7 +115,7 @@ export function SavedRoutesModal({ onClose, favorites, recentSearches, onSelectR
               No favorite stations bookmarked. Click the star ⭐ icon on any station card to save it.
             </div>
           ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '10px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(200px, 100%), 1fr))', gap: '10px' }}>
               {favoriteStations.map(st => (
                 <div
                   key={st.id}

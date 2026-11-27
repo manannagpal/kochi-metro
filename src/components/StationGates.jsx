@@ -81,11 +81,11 @@ export function StationGates({ fromStation, toStation }) {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         {/* Origin Station Gates */}
         {fromStation && (
-          <div className="glass-panel" style={{ padding: '20px', borderRadius: '16px', background: 'var(--bg-surface)' }}>
+          <div className="glass-panel route-seo-card" style={{ borderRadius: '16px', background: 'var(--bg-surface)' }}>
             <h4 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '14px', color: 'var(--text-primary)' }}>
               {fromStation.name} Metro Station Entry / Exit Gates
             </h4>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '14px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))', gap: '14px' }}>
               {fromGates.map((gate, idx) => renderGateCard(gate, idx))}
             </div>
           </div>
@@ -93,11 +93,11 @@ export function StationGates({ fromStation, toStation }) {
 
         {/* Destination Station Gates */}
         {toStation && (
-          <div className="glass-panel" style={{ padding: '20px', borderRadius: '16px', background: 'var(--bg-surface)' }}>
+          <div className="glass-panel route-seo-card" style={{ borderRadius: '16px', background: 'var(--bg-surface)' }}>
             <h4 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '14px', color: 'var(--text-primary)' }}>
               {toStation.name} Metro Station Entry / Exit Gates
             </h4>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '14px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))', gap: '14px' }}>
               {toGates.map((gate, idx) => renderGateCard(gate, idx))}
             </div>
           </div>

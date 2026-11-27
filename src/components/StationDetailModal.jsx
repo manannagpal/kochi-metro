@@ -228,7 +228,8 @@ export function StationDetailModal({ station, onClose, lang = 'en', isFullPage =
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      gap: '12px'
+                      flexWrap: 'wrap',
+                      gap: '8px 12px'
                     }}
                   >
                     <div>

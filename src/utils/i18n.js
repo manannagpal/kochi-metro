@@ -22,6 +22,8 @@ export const TRANSLATIONS = {
     fewestStops: "Fewest Stops",
     fastest: "Fastest Route",
     shareRoute: "Share",
+    towards: "दिशा:",
+    towards: "Towards",
     linkCopied: "Route link copied to clipboard!",
     mins: "MINS",
     stops: "STATIONS",

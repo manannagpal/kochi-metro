@@ -36,7 +36,7 @@ export function RouteResultCard({
         padding: '14px 8px',
         color: '#FFFFFF',
         display: 'grid',
-        gridTemplateColumns: 'repeat(4, 1fr)',
+        gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
         textAlign: 'center',
         alignItems: 'center'
       }}>
@@ -44,7 +44,7 @@ export function RouteResultCard({
           <div style={{ fontSize: 'clamp(1.2rem, 4vw, 1.6rem)', fontWeight: 800, color: '#38BDF8', lineHeight: 1 }}>
             {route.totalTimeMins}
           </div>
-          <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', color: '#94A3B8', marginTop: '4px', fontWeight: 600, letterSpacing: '0.02em', whiteSpace: 'nowrap' }}>
+          <div style={{ fontSize: 'clamp(0.6rem, 2.3vw, 0.72rem)', textTransform: 'uppercase', color: '#94A3B8', marginTop: '4px', fontWeight: 600, letterSpacing: '0.01em', whiteSpace: 'nowrap' }}>
             {t.mins || 'MINS'}
           </div>
         </div>
@@ -53,7 +53,7 @@ export function RouteResultCard({
           <div style={{ fontSize: 'clamp(1.2rem, 4vw, 1.6rem)', fontWeight: 800, color: '#4ADE80', lineHeight: 1 }}>
             ₹{route.fare}
           </div>
-          <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', color: '#94A3B8', marginTop: '4px', fontWeight: 600, letterSpacing: '0.02em', whiteSpace: 'nowrap' }}>
+          <div style={{ fontSize: 'clamp(0.6rem, 2.3vw, 0.72rem)', textTransform: 'uppercase', color: '#94A3B8', marginTop: '4px', fontWeight: 600, letterSpacing: '0.01em', whiteSpace: 'nowrap' }}>
             {t.fare || 'FARE'}
           </div>
         </div>
@@ -62,7 +62,7 @@ export function RouteResultCard({
           <div style={{ fontSize: 'clamp(1.2rem, 4vw, 1.6rem)', fontWeight: 800, color: '#FACC15', lineHeight: 1 }}>
             {route.totalStops}
           </div>
-          <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', color: '#94A3B8', marginTop: '4px', fontWeight: 600, letterSpacing: '0.02em', whiteSpace: 'nowrap' }}>
+          <div style={{ fontSize: 'clamp(0.6rem, 2.3vw, 0.72rem)', textTransform: 'uppercase', color: '#94A3B8', marginTop: '4px', fontWeight: 600, letterSpacing: '0.01em', whiteSpace: 'nowrap' }}>
             {t.stops || t.stations || 'STATIONS'}
           </div>
         </div>
@@ -71,14 +71,14 @@ export function RouteResultCard({
           <div style={{ fontSize: 'clamp(1.2rem, 4vw, 1.6rem)', fontWeight: 800, color: '#F472B6', lineHeight: 1 }}>
             {route.switches}
           </div>
-          <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', color: '#94A3B8', marginTop: '4px', fontWeight: 600, letterSpacing: '0.02em', whiteSpace: 'nowrap' }}>
-            {route.switches === 1 ? (t.switch || 'INTERCHANGE') : (t.switchPlural || t.interchanges || 'INTERCHANGES')}
+          <div style={{ fontSize: 'clamp(0.6rem, 2.3vw, 0.72rem)', textTransform: 'uppercase', color: '#94A3B8', marginTop: '4px', fontWeight: 600, letterSpacing: '0.01em', whiteSpace: 'nowrap' }}>
+            {route.switches === 1 ? (lang === 'en' ? 'SWITCH' : (t.switch || 'SWITCH')) : (lang === 'en' ? 'SWITCHES' : (t.switchPlural || 'SWITCHES'))}
           </div>
         </div>
       </div>
 
       {/* 2. CARD SUMMARY VIEW */}
-      <div style={{ padding: '18px 20px', background: 'var(--bg-card)' }}>
+      <div className="route-card-body" style={{ background: 'var(--bg-card)' }}>
         
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', position: 'relative' }}>
           
@@ -89,7 +89,7 @@ export function RouteResultCard({
             }}>
               <MetroOperatorLogo lineDef={route.legs[0]?.lineDef} size={22} />
             </div>
-            <div style={{ flex: 1 }}>
+            <div style={{ flex: 1, minWidth: 0 }}>
               <div
                 onClick={() => onStationClick && onStationClick(route.legs[0]?.fromStationId)}
                 style={{ fontWeight: 800, fontSize: '1.05rem', color: route.legs[0]?.lineDef?.color || 'var(--text-primary)', lineHeight: 1.2, cursor: 'pointer' }}
@@ -104,7 +104,7 @@ export function RouteResultCard({
                 }}>
                   {route.legs[0]?.lineDef?.name}
                 </span>
-                <span>{t.towards} <strong>{route.legs[0]?.direction}</strong></span>
+                <span>{t.towards || 'Towards'} <strong>{route.legs[0]?.direction}</strong></span>
               </div>
             </div>
           </div>
@@ -121,7 +121,7 @@ export function RouteResultCard({
                 }}>
                   <MetroOperatorLogo lineDef={nextLeg.lineDef} size={22} />
                 </div>
-                <div style={{ flex: 1 }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
                   <div
                     onClick={() => onStationClick && onStationClick(leg.toStationId)}
                     style={{ fontWeight: 800, fontSize: '1.02rem', color: 'var(--text-primary)', lineHeight: 1.2, cursor: 'pointer' }}
@@ -134,7 +134,7 @@ export function RouteResultCard({
                       border: `1px solid ${nextLegColor}44`, padding: '3px 8px', borderRadius: '8px',
                       fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '4px', flexWrap: 'wrap'
                     }}>
-                      Switch to {nextLeg.lineDef?.name} ({t.towards} {nextLeg.direction})
+                      Switch to {nextLeg.lineDef?.name} ({t.towards || 'Towards'} {nextLeg.direction})
                     </span>
                   </div>
                 </div>
@@ -149,7 +149,7 @@ export function RouteResultCard({
             }}>
               <MetroOperatorLogo lineDef={route.legs[route.legs.length - 1]?.lineDef} size={22} />
             </div>
-            <div style={{ flex: 1 }}>
+            <div style={{ flex: 1, minWidth: 0 }}>
               <div
                 onClick={() => onStationClick && onStationClick(route.legs[route.legs.length - 1]?.toStationId)}
                 style={{ fontWeight: 800, fontSize: '1.05rem', color: route.legs[route.legs.length - 1]?.lineDef?.color || 'var(--text-primary)', lineHeight: 1.2, cursor: 'pointer' }}
@@ -161,7 +161,7 @@ export function RouteResultCard({
         </div>
 
         {/* Action Toggle Bar */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '16px', paddingTop: '12px', borderTop: '1px solid var(--border-color)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px', marginTop: '16px', paddingTop: '12px', borderTop: '1px solid var(--border-color)' }}>
           <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
             Smart Card Fare: <strong style={{ color: '#10B981' }}>₹{route.smartCardFare}</strong>
           </div>

@@ -62,7 +62,7 @@ export function StationsDirectoryPage({ onSelectStation, onBackToHome }) {
         </div>
 
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginTop: '20px' }}>
-          <div style={{ position: 'relative', flex: 1, minWidth: '240px' }}>
+          <div style={{ position: 'relative', flex: 1, minWidth: 'min(240px, 100%)' }}>
             <input
               type="text"
               value={searchQuery}
@@ -93,7 +93,7 @@ export function StationsDirectoryPage({ onSelectStation, onBackToHome }) {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '14px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(280px, 100%), 1fr))', gap: '14px' }}>
         {filteredStations.map(st => {
           const stationLine = METRO_LINES[st.line];
           const slug = getStationSlug(st);
